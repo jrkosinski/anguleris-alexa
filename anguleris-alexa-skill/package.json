@@ -1,0 +1,16 @@
+{
+  "name": "anguleris-alexa-skill",
+  "version": "0.5.2",
+  "description": "alexa skill lambda",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Anguleris",
+  "license": "ISC",
+  "dependencies": {
+    "asyncawait": "^1.0.6",
+    "aws-sdk": "^2.188.0",
+    "uuid": "^3.2.1"
+  }
+}
