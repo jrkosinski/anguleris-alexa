@@ -3,8 +3,9 @@
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 
-const exception = require('anguleris-common').exceptions('INDEX');
-const logger = require('anguleris-common').logger('INDEX');
+const common = require('anguleris-common');
+const exception = common.exceptions('IDX');
+const logger = common.logger('IDX');
 
 const app = require('./util/alexaApp').app; 
 const config = require('./config');

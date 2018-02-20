@@ -24,26 +24,6 @@ var sendTestRequest = async(function sendTestRequest(request, context, handler) 
     return response;
 });
 
-function sendGetVersionRequest() {
-    var testRequest = alexa.createRequest({
-        type: 'IntentRequest',
-        name: config.intents.getVersion.name,
-        slots: {},
-        attrs: {},
-        appId: 'amzn1.echo-sdk-123456',
-        sessionId: 'SessionId.357a6s7',
-        userId: 'amzn1.account.abc123',
-        requestId: 'EdwRequestId.abc123456',
-        timestamp: '2016-06-16T14:38:46Z',
-        locale: 'en-US',
-        new: false
-    });
-
-    app.handle(testRequest, (response) => {
-        console.log(response);
-    });
-}
-
 function formVersionRequest(team, videoSupport) {
     var request = {
         "session": {
@@ -71,6 +51,46 @@ function formVersionRequest(team, videoSupport) {
     return request;
 }
 
+function sendGetVersionRequest() {
+    var testRequest = alexa.createRequest({
+        type: 'IntentRequest',
+        name: config.intents.getVersion.name,
+        slots: {},
+        attrs: {},
+        appId: 'amzn1.echo-sdk-123456',
+        sessionId: 'SessionId.357a6s7',
+        userId: 'amzn1.account.abc123',
+        requestId: 'EdwRequestId.abc123456',
+        timestamp: '2016-06-16T14:38:46Z',
+        locale: 'en-US',
+        new: false
+    });
+
+    app.handle(testRequest, (response) => {
+        console.log(response);
+    });
+}
+
+function sendGetCategoriesRequest() {
+    var testRequest = alexa.createRequest({
+        type: 'IntentRequest',
+        name: config.intents.getCategories.name,
+        slots: {},
+        attrs: {},
+        appId: 'amzn1.echo-sdk-123456',
+        sessionId: 'SessionId.357a6s7',
+        userId: 'amzn1.account.abc123',
+        requestId: 'EdwRequestId.abc123456',
+        timestamp: '2016-06-16T14:38:46Z',
+        locale: 'en-US',
+        new: false
+    });
+
+    app.handle(testRequest, (response) => {
+        console.log(response);
+    });
+}
+
 function assert(expr) {
     if (!expr)
         throw false;
@@ -78,9 +98,10 @@ function assert(expr) {
 
 
 module.exports = {
-    formVersionRequest: formVersionRequest,
+    //formVersionRequest: formVersionRequest,
+    //sendTestRequest: sendTestRequest,
+    //getTestContext: getTestContext,
     sendGetVersionRequest: sendGetVersionRequest,
-    assert: assert,
-    sendTestRequest: sendTestRequest,
-    getTestContext: getTestContext
+    sendGetCategoriesRequest: sendGetCategoriesRequest,
+    assert: assert
 };

@@ -6,4 +6,4 @@ const testUtil = require('./test/testUtil');
 const logger = require('anguleris-common').logger('TEST');
 
 //testUtil.sendTestRequest(testUtil.formVersionRequest(), testUtil.getTestContext(), handler);
-testUtil.sendGetVersionRequest();
+testUtil.sendGetCategoriesRequest();

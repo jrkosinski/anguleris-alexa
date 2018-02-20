@@ -58,7 +58,8 @@ module.exports = {
             generalError: configUtil.getSetting('CARD_GENERAL_ERROR', 'General Error'),
             pause: configUtil.getSetting('CARD_PAUSE', 'Pause'),
             resume: configUtil.getSetting('CARD_RESUME', 'Resume'),
-            mediaOutput: configUtil.getSetting('CARD_MEDIA_OUTPUT', 'Media Output')
+            mediaOutput: configUtil.getSetting('CARD_MEDIA_OUTPUT', 'Media Output'),
+            categoriesList: configUtil.getSetting('CARD_CATEGORIES_LIST', 'Categories List')
         }
     },
 };
