@@ -13,8 +13,8 @@ const config = require('../config');
 const dataAccess = require('./dataAccess');
 const pkg = require('../package.json');
 
-function responseWithCard(text, title, shouldEndSession) {
-    return {
+function responseWithCard(text, title, sessionAttr, shouldEndSession) {
+    var output = {
         text: text,
         card: {
             title: title,
@@ -22,6 +22,18 @@ function responseWithCard(text, title, shouldEndSession) {
         },
         shouldEndSession: shouldEndSession ? true: false
     };
+        
+    output.attrs = {
+        text: text
+    };
+
+    if (sessionAttr) {
+        for(var n=0; n<sessionAttr.length; n++){
+            output.attrs[sessionAttr[n].key] = sessionAttr[n].value;
+        }
+    }
+
+    return output; 
 }
 
 function addAppIntent(intent, func) {
@@ -34,18 +46,21 @@ function addAppIntent(intent, func) {
     );
 }
 
+// Startup
 app.onStart(() => {
     return exception.try(() => {
         return responseWithCard(config.ui.text.launchPrompt, config.ui.cards.launchPrompt); 
     });
 });
 
-addAppIntent(config.intents.getVersion, () => {
+// GetVersion
+addAppIntent(config.intents.getVersion, (slots, attrs) => {
     var versionText = config.ui.text.getVersion.replace('{version}', pkg.version);
     return responseWithCard(versionText, config.ui.cards.getVersion); 
 });
 
-addAppIntent(config.intents.getCategories, () => {
+// GetCategories
+addAppIntent(config.intents.getCategories, (slots, attrs) => {
     var categories = dataAccess.getCategories();
     var text = ""; 
     for(var n=0; n<categories.length; n++){
@@ -53,7 +68,20 @@ addAppIntent(config.intents.getCategories, () => {
         if (n < categories.length-1)
             text += ", ";
     }
+
+    text+= "Say a category name to enter that category."; 
+    
     return responseWithCard(text, config.ui.cards.categoriesList); 
+});
+
+// Repeat
+addAppIntent(config.intents.repeat, (slots, attrs) => {
+    if (attrs.text) {
+        return responseWithCard(text, 'Repeat'); 
+    }
+    else {
+        return responseWithCard(config.ui.text.launchPrompt, config.ui.cards.launchPrompt); 
+    }
 });
 
 module.exports = {

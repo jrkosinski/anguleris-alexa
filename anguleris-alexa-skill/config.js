@@ -30,6 +30,12 @@ module.exports = {
             utterances: [
                 "get a list of categories"
             ]
+        },
+        repeat: {
+            name: 'RepeatIntent',
+            utterances: [
+                "repeat"
+            ]
         }
     },
 
