@@ -1,1 +1,1 @@
-npm install --save uuid asyncawait aws-sdk 
+npm install --save uuid asyncawait alexia

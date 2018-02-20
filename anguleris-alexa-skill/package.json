@@ -1,6 +1,6 @@
 {
   "name": "anguleris-alexa-skill",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "alexa skill lambda",
   "main": "index.js",
   "scripts": {
@@ -9,9 +9,8 @@
   "author": "Anguleris",
   "license": "ISC",
   "dependencies": {
-    "alexa-app": "^4.2.1",
+    "alexia": "^2.4.0",
     "asyncawait": "^1.0.6",
-    "aws-sdk": "^2.188.0",
     "uuid": "^3.2.1"
   }
 }

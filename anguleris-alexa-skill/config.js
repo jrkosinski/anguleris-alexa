@@ -4,8 +4,33 @@ const configUtil = require('anguleris-common').config;
 
 module.exports = {
 
-    intentNames: {
-        getVersion: 'GetVersionIntent'
+    intents: {
+        getVersion: {
+            name: 'GetVersionIntent',
+            utterances: [
+                "what is the current version",
+                "what's the current version",
+                "what is the latest version",
+                "what's the latest version",
+                "get the version number",
+                "get the current version",
+                "get the latest version",
+                "what is the current version",
+                "what's the current version number",
+                "what is the latest version number",
+                "what's the latest version number",
+                "get the version number number",
+                "get the current version number",
+                "get the latest version number",
+                "get version info"
+            ]
+        },
+        getCategories: {
+            name: 'GetCategoriesIntent',
+            utterances: [
+                "get a list of categories"
+            ]
+        }
     },
 
     ui: {
@@ -14,7 +39,7 @@ module.exports = {
         clientSkillId: configUtil.getSetting('CLIENT_SKILL_ID', 'amzn1.ask.skill.7d8d4528-2a07-4d49-8026-4fa4a81aee51'),
 
         text: {
-            launchPrompt: configUtil.getSetting('TEXT_LAUNCH_PROMPT', "Welcome to the Anguleris Alexa Skill. This skill is to be a development base for what's to come. For now, try asking 'what is the current version?'"),
+            launchPrompt: configUtil.getSetting('TEXT_LAUNCH_PROMPT', "Welcome to the Anguleris Alexa Skill. This skill is to be a development base for what's to come. For now, try asking 'what is the current version?' or 'get a list of categories'."),
             launchReprompt: configUtil.getSetting('TEXT_LAUNCH_REPROMPT', "Try asking 'what is the current version?'"),
             errorReprompt: configUtil.getSetting('TEXT_ERROR_REPROMPT', 'Sorry, an error has occurred. Want to try again?'),
             unknownIntent: configUtil.getSetting('TEXT_UNKNOWN_INTENT', 'Sorry, your request was not recognized.'),
@@ -27,6 +52,7 @@ module.exports = {
 
         cards : {
             launchPrompt: configUtil.getSetting('CARD_LAUNCH_PROMPT', 'Launch'),
+            getVersion: configUtil.getSetting('CARD_GET_VERSION', 'Get Version'),
             unknownIntent: configUtil.getSetting('CARD_UNKNOWN_INTENT', 'Unknown Intent'),
             helpText: configUtil.getSetting('CARD_HELP', 'Help'),
             generalError: configUtil.getSetting('CARD_GENERAL_ERROR', 'General Error'),
