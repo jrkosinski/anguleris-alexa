@@ -9,6 +9,7 @@
   "author": "Anguleris",
   "license": "ISC",
   "dependencies": {
+    "alexa-app": "^4.2.1",
     "asyncawait": "^1.0.6",
     "aws-sdk": "^2.188.0",
     "uuid": "^3.2.1"
