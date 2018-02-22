@@ -1,5 +1,12 @@
 'use strict';
 
+// * * * * * 
+// navigation - utilities related to navigation through responses lists 
+// 
+// Anguleris Technologies
+// John R. Kosinski
+//
+// 22 Feb 2018
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 
@@ -12,6 +19,19 @@ const query = require('./query');
 const enums = require('./enums');
 const responseBuilder = require('./responseBuilder');
 
+// * * * 
+// given a query, returns params that help to form the Alexa response 
+// 
+// args
+//  query: string
+// 
+// returns: json object in the form 
+// {
+//    preText: string,
+//    postText: string,
+//    title: string,
+//    textProperty: string
+// }
 function getNavParamsForQuery(query) {
     var output = {
         preText: 'Results {start} to {end} of {count}. ',
@@ -32,6 +52,14 @@ function getNavParamsForQuery(query) {
     return output; 
 }
 
+// * * * 
+// returns a response that attempts to obey the given command on a list response
+// 
+// args
+//  session: the list response and its state is defined here 
+//  navigationCommand: the command to act upon the list 
+// 
+// returns: json object (Alexa response format) 
 function navigate(session, navigationCommand) {
     //TODO: proper error msgs & responses 
     return exception.try(() => {
@@ -52,7 +80,7 @@ function navigate(session, navigationCommand) {
                     //TODO: handle already at beginning of list?
                 }
 
-                else if (navigationCommand === enums.navigationCommand.startOver) {
+                else if (navigationCommand === enums.navigationCommand.moveFirst) {
                     index = 0; 
                 }
 
@@ -76,22 +104,57 @@ function navigate(session, navigationCommand) {
     });
 }
 
+// * * * 
+// move to the next result in the list response 
+// 
+// args
+//  session: the list response and its state is defined here 
+// 
+// returns: json object (Alexa response format) 
 function moveNext(session) {
     return navigate(session, enums.navigationCommand.next); 
 }
 
+// * * * 
+// move to the previous result in the list response 
+// 
+// args
+//  session: the list response and its state is defined here 
+// 
+// returns: json object (Alexa response format) 
 function movePrev(session) {
     return navigate(session, enums.navigationCommand.prev); 
 }
 
-function startOver(session) {
-    return navigate(session, enums.navigationCommand.startOver); 
+// * * * 
+// move to the first result in the list response 
+// 
+// args
+//  session: the list response and its state is defined here 
+// 
+// returns: json object (Alexa response format) 
+function moveFirst(session) {
+    return navigate(session, enums.navigationCommand.moveFirst); 
 }
 
+// * * * 
+// move to the next result in the list response 
+// 
+// args
+//  session: the list response and its state is defined here 
+// 
+// returns: json object (Alexa response format) 
 function stop(session) {
     return navigate(session, enums.navigationCommand.stop); 
 }
 
+// * * * 
+// gets a response containing the details for a specific category or manufacturer
+// 
+// args
+//  session: session attributes from request
+// 
+// returns: json object (Alexa response format) 
 function getDetails(session, parameter) {
     return exception.try(() => {
         var details =null;
@@ -121,7 +184,7 @@ function getDetails(session, parameter) {
 module.exports = {
     moveNext: moveNext,
     movePrev : movePrev,
-    startOver : startOver,
+    moveFirst : moveFirst,
     stop : stop,
     getDetails: getDetails
 };

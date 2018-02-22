@@ -1,5 +1,12 @@
 'use strict';
 
+// * * * * * 
+// alexaApp - alexia specification for the app's intents & handlers
+// 
+// Anguleris Technologies
+// John R. Kosinski
+//
+// 22 Feb 2018
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 const alexa = require("alexia");
@@ -17,7 +24,10 @@ const enums = require('./enums');
 const responseBuilder = require('./responseBuilder');
 const pkg = require('../package.json');
 
-
+// * * * 
+// utility for specifying an intent handler 
+// 
+// returns: nothing 
 function addAppIntent(intent, func) {
     app.intent(intent.name,
         intent.utterances, (slots, attr, data) => {
@@ -84,8 +94,8 @@ addAppIntent(config.intents.movePrev, (slots, attrs, data) => {
 });
 
 // Start Over
-addAppIntent(config.intents.startOver, (slots, attrs, data) => {
-    return navigation.startOver(attrs); 
+addAppIntent(config.intents.moveFirst, (slots, attrs, data) => {
+    return navigation.moveFirst(attrs); 
 });
 
 // Stop

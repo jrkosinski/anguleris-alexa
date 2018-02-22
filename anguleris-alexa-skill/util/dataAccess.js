@@ -1,5 +1,12 @@
 'use strict';
 
+// * * * * * 
+// dataAccess - access to application data sources
+// 
+// Anguleris Technologies
+// John R. Kosinski
+//
+// 22 Feb 2018
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 
@@ -13,10 +20,24 @@ const _categories = new Categories();
 const _manufacturers = new Manufacturers();
 
 
+// * * * * * 
+// DataTable - superclass for data container entities
+// 
+// Anguleris Technologies
+// John R. Kosinski
+//
+// 22 Feb 2018
 function DataTable(data) {
     const _this = this;
     const _all = data;
 
+    // * * *
+    // finds a specific entity, given its name 
+    //
+    // args
+    //  name: the name of the object to find 
+    // 
+    // returns: a single object, or null
     this.findByName = (name) => {
         return exception.try(() => {
             var output = null; 
@@ -37,11 +58,20 @@ function DataTable(data) {
         });
     };
 
+    // * * *
+    // returns all contained objects
     this.all = () => {
         return _all; 
     }
 }
 
+// * * * * * 
+// Categories - data container for categories
+// 
+// Anguleris Technologies
+// John R. Kosinski
+//
+// 22 Feb 2018
 function Categories() {
     const _all = [
         {
@@ -144,6 +174,13 @@ function Categories() {
     return new DataTable(_all);
 }
 
+// * * * * * 
+// Manufacturers - data container for manufacturers
+// 
+// Anguleris Technologies
+// John R. Kosinski
+//
+// 22 Feb 2018
 function Manufacturers() {
     const _all = [
         { name: 'Alucobond' },
@@ -172,6 +209,13 @@ function Manufacturers() {
 }
 
 
+// * * * 
+// gets all categories, or a specific one by name
+//
+// args
+//  parameter: the name of the desired category; if omitted, all categories are returned in array
+//
+// returns: single object or array of categories
 function getCategories(parameter) {
     return exception.try(() => {
         if (parameter)
@@ -181,6 +225,13 @@ function getCategories(parameter) {
     });
 }
 
+// * * * 
+// gets all manufacturers, or a specific one by name
+//
+// args
+//  parameter: the name of the desired manufacturer; if omitted, all manufacturers are returned in array
+//
+// returns: single object or array of manufacturers
 function getManufacturers(parameter) {
     return exception.try(() => {
         if (parameter)

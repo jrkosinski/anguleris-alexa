@@ -1,5 +1,12 @@
 'use strict';
 
+// * * * * * 
+// index - entry point
+// 
+// Anguleris Technologies
+// John R. Kosinski
+//
+// 22 Feb 2018
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 

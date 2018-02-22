@@ -1,5 +1,12 @@
 'use strict'
 
+// * * * * * 
+// testUtil - unit tests (run from test.js as entry point)
+// 
+// Anguleris Technologies
+// John R. Kosinski
+//
+// 22 Feb 2018
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 const alexa = require("alexia");
@@ -70,7 +77,7 @@ function createNavigationRequest(querySubject, navigationCommand, startIndex) {
     var intentNames = {}; 
     intentNames[enums.navigationCommand.next] = config.intents.moveNext.name;
     intentNames[enums.navigationCommand.prev] = config.intents.movePrev.name;
-    intentNames[enums.navigationCommand.startOver] = config.intents.startOver.name;
+    intentNames[enums.navigationCommand.moveFirst] = config.intents.moveFirst.name;
     intentNames[enums.navigationCommand.stop] = config.intents.stop.name;
 
     return {
@@ -291,8 +298,8 @@ const runUnitTests = async((handler) => {
 
         //categories start over 1
         async(() => {
-            var request = createNavigationRequest(enums.querySubject.categories, enums.navigationCommand.startOver, 0); 
-            await(runTest('categories startOver 1', request, [
+            var request = createNavigationRequest(enums.querySubject.categories, enums.navigationCommand.moveFirst, 0); 
+            await(runTest('categories moveFirst 1', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
                 assertions.hasStartIndexAttribute,
@@ -302,8 +309,8 @@ const runUnitTests = async((handler) => {
 
         //categories start over 2
         async(() => {
-            var request = createNavigationRequest(enums.querySubject.categories, enums.navigationCommand.startOver, 0); 
-            await(runTest('categories startOver 2', request, [
+            var request = createNavigationRequest(enums.querySubject.categories, enums.navigationCommand.moveFirst, 0); 
+            await(runTest('categories moveFirst 2', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
                 assertions.hasStartIndexAttribute,
@@ -345,8 +352,8 @@ const runUnitTests = async((handler) => {
 
         //manufacturers start over 1
         async(() => {
-            var request = createNavigationRequest(enums.querySubject.manufacturers, enums.navigationCommand.startOver, 0); 
-            await(runTest('manufacturers startOver 1', request, [
+            var request = createNavigationRequest(enums.querySubject.manufacturers, enums.navigationCommand.moveFirst, 0); 
+            await(runTest('manufacturers moveFirst 1', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
                 assertions.hasStartIndexAttribute,

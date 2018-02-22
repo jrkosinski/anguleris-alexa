@@ -59,10 +59,11 @@ module.exports = {
                 "previous"
             ]
         },
-        startOver: {
-            name: 'StartOverIntent',
+        moveFirst: {
+            name: 'MoveFirstIntent',
             utterances: [
-                "startOver"
+                "move first", 
+                "start over"
             ]
         },
         stop: {
