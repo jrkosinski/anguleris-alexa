@@ -57,13 +57,36 @@ addAppIntent(config.intents.getCategories, (slots, attrs, data) => {
     
     return responseBuilder.responseListGroup (
         categories, 
-        'categories',
+        { subject: enums.querySubject.categories },
         'name', 
         config.ui.cards.categoriesList, 
         0, 
-        'Found {count} results. Results {start} to {end} of {count}. ',
+        'Found {count} categories. Results {start} to {end} of {count}. ',
         'Say next, previous, start over, or stop. '
     ); 
+});
+
+// GetManufacturers
+addAppIntent(config.intents.getManufacturers, (slots, attrs, data) => {
+    var categories = query.runQuery(enums.querySubject.manufacturers)
+    
+    return responseBuilder.responseListGroup (
+        categories, 
+        { subject: enums.querySubject.manufacturers},
+        'name', 
+        config.ui.cards.manufacturersList, 
+        0, 
+        'Found {count} manufacturers. Results {start} to {end} of {count}. ',
+        'Say next, previous, start over, or stop. '
+    ); 
+});
+
+// GetManufacturersForCategory
+addAppIntent(config.intents.getManufacturersForCategory, (slots, attrs, data) => {
+    var queryParams = { category: slots.entity}; 
+    var manufacturers = query.runQuery(enums.querySubject.manufacturers, queryParams); 
+    
+    return responseBuilder.listToText(manufacturers, attrs, config.ui.text.manufacturersForCategory); 
 });
 
 // GetDetails

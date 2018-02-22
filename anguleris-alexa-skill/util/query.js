@@ -26,16 +26,27 @@ const dataAccess = require('./dataAccess');
 //  parameter: optional parameter to modify the request
 //
 // returns: object or array of objects 
-function runQuery(querySubject, parameter) {
+function runQuery(querySubject, queryParams) {
     return exception.try(() => {
-        switch(querySubject) {
-            case enums.querySubject.categories: 
-                return dataAccess.getCategories(parameter); 
-            case enums.querySubject.manufacturers: 
-                return dataAccess.getManufacturers(parameter); 
+        var name = null; 
+        if (queryParams && queryParams.name){
+            name = queryParams.name;
         }
 
-        return [];
+        switch(querySubject) {
+            case enums.querySubject.categories: {  
+                return dataAccess.getCategories(name); 
+            }
+            case enums.querySubject.manufacturers: {            
+                if (queryParams && queryParams.category) {
+                    var category = dataAccess.getCategories(queryParams.category); 
+                    if (category)
+                        return category.manufacturers; 
+                }
+            }
+        }
+
+        return null;
     });
 }
 

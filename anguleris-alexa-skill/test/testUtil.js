@@ -73,6 +73,38 @@ function createGetCategoriesRequest() {
     }; 
 }
 
+function createGetManufacturersRequest() {
+    return {
+        type: 'IntentRequest',
+        name: config.intents.getManufacturers.name,
+        slots: {},
+        attrs: {},
+        appId: 'amzn1.echo-sdk-123456',
+        sessionId: 'SessionId.357a6s7',
+        userId: 'amzn1.account.abc123',
+        requestId: 'EdwRequestId.abc123456',
+        timestamp: '2016-06-16T14:38:46Z',
+        locale: 'en-US',
+        new: false
+    }; 
+}
+
+function createManufacturersForCategoryRequest(querySubject, parameter, startIndex) {
+    return {
+        type: 'IntentRequest',
+        name: config.intents.getManufacturersForCategory.name,
+        slots: { entity: parameter },
+        attrs: { querySubject: querySubject, startIndex:startIndex},
+        appId: 'amzn1.echo-sdk-123456',
+        sessionId: 'SessionId.357a6s7',
+        userId: 'amzn1.account.abc123',
+        requestId: 'EdwRequestId.abc123456',
+        timestamp: '2016-06-16T14:38:46Z',
+        locale: 'en-US',
+        new: false
+    }; 
+}
+
 function createNavigationRequest(querySubject, navigationCommand, startIndex) {
     var intentNames = {}; 
     intentNames[enums.navigationCommand.next] = config.intents.moveNext.name;
@@ -321,7 +353,7 @@ const runUnitTests = async((handler) => {
 
         //get manufacturers
         async(() => {
-            await(runTest('get manufacturers', createGetCategoriesRequest(), [
+            await(runTest('get manufacturers', createGetManufacturersRequest(), [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
                 assertions.hasStartIndexAttribute
@@ -365,6 +397,17 @@ const runUnitTests = async((handler) => {
         async(() => {
             var request = createDetailsRequest(enums.querySubject.categories, 'Ceilings', 5); 
             await(runTest('category details 1', request, [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes,
+                assertions.hasStartIndexAttribute,
+                assertions.listIndexIsExpected(5)
+            ])); 
+        }),
+
+        //manufacturers for category 1
+        async(() => {
+            var request = createManufacturersForCategoryRequest(enums.querySubject.categories, 'Ceilings', 5); 
+            await(runTest('manufacturers for category 1', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
                 assertions.hasStartIndexAttribute,

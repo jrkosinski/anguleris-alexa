@@ -85,7 +85,15 @@ function navigate(session, navigationCommand) {
                 }
 
                 if (results && results.length) {
-                    return responseBuilder.responseListGroup(results, session.querySubject, navParams.textProperty, navParams.title, index, navParams.preText, navParams.postText); 
+                    return responseBuilder.responseListGroup(
+                        results, 
+                        { subject: session.querySubject, params: session.queryParams }, 
+                        navParams.textProperty, 
+                        navParams.title, 
+                        index, 
+                        navParams.preText, 
+                        navParams.postText
+                    ); 
                 }
                 else{
                     //TODO: output no results found 
@@ -161,12 +169,12 @@ function getDetails(session, parameter) {
 
         switch (session.querySubject) {
             case enums.querySubject.categories: 
-                var obj = query.runQuery(enums.querySubject.categories, parameter); 
+                var obj = query.runQuery(enums.querySubject.categories, {name:parameter}); 
                 if (obj)
                     details = obj.description;
                 break; 
             case enums.querySubject.manufacturers: 
-                var obj = query.runQuery(enums.querySubject.categories, parameter); 
+                var obj = query.runQuery(enums.querySubject.manufacturers, {name:parameter}); 
                 if (obj)
                     details = obj.description;
                 break;

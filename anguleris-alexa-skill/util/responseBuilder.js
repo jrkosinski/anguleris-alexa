@@ -62,7 +62,7 @@ function responseWithCard(text, title, session, shouldEndSession) {
 //  postText: text to speak after the list contents 
 //
 // returns: json object (Alexa response format) 
-function responseListGroup(list, querySubject, textProperty, title, startIndex, preText, postText) {
+function responseListGroup(list, query, textProperty, title, startIndex, preText, postText) {
     return exception.try(() => {
 
         var text = '';
@@ -70,12 +70,13 @@ function responseListGroup(list, querySubject, textProperty, title, startIndex, 
         //build session attributes
         var sessionAttr = {
             startIndex: startIndex,
-            querySubject: querySubject
+            querySubject: query.subject,
+            queryParams: query.params
         };
 
         if (!list || !list.length) {
             //if no results, output 'not found' 
-            return responseWithCard(config.ui.text.noResultsFound, config.ui.cards.noResultsFound, sessionAttr);
+            return noResultsResponse(sessionAttr);
         }
         else {
             //if start index is past the end, loop around 
@@ -123,8 +124,47 @@ function responseListGroup(list, querySubject, textProperty, title, startIndex, 
 }
 
 //TODO: get text from config
-function generalError() {
-    return responseWithCard('error', 'error'); 
+function generalError(session) {
+    return responseWithCard(config.ui.text.generalError, config.ui.cards.generalError, session, true); 
+}
+
+// * * * 
+// forms a standard response for when no results were found for a query
+// 
+// args
+//  session: session attributes to return
+//  shouldEndSession: true to end session after response; false is the default 
+//
+// returns: json object (Alexa response format) 
+function noResultsResponse(session, shouldEndSession) {
+    return responseWithCard(config.ui.text.noResultsFound, config.ui.cards.noResultsFound, session, shouldEndSession); 
+}
+
+// * * * 
+// converts an array of strings to speech, and returns in a basic speech response
+// 
+// args
+//  list: the list to format as text (array of strings) 
+//  title: the card title
+//  session: session attributes to return
+//  shouldEndSession: true to end session after response; false is the default 
+//
+// returns: json object (Alexa response format) 
+function listToText(list, title, session, shouldEndSession) {
+    return exception.try(() => {
+        if (!list || !list.length){
+            return noResultsResponse(session);
+        }
+        
+        var text = list[0]; 
+        if (list.length > 1){
+            for(var n=1; n<list.length; n++){
+                text += ', ' + list[n]; 
+            }
+        }
+
+        return responseWithCard(text, title, session); 
+    });
 }
 
 module.exports = {

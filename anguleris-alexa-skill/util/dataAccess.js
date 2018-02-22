@@ -77,41 +77,49 @@ function Categories() {
         {
             name: 'Access Security',
             subcategories: [],
+            manufacturers: ['Boon Edam USA', 'Delta Turnstiles'],
             description: 'Browse through BIMsmith’s library of Revit Access Security families for free download. Compare the products you like best, then download the Revit files you need or save them in the cloud for free by clicking Add to MyBIMsmith.'
         },
         {
             name: 'Appliances',
             subcategories: [],
+            manufacturers: ['Kenmore'],
             description: 'Browse through BIMsmith’s comprehensive library of parametric BIM objects for different appliances. From refrigerators to washers and dryers, you can find it here. Download the Revit files you need, then save your favorite families to the cloud to use later with your MyBIMsmith account – all 100% for free.'
         },
         {
             name: 'AV',
             subcategories: [],
+            manufacturers: [],
             description: ''
         },
         {
             name: 'Cable Tray',
             subcategories: [],
+            manufacturers: ['Chalfant'],
             description: ''
         },
         {
             name: 'Ceilings',
             subcategories: [],
+            manufacturers: ['Homasote'],
             description: 'Browse through BIMsmith’s library of free ceiling families to use with Revit. Compare the products you like best, then download the Revit files you need or save them in the cloud for free by clicking Add to MyBIMsmith.'
         },
         {
             name: 'Countertops',
             subcategories: [],
+            manufacturers: [],
             description: "Browse through BIMsmith’s comprehensive library of parametric Revit families for when you're modeling countertops in Revit. Sort and compare each countertop by key stats such as certifications, standard dimensions, and type of finish. Download the Revit files you need, then save your favorite families to the cloud to use later with your MyBIMsmith account – all 100% for free."
         },
         {
             name: 'Door Hardware',
             subcategories: [],
+            manufacturers: [],
             description: "Browse through BIMsmith’s curated library of parametric Revit door hardware content. Whether its deadbolts or exit devices you're looking for, you can find it here. Download all the Revit files you need, then save your favorite families to the cloud to use later with your MyBIMsmith account – all 100% for free."
         },
         {
             name: 'Doors',
             subcategories: [],
+            manufacturers: [],
             description: "Download door Revit families with BIMsmith Market. Browse through BIMsmith’s curated BIM library to research and select which doors to use in your project. Whether you're looking for something classic, something modern, or something in between, you can find it here. Download all the Revit files you need, then save your favorite families to the cloud to use later with your MyBIMsmith account – all for free."
         },
         {
@@ -122,51 +130,61 @@ function Categories() {
         {
             name: 'Flooring',
             subcategories: [],
+            manufacturers: [],
             description: "Browse through BIMsmith’s library of parametric Revit flooring families for free download. Compare the products you like best, then download the Revit files you need or save them in the cloud for free by clicking Add to MyBIMsmith."
         },
         {
             name: 'Furniture',
             subcategories: [],
+            manufacturers: [],
             description: "Browse through BIMsmith’s library of furniture families for free download and use with Revit. Compare the products you like best, then download the Revit files you need or save them in the cloud for free by clicking Add to MyBIMsmith."
         },
         {
             name: 'Mailboxes',
             subcategories: [],
+            manufacturers: [],
             description: "Browse through BIMsmith’s curated collection of parametric Revit content for mailboxes. Select from different mailbox types with key stats such as mail capacity, lock types, finishes, and measurements. Download the Revit families you need, then save your favorite families to the cloud to use later with your MyBIMsmith account – all 100% for free."
         },
         {
             name: 'Lighting',
             subcategories: [],
+            manufacturers: [],
             description: "Download lighting for Revit with BIMsmith Market. Browse through BIM lighting fixtures from leading manufacturers like LSI Industries and Prudential Lighting. Whether its indoor, outdoor, LED, fluorescent, or any other lighting style you're looking for, you can find the industry's top lighting BIM objects on BIMsmith. Compare key stats and features, and view or download all cut sheets, 3-part specs, product literature, material information, and more for each product quickly and easily. Building with the best lights in the industry starts with the best lighting Revit models in the industry. Download now with BIMsmith."
         },
         {
             name: 'Paints & Coatings',
             subcategories: [],
+            manufacturers: [],
             description: "Browse through BIMsmith’s comprehensive library of parametric Revit families for paints and coatings. From leading brands like Sherwin Williams to Behr to PPG Paints, we have it here. Download the Revit files you need, then save your favorite families to the cloud to use later with your MyBIMsmith account – all for free."
         },
         {
             name: 'Piping',
             subcategories: [],
+            manufacturers: [],
             description: "Browse through BIMsmith’s curated library of parametric piping families for Revit. From outlet boxes to flush valves, we have it here. Compare side by side with key stats such as measurements, outlet connections and sizes, inlet connections and sizes, and application types. Download the BIM objects you need, then save your favorite families to the cloud to use later with your MyBIMsmith account – all 100% for free."
         },
         {
             name: 'Railings',
             subcategories: [],
+            manufacturers: [],
             description: "Browse through BIMsmith’s comprehensive collection of parametric BIM objects for railings. Choose between models using with key stats such as measurements, finish, and baluster details. Download the BIM content you need, then save your favorite families to the cloud to use later with your MyBIMsmith account."
         },
         {
             name: 'Roofing',
             subcategories: [],
+            manufacturers: [],
             description: "Browse through BIMsmith’s library of roofing Revit families for free download. Compare the products you like best, then download the Revit files you need or save them in the cloud for free by clicking Add to MyBIMsmith."
         },
         {
             name: 'Security Cameras',
             subcategories: [],
+            manufacturers: [],
             description: "Browse through BIMsmith’s comprehensive collection of parametric BIM content for security cameras. Compare products with key stats such as camera type, resolution, and field of view. Download the Revit content you need, then save your favorite families to the cloud to use later with your MyBIMsmith account – all 100% for free."
         },
         {
             name: 'Skylights',
             subcategories: [],
+            manufacturers: [],
             description: "Download skylights for Revit with BIMsmith Market. Browse through BIM skylights from leading manufacturers like Wasco Skylights. Whether its strucutral or nonstructural, simple or complex, dome or pyramid, you can find the industry's top skylight BIM objects here. Compare key stats and features, and view or download all cut sheets, 3-part specs, product literature, material information, and more for each product quickly and easily. Building with the best skylights in the industry starts with the best skylight Revit models in the industry. Download now with BIMsmith."
         }
     ];
@@ -213,13 +231,13 @@ function Manufacturers() {
 // gets all categories, or a specific one by name
 //
 // args
-//  parameter: the name of the desired category; if omitted, all categories are returned in array
+//  name: the name of the desired category; if omitted, all categories are returned in array
 //
 // returns: single object or array of categories
-function getCategories(parameter) {
+function getCategories(name) {
     return exception.try(() => {
         if (parameter)
-            return _categories.findByName(parameter); 
+            return _categories.findByName(name); 
         else
             return _categories.all();
     });
@@ -229,13 +247,13 @@ function getCategories(parameter) {
 // gets all manufacturers, or a specific one by name
 //
 // args
-//  parameter: the name of the desired manufacturer; if omitted, all manufacturers are returned in array
+//  name: the name of the desired manufacturer; if omitted, all manufacturers are returned in array
 //
 // returns: single object or array of manufacturers
-function getManufacturers(parameter) {
+function getManufacturers(name) {
     return exception.try(() => {
-        if (parameter)
-            return _manufacturers.findByName(parameter); 
+        if (name)
+            return _manufacturers.findByName(name); 
         else
             return _manufacturers.all();
     });

@@ -35,6 +35,18 @@ module.exports = {
                 "get a list of categories"
             ]
         },
+        getManufacturers: {
+            name: 'GetManufacturersIntent',
+            utterances: [
+                "get a list of manufacturers"
+            ]
+        },
+        getManufacturersForCategory: {
+            name: 'GetManufacturersForCategoryIntent',
+            utterances: [
+                "get a list of manufacturers for {entity:Name}"
+            ]
+        },
         getDetails: {
             name: 'GetDetailsIntent',
             utterances: [
@@ -90,7 +102,7 @@ module.exports = {
             getVersion: configUtil.getSetting('TEXT_GET_VERSION', 'Anguleris Alexa Skill version {version}, copyright Anguleris Technologies 2018'),
             pause: configUtil.getSetting('TEXT_PAUSE', 'Pause'),
             resume: configUtil.getSetting('TEXT_RESUME', 'Resume'),
-            noResultsFound: configUtil.getSetting('TEXT_NO_RESULTS', 'Sorry, no results found for your query.'), 
+            noResultsFound: configUtil.getSetting('TEXT_NO_RESULTS', 'Sorry, no results found for your query. Do you want to try that again?'), 
         },
 
         cards : {
@@ -103,6 +115,7 @@ module.exports = {
             resume: configUtil.getSetting('CARD_RESUME', 'Resume'),
             mediaOutput: configUtil.getSetting('CARD_MEDIA_OUTPUT', 'Media Output'),
             categoriesList: configUtil.getSetting('CARD_CATEGORIES_LIST', 'Categories List'),
+            manufacturersList: configUtil.getSetting('CARD_MANUFACTURERS_LIST', 'Manufacturers List'),
             noResultsFound: configUtil.getSetting('CARD_NO_RESULTS', 'No Results Found'), 
         }
     },
