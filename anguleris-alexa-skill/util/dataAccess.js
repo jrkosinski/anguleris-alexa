@@ -236,7 +236,7 @@ function Manufacturers() {
 // returns: single object or array of categories
 function getCategories(name) {
     return exception.try(() => {
-        if (parameter)
+        if (name)
             return _categories.findByName(name); 
         else
             return _categories.all();

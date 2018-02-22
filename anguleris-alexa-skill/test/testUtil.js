@@ -406,7 +406,7 @@ const runUnitTests = async((handler) => {
 
         //manufacturers for category 1
         async(() => {
-            var request = createManufacturersForCategoryRequest(enums.querySubject.categories, 'Ceilings', 5); 
+            var request = createManufacturersForCategoryRequest(enums.querySubject.manufacturers, 'Ceilings', 5); 
             await(runTest('manufacturers for category 1', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,

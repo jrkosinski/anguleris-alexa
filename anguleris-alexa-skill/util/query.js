@@ -43,6 +43,9 @@ function runQuery(querySubject, queryParams) {
                     if (category)
                         return category.manufacturers; 
                 }
+                else{
+                    return dataAccess.getManufacturers(name); 
+                }
             }
         }
 

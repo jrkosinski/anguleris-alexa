@@ -86,7 +86,7 @@ addAppIntent(config.intents.getManufacturersForCategory, (slots, attrs, data) =>
     var queryParams = { category: slots.entity}; 
     var manufacturers = query.runQuery(enums.querySubject.manufacturers, queryParams); 
     
-    return responseBuilder.listToText(manufacturers, attrs, config.ui.text.manufacturersForCategory); 
+    return responseBuilder.listToText(manufacturers, config.ui.text.manufacturersForCategory, attrs); 
 });
 
 // GetDetails

@@ -170,5 +170,6 @@ function listToText(list, title, session, shouldEndSession) {
 module.exports = {
     responseWithCard: responseWithCard,
     responseListGroup: responseListGroup,
-    generalError: generalError
+    generalError: generalError, 
+    listToText: listToText
 }
