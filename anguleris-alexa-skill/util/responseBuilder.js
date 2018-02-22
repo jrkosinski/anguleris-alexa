@@ -49,7 +49,7 @@ function responseListGroup(list, query, textProperty, title, startIndex, preText
         }
         else {
             //if start index is past the end, loop around 
-            if (starIndex >= list.length) {
+            if (startIndex >= list.length) {
                 startIndex = 0;
                 sessionAttr.startIndex = startIndex;
             }
@@ -64,18 +64,19 @@ function responseListGroup(list, query, textProperty, title, startIndex, preText
             var bodyItems = [];
             for (var n = startIndex; n <= endIndex; n++) {
                 if (list[n][textProperty]) {
-                    bodyItems.push(list[n][textProperty]);
+                    bodyItems.push(list[n][textProperty].trim());
                 }
             }
 
             //build the body
+            var body = '';
             if (bodyItems.length) {
                 for (var n = 0; n < bodyItems.length; n++) {
                     body += bodyItems[n];
                     if (n < bodyItems.length - 1)
                         body += ", ";
                     else
-                        body += '.';
+                        body += '. ';
                 }
             }
 

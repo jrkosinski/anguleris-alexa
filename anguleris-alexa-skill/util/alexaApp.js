@@ -43,8 +43,6 @@ addAppIntent(config.intents.getVersion, (slots, attrs) => {
 // GetCategories
 addAppIntent(config.intents.getCategories, (slots, attrs) => {
     var categories = dataAccess.getCategories();
-
-    text+= "Say a category name to enter that category."; 
     
     return responseBuilder.responseListGroup (
         categories, 
@@ -52,7 +50,7 @@ addAppIntent(config.intents.getCategories, (slots, attrs) => {
         'name', 
         config.ui.cards.categoriesList, 
         0, 
-        'Found {count} results. Results {start} to {end} of {count}',
+        'Found {count} results. Results {start} to {end} of {count}. ',
         'Say next, previous, start over, or stop. '
     ); 
 });

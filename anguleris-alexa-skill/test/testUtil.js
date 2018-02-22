@@ -127,21 +127,34 @@ const runUnitTests = async((handler) => {
     _failedAssertionsList = [];
 
     //ASSERTIONS
-    var responseIsNotNull = {name: 'responseNotNull', assert: (r) => { return r != null;}}; 
+    var assertions = {
+        responseIsNotNull: {name: 'responseNotNull', assert: (r) => { 
+            return r != null;
+        }}, 
+        hasSessionAttributes : {name: 'hasSessionAttributes', assert: (r) => { 
+            return r.sessionAttributes && r.sessionAttributes.text; 
+        }}, 
+        hasStartIndexAttribute : {name: 'hasStartIndexAttribute', assert: (r) => { 
+            return r.sessionAttributes && !common.types.isUndefinedOrNull(r.sessionAttributes.startIndex); 
+        }}
+    }; 
 
     //UNIT TESTS 
     const unitTests = [
         async(() => {
-            runTest('get version', createGetVersionRequest, [
-                responseIsNotNull
-            ]); 
+            await(runTest('get version', createGetVersionRequest(), [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes
+            ])); 
         }),
 
         async(() => {
-            runTest('get categories', createGetCategoriesRequest, [
-                responseIsNotNull
-            ]); 
-        }),
+            await(runTest('get categories', createGetCategoriesRequest(), [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes,
+                assertions.hasStartIndexAttribute
+            ])); 
+        })
     ];
 
     //RUN TESTS 
