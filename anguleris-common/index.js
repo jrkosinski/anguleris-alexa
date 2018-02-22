@@ -1,24 +1,40 @@
 'use strict';
 
 // * * * * * 
-// index - entry point
+// anguleris-common
 // 
+// common & generic utilities for the suite of node-based Anguleris software. 
+// 
+// Anguleris Technologies
 // John R. Kosinski
-// 4 Jan 2018
-
+// 
+// 24 Jan 2018
 var config = require('./config');
 var dateUtil = require('./util/dateUtil');
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 
-//TODO: add exceptionUtil to common 
-
+// * * * 
+// waits a given number of milliseconds
+//
+// args
+//  ms: number of milliseconds to wait 
+// 
+// returns: Promise
 function wait(ms) {
     return new Promise((resolve, reject) => {
         setTimeout(() => { resolve(true);}, ms);
     });
 }
 
+// * * * 
+// wraps the given function inside of a promise & returns a promise that resolves to the 
+// return value of the given function. 
+//
+// args
+//  func: the lambda to wrap 
+// 
+// returns: Promise
 function wrapInPromise(func){
     var promise = new Promise((resolve, reject) => {
         resolve(func);
@@ -26,6 +42,14 @@ function wrapInPromise(func){
     return promise;
 }
 
+// * * * 
+// wraps the given async function inside of a promise & returns a promise that resolves to the 
+// return value of the awaited given function. 
+//
+// args
+//  func: the async lambda to wrap 
+// 
+// returns: Promise
 function wrapInPromiseAsync(asyncFunc){
     var promise = new Promise(async((resolve, reject) => {
         resolve(await(asyncFunc()));
@@ -33,6 +57,16 @@ function wrapInPromiseAsync(asyncFunc){
     return promise;
 }
 
+// * * * 
+// patiently waits for a given condition to be true, checking the condition every given interval. 
+// Optionally can timeout after a given number of seconds.
+//
+// args
+//  conditionFunction: lambda that returns a value when true, the promise resolves 
+//  intervalSeconds: number of seconds between checking the condition function
+//  timeoutSeconds: optional number of seconds before waiting times out 
+// 
+// returns: Promise that resolves to true when the condition becomes true, false on timeout
 function waitForCondition(conditionFunction, intervalSeconds, timeoutSeconds) {
     return new Promise((resolve, reject) => {
         var timestamp = dateUtil.getUnixTimestamp();

@@ -6,6 +6,13 @@
 // 13 Jan 2018
 var profile = (process.env.PROFILE || ''); 
 
+// * * * 
+// creates an enum with the given elements 
+// 
+// args
+//  elementNames: an array of strings
+//
+// returns: a javascript object in the form { a: a, b: b }
 function makeEnum(elementNames){
     var output = {};
     for(var n=0; n<elementNames.length; n++){
@@ -14,6 +21,10 @@ function makeEnum(elementNames){
     return output; 
 }
 
+// * * * 
+// gets a given setting from process.env, or the given default 
+// 
+// returns: value
 function getSetting(key, defaultValue){
     if (profile.length)
         key += '_' + profile;
@@ -26,11 +37,19 @@ function getSetting(key, defaultValue){
     return value; 
 }
 
+// * * * 
+// gets a given boolean setting from process.env, or the given default 
+// 
+// returns: boolean
 function getBooleanSetting(key, defaultValue){
     var value = getSetting(key, defaultValue ? 'true' : 'false'); 
     return (value == 'true'); 
 }
 
+// * * * 
+// gets a given setting from process.env, or the given default, where the value is an array
+// 
+// returns: array
 function getArraySetting(key, defaultValue, delimiter){
     if (!delimiter)
         delimiter = ',';
@@ -44,6 +63,10 @@ function getArraySetting(key, defaultValue, delimiter){
     return array;
 }
 
+// * * * 
+// gets the value of the loggingLevel setting 
+// 
+// returns: array
 function getLoggingLevel(key, defaultValue) {
     var sValue = getSetting(key, defaultValue);
     var output = sValue.trim().toLowerCase();

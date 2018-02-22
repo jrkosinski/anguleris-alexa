@@ -4,29 +4,29 @@
 // 
 // John R. Kosinski
 // 13 Jan 2018
+
+// * * * 
+// replaces all occurrences of a value in the current string, with the given replacement 
+// 
+// returns: string 
 String.prototype.replaceAll = function (search, replacement) {
 	var target = this;
 	return target.split(search).join(replacement);
 };
 
+// * * * 
+// returns true if the string contains at least one instance of the given substring
+// 
+// returns: boolean 
 String.prototype.contains = function (search) {
 	var target = this;
 	return target.indexOf(search) >= 0;
 };
 
-String.prototype.maxDecimalPlaces = function(max) {
-	var target = this;
-	var index = target.indexOf('.');
-	if (index >= 0){
-		var maxLen = index + 1 + max; 
-		if (target.length > maxLen){
-			target = target.substr(0, maxLen); 
-		}
-	}
-
-	return target;
-};
-
+// * * * 
+// pads the string with the given character, until its length is equal to max length
+// 
+// returns: string of length totalLen 
 String.prototype.padRight = function(totalLen, paddingChar) {
 	var target = this;
     if (!paddingChar)
@@ -36,6 +36,10 @@ String.prototype.padRight = function(totalLen, paddingChar) {
 	return target;
 };
 
+// * * * 
+// pads the string with the given character, until its length is equal to max length
+// 
+// returns: string of length totalLen 
 String.prototype.padLeft = function(totalLen, paddingChar) {
 	var target = this;
     if (!paddingChar)
@@ -45,6 +49,10 @@ String.prototype.padLeft = function(totalLen, paddingChar) {
 	return target;
 };
 
+// * * * 
+// returns true if the string ends with any punctuation mark (ignoring trailing whitespace)
+// 
+// returns: boolean
 String.prototype.endsWithPunctuation = function () {
 	var target = this;
 	target = target.trim();
@@ -56,6 +64,11 @@ String.prototype.endsWithPunctuation = function () {
 	return false;
 };
 
+// * * * 
+// returns true if the given object represents a purely numeric value (it either is a number already, or 
+// when converted to string, is purely numeric)
+// 
+// returns: boolean
 function isNumeric(obj){
 	if (variable === undefined || variable === null) 
 		return false;
@@ -64,6 +77,7 @@ function isNumeric(obj){
 	var pattern = /^\d+$/;
     return pattern.test(s);
 }
+
 
 module.exports = {
 	isNumeric : isNumeric

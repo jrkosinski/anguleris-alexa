@@ -5,7 +5,6 @@
 // 
 // John R. Kosinski
 // 4 Oct 2017
-
 var config = require('../config');
 
 
@@ -14,7 +13,6 @@ var loggingLevel = config.loggingLevel;
 
 
 module.exports = function logger(prefix) {
-
     function Logger(prefix) {
         var _this = this; 
 
@@ -29,7 +27,9 @@ module.exports = function logger(prefix) {
             prefix = '';
         this.prefix = prefix;
 
-        var log = function(s, type=_this.logType.info) {
+        // * * * 
+        // internally does all the work of logging.
+        const log = function(s, type=_this.logType.info) {
             var log = true;
 
             if (Array.isArray(loggingLevel)){
@@ -49,9 +49,40 @@ module.exports = function logger(prefix) {
                 console.log('[' + type + '] ' + _this.prefix + ': ' + s);
         };
 
+        // * * * 
+        // logs an informational message 
+        // 
+        // args
+        //  s: the message to log 
+        //
+        // returns: nothing
         this.info = function(s) { log(s, this.logType.info);}
+
+        // * * * 
+        // logs a debug message 
+        // 
+        // args
+        //  s: the message to log 
+        //
+        // returns: nothing
         this.debug = function(s) { log(s, this.logType.debug);}
+
+        // * * * 
+        // logs a warning message 
+        // 
+        // args
+        //  s: the message to log 
+        //
+        // returns: nothing
         this.warn = function(s) { log(s, this.logType.warn);}
+
+        // * * * 
+        // logs an error message 
+        // 
+        // args
+        //  s: the message to log 
+        //
+        // returns: nothing
         this.error = function(s) { log(s, this.logType.error);}
     }
 

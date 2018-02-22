@@ -25,6 +25,7 @@ module.exports = function excepUtil(logPrefix) {
         //      onError: () => {},
         //      functionName: ''
         //  }
+        //
         // returns: return value of given expression
         this.try = (expr, options) => {
             try{
@@ -47,6 +48,7 @@ module.exports = function excepUtil(logPrefix) {
         //      onError: () => {},
         //      functionName: ''
         //  }
+        //
         // returns: return value of given expression
         this.tryAsync = async((expr, options) => {
             try{
@@ -62,6 +64,7 @@ module.exports = function excepUtil(logPrefix) {
 
         // * * *
         // provides standard handling for any errors.
+        //
         // returns: nothing
         this.handleError = (err, functionName) => {
             var prefix = (functionName && functionName.length ? ' <' + functionName + '> ' : '');
