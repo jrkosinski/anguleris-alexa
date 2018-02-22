@@ -25,12 +25,14 @@ function getCategories() {
             { name: 'Furniture' },
             { name: 'Mailboxes' },
             { name: 'Lighting' },
+            { name: 'Paints & Coatings' },
             { name: 'Piping' },
             { name: 'Railings' },
             { name: 'Roofing' },
             { name: 'Security Cameras' },
             { name: 'Skylights' },
             { name: 'Walls' },
+            { name: 'Washroom Accessories' },
             { name: 'Windows' }
         ];
     //}); 

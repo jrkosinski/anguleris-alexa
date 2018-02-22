@@ -84,6 +84,7 @@ function responseListGroup(list, query, textProperty, title, startIndex, preText
             text += postText + ' ';
 
             //build the response body
+            title = title.replaceAll('{start}', startIndex).replaceAll('{end}', endIndex).replaceAll('{count}', list.length);
             var output = responseWithCard(text, title, sessionAttr);
 
             return output;

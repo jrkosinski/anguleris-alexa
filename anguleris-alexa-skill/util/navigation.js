@@ -36,7 +36,7 @@ function navigate(session, navigationCommand) {
     //TODO: proper error msgs & responses 
     return exception.try(() => {
         if (session) {
-            if (session.query && session.startIndex) {
+            if (session.query && !common.types.isUndefinedOrNull(session.startIndex)) {
                 var results = query.runQuery(session.query); 
                 var index = common.types.tryParseInt(session.startIndex); 
                 var navParams = getNavParamsForQuery(session.query);
@@ -49,7 +49,7 @@ function navigate(session, navigationCommand) {
                     if (index < 0)
                         index = 0;
 
-                    //TODO: handle already at beginning of list 
+                    //TODO: handle already at beginning of list?
                 }
 
                 else if (navigationCommand === enums.navigationCommand.startOver) {
@@ -77,19 +77,19 @@ function navigate(session, navigationCommand) {
 }
 
 function moveNext(session) {
-    return navigate(session, navigationCommand.next); 
+    return navigate(session, enums.navigationCommand.next); 
 }
 
 function movePrev(session) {
-    return navigate(session, navigationCommand.prev); 
+    return navigate(session, enums.navigationCommand.prev); 
 }
 
 function startOver(session) {
-    return navigate(session, navigationCommand.startOver); 
+    return navigate(session, enums.navigationCommand.startOver); 
 }
 
 function stop(session) {
-    return navigate(session, navigationCommand.stop); 
+    return navigate(session, enums.navigationCommand.stop); 
 }
 
 
