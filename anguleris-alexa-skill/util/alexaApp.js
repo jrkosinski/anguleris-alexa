@@ -12,6 +12,7 @@ const stringUtil = common.strings;
 
 const config = require('../config');
 const dataAccess = require('./dataAccess');
+const enums = require('./enums');
 const responseBuilder = require('./responseBuilder');
 const pkg = require('../package.json');
 
