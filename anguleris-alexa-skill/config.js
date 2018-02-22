@@ -40,6 +40,30 @@ module.exports = {
             utterances: [
                 "repeat"
             ]
+        }, 
+        moveNext: {
+            name: 'MoveNextIntent',
+            utterances: [
+                "next"
+            ]
+        },
+        movePrev: {
+            name: 'MovePrevIntent',
+            utterances: [
+                "previous"
+            ]
+        },
+        startOver: {
+            name: 'StartOverIntent',
+            utterances: [
+                "startOver"
+            ]
+        },
+        stop: {
+            name: 'StopNavIntent',
+            utterances: [
+                "stop"
+            ]
         }
     },
 

@@ -23,8 +23,8 @@ function responseWithCard(text, title, sessionAttr, shouldEndSession) {
         };
 
         if (sessionAttr) {
-            for (var n = 0; n < sessionAttr.length; n++) {
-                output.attrs[sessionAttr[n].key] = sessionAttr[n].value;
+            for (var p in sessionAttr) {
+                output.attrs[p] = sessionAttr[p];
             }
         }
 
@@ -91,7 +91,13 @@ function responseListGroup(list, query, textProperty, title, startIndex, preText
     });
 }
 
+//TODO: get text from config
+function generalError() {
+    return responseWithCard('error', 'error'); 
+}
+
 module.exports = {
     responseWithCard: responseWithCard,
-    responseListGroup: responseListGroup
+    responseListGroup: responseListGroup,
+    generalError: generalError
 }

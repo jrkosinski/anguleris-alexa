@@ -67,7 +67,7 @@ function createGetCategoriesRequest() {
 }
 
 function createNavigationRequest(query, navigationCommand, startIndex) {
-
+    
 }
 
 function assert(expr) {

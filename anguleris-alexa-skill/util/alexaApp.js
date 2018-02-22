@@ -11,7 +11,7 @@ const logger = common.logger('APP');
 const stringUtil = common.strings;
 
 const config = require('../config');
-const dataAccess = require('./dataAccess');
+const navigation = require('./navigation');
 const enums = require('./enums');
 const responseBuilder = require('./responseBuilder');
 const pkg = require('../package.json');
@@ -42,7 +42,7 @@ addAppIntent(config.intents.getVersion, (slots, attrs) => {
 
 // GetCategories
 addAppIntent(config.intents.getCategories, (slots, attrs) => {
-    var categories = dataAccess.getCategories();
+    var categories = query.runQuery(enums.queryType.categories)
     
     return responseBuilder.responseListGroup (
         categories, 
@@ -63,6 +63,26 @@ addAppIntent(config.intents.repeat, (slots, attrs) => {
     else {
         return responseBuilder.responseWithCard(config.ui.text.launchPrompt, config.ui.cards.launchPrompt); 
     }
+});
+
+// Next
+addAppIntent(config.intents.moveNext, (slots, attrs) => {
+    return navigation.moveNext(attrs); 
+});
+
+// Prev
+addAppIntent(config.intents.movePrev, (slots, attrs) => {
+    return navigation.movePrev(attrs); 
+});
+
+// Start Over
+addAppIntent(config.intents.startOver, (slots, attrs) => {
+    return navigation.startOver(attrs); 
+});
+
+// Stop
+addAppIntent(config.intents.stop, (slots, attrs) => {
+    return navigation.stop(attrs); 
 });
 
 
