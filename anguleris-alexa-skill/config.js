@@ -4,6 +4,10 @@ const configUtil = require('anguleris-common').config;
 
 module.exports = {
 
+    //Settings 
+    listOutputGroupSize: configUtil.getSetting('LIST_OUTPUT_GROUP_SIZE', 5),
+
+    // Intents
     intents: {
         getVersion: {
             name: 'GetVersionIntent',
@@ -39,6 +43,7 @@ module.exports = {
         }
     },
 
+    // UI elements
     ui: {
         useCards: true,
 
@@ -54,6 +59,7 @@ module.exports = {
             getVersion: configUtil.getSetting('TEXT_GET_VERSION', 'Anguleris Alexa Skill version {version}, copyright Anguleris Technologies 2018'),
             pause: configUtil.getSetting('TEXT_PAUSE', 'Pause'),
             resume: configUtil.getSetting('TEXT_RESUME', 'Resume'),
+            noResultsFound: configUtil.getSetting('TEXT_NO_RESULTS', 'Sorry, no results found for your query.'), 
         },
 
         cards : {
@@ -65,7 +71,8 @@ module.exports = {
             pause: configUtil.getSetting('CARD_PAUSE', 'Pause'),
             resume: configUtil.getSetting('CARD_RESUME', 'Resume'),
             mediaOutput: configUtil.getSetting('CARD_MEDIA_OUTPUT', 'Media Output'),
-            categoriesList: configUtil.getSetting('CARD_CATEGORIES_LIST', 'Categories List')
+            categoriesList: configUtil.getSetting('CARD_CATEGORIES_LIST', 'Categories List'),
+            noResultsFound: configUtil.getSetting('CARD_NO_RESULTS', 'No Results Found'), 
         }
     },
 };
