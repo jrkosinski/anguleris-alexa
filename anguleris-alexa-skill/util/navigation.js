@@ -98,10 +98,14 @@ function getDetails(session, parameter) {
 
         switch (session.querySubject) {
             case enums.querySubject.categories: 
-                details = query.runQuery(enums.querySubject.categories, parameter); 
+                var obj = query.runQuery(enums.querySubject.categories, parameter); 
+                if (obj)
+                    details = obj.description;
                 break; 
             case enums.querySubject.manufacturers: 
-                details = query.runQuery(enums.querySubject.categories, parameter); 
+                var obj = query.runQuery(enums.querySubject.categories, parameter); 
+                if (obj)
+                    details = obj.description;
                 break;
         }
 
