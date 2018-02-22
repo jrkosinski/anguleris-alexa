@@ -66,5 +66,6 @@ function getManufacturers() {
 }
 
 module.exports = {
-    getCategories: getCategories
+    getCategories: getCategories,
+    getManufacturers: getManufacturers
 };

@@ -185,7 +185,7 @@ const runUnitTests = async((handler) => {
             ])); 
         }),
 
-        //move next 1
+        //categories move next 1
         async(() => {
             var request = createNavigationRequest(enums.queryType.categories, enums.navigationCommand.next, 0); 
             await(runTest('categories next 1', request, [
@@ -196,7 +196,7 @@ const runUnitTests = async((handler) => {
             ])); 
         }),
 
-        //move next 2
+        //categories move next 2
         async(() => {
             var request = createNavigationRequest(enums.queryType.categories, enums.navigationCommand.next, config.listOutputGroupSize); 
             await(runTest('categories next 2', request, [
@@ -207,7 +207,7 @@ const runUnitTests = async((handler) => {
             ])); 
         }),
 
-        //move next 3
+        //categories move next 3
         async(() => {
             var request = createNavigationRequest(enums.queryType.categories, enums.navigationCommand.next, config.listOutputGroupSize * 2); 
             await(runTest('categories next 3', request, [
@@ -218,7 +218,7 @@ const runUnitTests = async((handler) => {
             ])); 
         }),
 
-        //move next 4
+        //categories move next 4
         async(() => {
             var request = createNavigationRequest(enums.queryType.categories, enums.navigationCommand.next, config.listOutputGroupSize * 3); 
             await(runTest('categories next 3', request, [
@@ -229,7 +229,7 @@ const runUnitTests = async((handler) => {
             ])); 
         }),
 
-        //move next 5
+        //categories move next 5
         async(() => {
             var request = createNavigationRequest(enums.queryType.categories, enums.navigationCommand.next, config.listOutputGroupSize * 4); 
             await(runTest('categories next 3', request, [
@@ -240,7 +240,7 @@ const runUnitTests = async((handler) => {
             ])); 
         }),
 
-        //move prev 1 
+        //categories move prev 1 
         async(() => {
             var request = createNavigationRequest(enums.queryType.categories, enums.navigationCommand.prev, 0); 
             await(runTest('categories prev 1', request, [
@@ -251,7 +251,7 @@ const runUnitTests = async((handler) => {
             ])); 
         }),
 
-        //move next 6
+        //categories move next 6
         async(() => {
             var request = createNavigationRequest(enums.queryType.categories, enums.navigationCommand.next, 0); 
             await(runTest('categories next 1', request, [
@@ -262,7 +262,7 @@ const runUnitTests = async((handler) => {
             ])); 
         }),
 
-        //move next 7
+        //categories move next 7
         async(() => {
             var request = createNavigationRequest(enums.queryType.categories, enums.navigationCommand.next, config.listOutputGroupSize); 
             await(runTest('categories next 1', request, [
@@ -273,7 +273,7 @@ const runUnitTests = async((handler) => {
             ])); 
         }),
 
-        //move start over 1
+        //categories start over 1
         async(() => {
             var request = createNavigationRequest(enums.queryType.categories, enums.navigationCommand.startOver, 0); 
             await(runTest('categories startOver 1', request, [
@@ -284,7 +284,7 @@ const runUnitTests = async((handler) => {
             ])); 
         }),
 
-        //move start over 2
+        //categories start over 2
         async(() => {
             var request = createNavigationRequest(enums.queryType.categories, enums.navigationCommand.startOver, 0); 
             await(runTest('categories startOver 2', request, [
@@ -293,7 +293,50 @@ const runUnitTests = async((handler) => {
                 assertions.hasStartIndexAttribute,
                 assertions.listIndexIsExpected(0)
             ])); 
-        })
+        }),
+        
+
+        //get manufacturers
+        async(() => {
+            await(runTest('get manufacturers', createGetCategoriesRequest(), [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes,
+                assertions.hasStartIndexAttribute
+            ])); 
+        }),
+
+        //manufacturers move next 1
+        async(() => {
+            var request = createNavigationRequest(enums.queryType.manufacturers, enums.navigationCommand.next, 0); 
+            await(runTest('manufacturers next 1', request, [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes,
+                assertions.hasStartIndexAttribute,
+                assertions.listIndexIsExpected(config.listOutputGroupSize)
+            ])); 
+        }),
+
+        //manufacturers move next 2
+        async(() => {
+            var request = createNavigationRequest(enums.queryType.manufacturers, enums.navigationCommand.next, config.listOutputGroupSize); 
+            await(runTest('manufacturers next 2', request, [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes,
+                assertions.hasStartIndexAttribute,
+                assertions.listIndexIsExpected(config.listOutputGroupSize * 2)
+            ])); 
+        }),
+
+        //manufacturers start over 1
+        async(() => {
+            var request = createNavigationRequest(enums.queryType.manufacturers, enums.navigationCommand.startOver, 0); 
+            await(runTest('manufacturers startOver 1', request, [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes,
+                assertions.hasStartIndexAttribute,
+                assertions.listIndexIsExpected(0)
+            ])); 
+        }),
     ];
 
     //RUN TESTS 
