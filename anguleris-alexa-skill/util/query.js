@@ -12,13 +12,13 @@ const enums = require('./enums');
 const dataAccess = require('./dataAccess');
 
 
-function runQuery(query) {
+function runQuery(query, parameter) {
     return exception.try(() => {
         switch(query) {
-            case enums.queryType.categories: 
-                return dataAccess.getCategories(); 
-            case enums.queryType.manufacturers: 
-                return dataAccess.getManufacturers(); 
+            case enums.querySubject.categories: 
+                return dataAccess.getCategories(parameter); 
+            case enums.querySubject.manufacturers: 
+                return dataAccess.getManufacturers(parameter); 
         }
 
         return [];

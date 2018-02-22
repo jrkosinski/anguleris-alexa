@@ -21,11 +21,11 @@ function getNavParamsForQuery(query) {
     }
 
     switch(query) {
-        case enums.queryType.categories: 
+        case enums.querySubject.categories: 
             output.preText = 'Categories {start} to {end} of {count}. ';
             output.title = 'Categories {start} to {end} of {count}';
             break;
-        case enums.queryType.manufacturers: 
+        case enums.querySubject.manufacturers: 
             break;
     }
 
@@ -36,10 +36,10 @@ function navigate(session, navigationCommand) {
     //TODO: proper error msgs & responses 
     return exception.try(() => {
         if (session) {
-            if (session.query && !common.types.isUndefinedOrNull(session.startIndex)) {
-                var results = query.runQuery(session.query); 
+            if (session.querySubject && !common.types.isUndefinedOrNull(session.startIndex)) {
+                var results = query.runQuery(session.querySubject); 
                 var index = common.types.tryParseInt(session.startIndex); 
-                var navParams = getNavParamsForQuery(session.query);
+                var navParams = getNavParamsForQuery(session.querySubject);
 
                 if (navigationCommand === enums.navigationCommand.next)
                     index += config.listOutputGroupSize; 
@@ -57,7 +57,7 @@ function navigate(session, navigationCommand) {
                 }
 
                 if (results && results.length) {
-                    return responseBuilder.responseListGroup(results, session.query, navParams.textProperty, navParams.title, index, navParams.preText, navParams.postText); 
+                    return responseBuilder.responseListGroup(results, session.querySubject, navParams.textProperty, navParams.title, index, navParams.preText, navParams.postText); 
                 }
                 else{
                     //TODO: output no results found 
@@ -92,10 +92,32 @@ function stop(session) {
     return navigate(session, enums.navigationCommand.stop); 
 }
 
+function getDetails(session, parameter) {
+    return exception.try(() => {
+        var details =null;
+
+        switch (session.querySubject) {
+            case enums.querySubject.categories: 
+                details = query.runQuery(enums.querySubject.categories, parameter); 
+                break; 
+            case enums.querySubject.manufacturers: 
+                details = query.runQuery(enums.querySubject.categories, parameter); 
+                break;
+        }
+
+        if (!details || !details.length) {
+            details = 'no details found for ' + parameter;
+        }
+            
+        return responseBuilder.responseWithCard(details, 'Category Details: ' + parameter, session); 
+    });
+}
+
 
 module.exports = {
-    moveNext,
-    movePrev,
-    startOver,
-    stop
+    moveNext: moveNext,
+    movePrev : movePrev,
+    startOver : startOver,
+    stop : stop,
+    getDetails: getDetails
 };

@@ -66,7 +66,7 @@ function createGetCategoriesRequest() {
     }; 
 }
 
-function createNavigationRequest(query, navigationCommand, startIndex) {
+function createNavigationRequest(querySubject, navigationCommand, startIndex) {
     var intentNames = {}; 
     intentNames[enums.navigationCommand.next] = config.intents.moveNext.name;
     intentNames[enums.navigationCommand.prev] = config.intents.movePrev.name;
@@ -77,7 +77,7 @@ function createNavigationRequest(query, navigationCommand, startIndex) {
         type: 'IntentRequest',
         name: intentNames[navigationCommand],
         slots: {},
-        attrs: { query: query, startIndex: startIndex},
+        attrs: { querySubject: querySubject, startIndex: startIndex},
         appId: 'amzn1.echo-sdk-123456',
         sessionId: 'SessionId.357a6s7',
         userId: 'amzn1.account.abc123',
@@ -187,7 +187,7 @@ const runUnitTests = async((handler) => {
 
         //categories move next 1
         async(() => {
-            var request = createNavigationRequest(enums.queryType.categories, enums.navigationCommand.next, 0); 
+            var request = createNavigationRequest(enums.querySubject.categories, enums.navigationCommand.next, 0); 
             await(runTest('categories next 1', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
@@ -198,7 +198,7 @@ const runUnitTests = async((handler) => {
 
         //categories move next 2
         async(() => {
-            var request = createNavigationRequest(enums.queryType.categories, enums.navigationCommand.next, config.listOutputGroupSize); 
+            var request = createNavigationRequest(enums.querySubject.categories, enums.navigationCommand.next, config.listOutputGroupSize); 
             await(runTest('categories next 2', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
@@ -209,7 +209,7 @@ const runUnitTests = async((handler) => {
 
         //categories move next 3
         async(() => {
-            var request = createNavigationRequest(enums.queryType.categories, enums.navigationCommand.next, config.listOutputGroupSize * 2); 
+            var request = createNavigationRequest(enums.querySubject.categories, enums.navigationCommand.next, config.listOutputGroupSize * 2); 
             await(runTest('categories next 3', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
@@ -220,7 +220,7 @@ const runUnitTests = async((handler) => {
 
         //categories move next 4
         async(() => {
-            var request = createNavigationRequest(enums.queryType.categories, enums.navigationCommand.next, config.listOutputGroupSize * 3); 
+            var request = createNavigationRequest(enums.querySubject.categories, enums.navigationCommand.next, config.listOutputGroupSize * 3); 
             await(runTest('categories next 3', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
@@ -231,7 +231,7 @@ const runUnitTests = async((handler) => {
 
         //categories move next 5
         async(() => {
-            var request = createNavigationRequest(enums.queryType.categories, enums.navigationCommand.next, config.listOutputGroupSize * 4); 
+            var request = createNavigationRequest(enums.querySubject.categories, enums.navigationCommand.next, config.listOutputGroupSize * 4); 
             await(runTest('categories next 3', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
@@ -242,7 +242,7 @@ const runUnitTests = async((handler) => {
 
         //categories move prev 1 
         async(() => {
-            var request = createNavigationRequest(enums.queryType.categories, enums.navigationCommand.prev, 0); 
+            var request = createNavigationRequest(enums.querySubject.categories, enums.navigationCommand.prev, 0); 
             await(runTest('categories prev 1', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
@@ -253,7 +253,7 @@ const runUnitTests = async((handler) => {
 
         //categories move next 6
         async(() => {
-            var request = createNavigationRequest(enums.queryType.categories, enums.navigationCommand.next, 0); 
+            var request = createNavigationRequest(enums.querySubject.categories, enums.navigationCommand.next, 0); 
             await(runTest('categories next 1', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
@@ -264,7 +264,7 @@ const runUnitTests = async((handler) => {
 
         //categories move next 7
         async(() => {
-            var request = createNavigationRequest(enums.queryType.categories, enums.navigationCommand.next, config.listOutputGroupSize); 
+            var request = createNavigationRequest(enums.querySubject.categories, enums.navigationCommand.next, config.listOutputGroupSize); 
             await(runTest('categories next 1', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
@@ -275,7 +275,7 @@ const runUnitTests = async((handler) => {
 
         //categories start over 1
         async(() => {
-            var request = createNavigationRequest(enums.queryType.categories, enums.navigationCommand.startOver, 0); 
+            var request = createNavigationRequest(enums.querySubject.categories, enums.navigationCommand.startOver, 0); 
             await(runTest('categories startOver 1', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
@@ -286,7 +286,7 @@ const runUnitTests = async((handler) => {
 
         //categories start over 2
         async(() => {
-            var request = createNavigationRequest(enums.queryType.categories, enums.navigationCommand.startOver, 0); 
+            var request = createNavigationRequest(enums.querySubject.categories, enums.navigationCommand.startOver, 0); 
             await(runTest('categories startOver 2', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
@@ -307,7 +307,7 @@ const runUnitTests = async((handler) => {
 
         //manufacturers move next 1
         async(() => {
-            var request = createNavigationRequest(enums.queryType.manufacturers, enums.navigationCommand.next, 0); 
+            var request = createNavigationRequest(enums.querySubject.manufacturers, enums.navigationCommand.next, 0); 
             await(runTest('manufacturers next 1', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
@@ -318,7 +318,7 @@ const runUnitTests = async((handler) => {
 
         //manufacturers move next 2
         async(() => {
-            var request = createNavigationRequest(enums.queryType.manufacturers, enums.navigationCommand.next, config.listOutputGroupSize); 
+            var request = createNavigationRequest(enums.querySubject.manufacturers, enums.navigationCommand.next, config.listOutputGroupSize); 
             await(runTest('manufacturers next 2', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
@@ -329,7 +329,7 @@ const runUnitTests = async((handler) => {
 
         //manufacturers start over 1
         async(() => {
-            var request = createNavigationRequest(enums.queryType.manufacturers, enums.navigationCommand.startOver, 0); 
+            var request = createNavigationRequest(enums.querySubject.manufacturers, enums.navigationCommand.startOver, 0); 
             await(runTest('manufacturers startOver 1', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,

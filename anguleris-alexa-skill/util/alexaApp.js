@@ -43,7 +43,7 @@ addAppIntent(config.intents.getVersion, (slots, attrs, data) => {
 
 // GetCategories
 addAppIntent(config.intents.getCategories, (slots, attrs, data) => {
-    var categories = query.runQuery(enums.queryType.categories)
+    var categories = query.runQuery(enums.querySubject.categories)
     
     return responseBuilder.responseListGroup (
         categories, 
@@ -54,6 +54,13 @@ addAppIntent(config.intents.getCategories, (slots, attrs, data) => {
         'Found {count} results. Results {start} to {end} of {count}. ',
         'Say next, previous, start over, or stop. '
     ); 
+});
+
+// GetDetails
+addAppIntent(config.intents.getDetails, (slots, attrs, data) => {
+    var categories = query.runQuery(enums.querySubject.categories)
+    
+    return navigation.getDetails(attrs, slots.entity); 
 });
 
 // Repeat

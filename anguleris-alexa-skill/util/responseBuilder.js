@@ -26,13 +26,14 @@ function responseWithCard(text, title, sessionAttr, shouldEndSession) {
             for (var p in sessionAttr) {
                 output.attrs[p] = sessionAttr[p];
             }
+            output.text = text;
         }
 
         return output;
     });
 }
 
-function responseListGroup(list, query, textProperty, title, startIndex, preText, postText) {
+function responseListGroup(list, querySubject, textProperty, title, startIndex, preText, postText) {
     return exception.try(() => {
 
         var text = '';
@@ -40,7 +41,7 @@ function responseListGroup(list, query, textProperty, title, startIndex, preText
         //build session attributes
         var sessionAttr = {
             startIndex: startIndex,
-            query: query
+            querySubject: querySubject
         };
 
         if (!list || !list.length) {

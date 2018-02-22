@@ -35,6 +35,12 @@ module.exports = {
                 "get a list of categories"
             ]
         },
+        getDetails: {
+            name: 'GetDetailsIntent',
+            utterances: [
+                "get details for {entity:Name}"
+            ]
+        },
         repeat: {
             name: 'RepeatIntent',
             utterances: [

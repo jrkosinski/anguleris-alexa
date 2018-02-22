@@ -11,7 +11,7 @@ module.exports = {
         'startOver'
     ]), 
     
-    queryType: configUtil.makeEnum([
+    querySubject: configUtil.makeEnum([
         'categories',
         'manufacturers'
     ]), 
