@@ -68,10 +68,10 @@ addAppIntent(config.intents.getCategories, (slots, attrs, data) => {
 
 // GetManufacturers
 addAppIntent(config.intents.getManufacturers, (slots, attrs, data) => {
-    var categories = query.runQuery(enums.querySubject.manufacturers)
+    var manufacturers = query.runQuery(enums.querySubject.manufacturers)
     
     return responseBuilder.responseListGroup (
-        categories, 
+        manufacturers, 
         { subject: enums.querySubject.manufacturers},
         'name', 
         config.ui.cards.manufacturersList, 

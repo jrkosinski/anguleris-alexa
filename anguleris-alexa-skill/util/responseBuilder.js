@@ -123,7 +123,13 @@ function responseListGroup(list, query, textProperty, title, startIndex, preText
     });
 }
 
-//TODO: get text from config
+// * * * 
+// forms a speech response for the case of general error 
+// 
+// args
+//  session: session attributes to pass along despite the error 
+//
+// returns: json object (Alexa response format) 
 function generalError(session) {
     return responseWithCard(config.ui.text.generalError, config.ui.cards.generalError, session, true); 
 }

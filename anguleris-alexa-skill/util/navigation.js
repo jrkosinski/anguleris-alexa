@@ -96,8 +96,7 @@ function navigate(session, navigationCommand) {
                     ); 
                 }
                 else{
-                    //TODO: output no results found 
-                    return responseBuilder.generalError();
+                    return responseBuilder.noResultsResponse(session, false);
                 }
             }
             else{
