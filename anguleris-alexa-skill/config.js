@@ -90,6 +90,12 @@ module.exports = {
             utterances: [
                 "help"
             ]
+        },
+        freeText: {
+            name: "FreeText",
+            utterances: [
+                "what do you think we should do next"
+            ]
         }
     },
 
@@ -139,6 +145,11 @@ module.exports = {
             text: configUtil.getSetting('TEXT_RESUME', 'Resume'),
             reprompt: null,
             card: configUtil.getSetting('CARD_RESUME', 'Resume')
+        },
+        notInList: {
+            text: configUtil.getSetting('TEXT_NOT_IN_LIST', "Sorry, that's not a valid command, because we're not currently navigating a list result. Do you want to try that again?"),
+            reprompt: configUtil.getSetting('REPROMPT_NOT_IN_LIST', 'Do you want to try again?'),
+            card: configUtil.getSetting('CARD_INVALID_REQUEST', 'Invalid Request')
         }
     },
 };

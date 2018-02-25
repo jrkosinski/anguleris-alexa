@@ -87,7 +87,7 @@ addAppIntent(config.intents.getManufacturers, (slots, session, data) => {
         0, 
         {
             textProperty: 'name', 
-            preText: 'Found {count} categories. Results {start} to {end} of {count}. ', 
+            preText: 'Found {count} manufacturers. Results {start} to {end} of {count}. ', 
             postText: 'Say next to move to next results group. ', 
             reprompt: 'Say next to move to next results group. ',
             title: 'Results {start} to {end} of {count}'
@@ -115,7 +115,7 @@ addAppIntent(config.intents.getDetails, (slots, session, data) => {
 addAppIntent(config.intents.repeat, (slots, session, data) => {
     if (session.text) {
         //TODO: add reprompt?
-        return responseBuilder.responseWithCard(text, 'Repeat'); 
+        return responseBuilder.responseWithCard(session.text, 'Repeat', session.text, session); 
     }
     else {
         return responseBuilder.responseWithCardShortcut('launchPrompt'); 
@@ -145,6 +145,11 @@ addAppIntent(config.intents.stop, (slots, session, data) => {
 // Help 
 addAppIntent(config.intents.help, (slots, session, data) => {
     return responseBuilder.buildHelpResponse(session); 
+});
+
+// FreeText
+addAppIntent(config.intents.freeText, (slots, session, data) => {
+    return responseBuilder.responseWithCard('ram a log in it', 'FreeText', null, null, true);
 });
 
 

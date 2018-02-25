@@ -102,12 +102,12 @@ function navigate(session, navigationCommand) {
             }
             else{
                 logger.warn('query and/or startIndex missing from request'); 
-                return responseBuilder.generalError();
+                return responseBuilder.responseWithCardShortcut('notInList', session);
             }
         }
         else{
             logger.warn('session not provided!'); 
-            return responseBuilder.generalError();
+            return responseBuilder.responseWithCardShortcut('notInList', session);
         }
     });
 }
@@ -166,6 +166,11 @@ function stop(session) {
 function getDetails(session, parameter) {
     return exception.try(() => {
         var details =null;
+
+        if (!session)
+            session = {};
+        if (!session.querySubject)
+            session.querySubject = enums.querySubject.categories;
 
         switch (session.querySubject) {
             case enums.querySubject.categories: 

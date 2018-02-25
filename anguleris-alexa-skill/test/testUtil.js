@@ -143,6 +143,22 @@ function createDetailsRequest(querySubject, parameter, startIndex) {
     }; 
 }
 
+function createRepeatRequest(querySubject, parameter, startIndex, text) {
+    return {
+        type: 'IntentRequest',
+        name: config.intents.repeat.name,
+        slots: { entity: parameter},
+        attrs: { querySubject: querySubject, startIndex: startIndex, text:text},
+        appId: 'amzn1.echo-sdk-123456',
+        sessionId: 'SessionId.357a6s7',
+        userId: 'amzn1.account.abc123',
+        requestId: 'EdwRequestId.abc123456',
+        timestamp: '2016-06-16T14:38:46Z',
+        locale: 'en-US',
+        new: false
+    }; 
+}
+
 function assert(expr) {
     if (!expr)
         throw false;
@@ -216,6 +232,16 @@ const runUnitTests = async((handler) => {
                     return r.sessionAttributes && 
                         !common.types.isUndefinedOrNull(r.sessionAttributes.startIndex && 
                         r.sessionAttributes.startIndex === value); 
+                }
+            }
+        },
+        textIsExpected: (value) => {
+            return {
+                name: 'textIsExpected:' + value, assert: (r) => {
+                    return r.sessionAttributes && 
+                        !common.types.isUndefinedOrNull(r.sessionAttributes.text && 
+                        r.response.outputSpeech.text === value && 
+                        r.sessionAttributes.text === value); 
                 }
             }
         }
@@ -401,6 +427,18 @@ const runUnitTests = async((handler) => {
                 assertions.hasSessionAttributes,
                 assertions.hasStartIndexAttribute,
                 assertions.listIndexIsExpected(5)
+            ])); 
+        }),
+
+        //repeat 1
+        async(() => {
+            var request = createRepeatRequest(enums.querySubject.categories, 'Ceilings', 5, "abc 123"); 
+            await(runTest('repeat 1', request, [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes,
+                assertions.hasStartIndexAttribute,
+                assertions.listIndexIsExpected(5),
+                assertions.textIsExpected("abc 123")
             ])); 
         }),
 

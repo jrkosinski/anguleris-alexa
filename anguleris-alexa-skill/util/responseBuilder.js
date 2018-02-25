@@ -44,7 +44,7 @@ function responseWithCard(text, title, reprompt, session, shouldEndSession) {
             for (var p in session) {
                 output.attrs[p] = session[p];
             }
-            output.text = text;
+            output.attrs.text = text;
         }
 
         logger.info('response: ' + JSON.stringify(output)); 
@@ -210,6 +210,7 @@ function buildHelpResponse(session) {
 
 module.exports = {
     responseWithCard: responseWithCard,
+    responseWithCardShortcut: responseWithCardShortcut,
     responseListGroup: responseListGroup,
     generalError: generalError, 
     listToText: listToText,
