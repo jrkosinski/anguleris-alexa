@@ -31,6 +31,10 @@ function DataTable(data) {
     const _this = this;
     const _all = data;
 
+    /*for (var n=0; n<data.length; n++){
+        console.log("'" + data[n].name + "',");
+    }*/
+
     // * * *
     // finds a specific entity, given its name 
     //

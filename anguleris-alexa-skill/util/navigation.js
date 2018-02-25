@@ -38,7 +38,7 @@ function getNavParamsForQuery(query) {
         postText: 'Say next, previous, start over, or stop. ',
         title: 'Results {start} to {end} of {count}',
         textProperty: 'name'
-    }
+    };
 
     switch(query) {
         case enums.querySubject.categories: 
@@ -63,6 +63,8 @@ function getNavParamsForQuery(query) {
 function navigate(session, navigationCommand) {
     //TODO: proper error msgs & responses 
     return exception.try(() => {
+        logger.info('navigating ' + navigationCommand); 
+        
         if (session) {
             if (session.querySubject && !common.types.isUndefinedOrNull(session.startIndex)) {
                 var results = query.runQuery(session.querySubject); 
@@ -73,7 +75,7 @@ function navigate(session, navigationCommand) {
                     index += config.listOutputGroupSize; 
 
                 else if (navigationCommand === enums.navigationCommand.prev) {
-                    index += config.listOutputGroupSize; 
+                    index -= config.listOutputGroupSize; 
                     if (index < 0)
                         index = 0;
 

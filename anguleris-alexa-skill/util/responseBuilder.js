@@ -91,7 +91,7 @@ function responseListGroup(list, query, textProperty, title, startIndex, preText
                 endIndex = list.length - 1;
 
             //build the text
-            text += preText.replaceAll('{start}', startIndex).replaceAll('{end}', endIndex).replaceAll('{count}', list.length);
+            text += preText.replaceAll('{start}', startIndex+1).replaceAll('{end}', endIndex+1).replaceAll('{count}', list.length);
             var bodyItems = [];
             for (var n = startIndex; n <= endIndex; n++) {
                 if (list[n][textProperty]) {
@@ -115,7 +115,7 @@ function responseListGroup(list, query, textProperty, title, startIndex, preText
             text += postText + ' ';
 
             //build the response body
-            title = title.replaceAll('{start}', startIndex).replaceAll('{end}', endIndex).replaceAll('{count}', list.length);
+            title = title.replaceAll('{start}', startIndex+1).replaceAll('{end}', endIndex+1).replaceAll('{count}', list.length);
             var output = responseWithCard(text, title, sessionAttr);
 
             return output;
@@ -165,7 +165,7 @@ function listToText(list, title, session, shouldEndSession) {
         var text = list[0]; 
         if (list.length > 1){
             for(var n=1; n<list.length; n++){
-                text += ', ' + list[n]; 
+                text += ', ' + list[n][textProperty]; 
             }
         }
 

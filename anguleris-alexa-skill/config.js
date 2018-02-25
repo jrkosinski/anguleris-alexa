@@ -44,13 +44,13 @@ module.exports = {
         getManufacturersForCategory: {
             name: 'GetManufacturersForCategoryIntent',
             utterances: [
-                "get a list of manufacturers for {entity:Name}"
+                "get a list of manufacturers for {Entity:Entity}"
             ]
         },
         getDetails: {
             name: 'GetDetailsIntent',
             utterances: [
-                "get details for {entity:Name}"
+                "get details for {Entity:Entity}"
             ]
         },
         repeat: {

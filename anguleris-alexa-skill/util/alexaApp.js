@@ -24,6 +24,9 @@ const enums = require('./enums');
 const responseBuilder = require('./responseBuilder');
 const pkg = require('../package.json');
 
+
+app.customSlot('Entity', ['Access Security','Appliances','AV','Cable Tray','Ceilings','Countertops','Door Hardware','Doors','Drains','Flooring','Furniture','Mailboxes','Lighting','Paints & Coatings','Piping','Railings','Roofing','Security Cameras','Skylights','Alucobond','Behr','Boon Edam USA','Chalfant','Clark Dietrich','Delta Turnstiles','Dow Corning','Epilay','Fabral','Grabber','Kenmore','Moen','National Gypsum','Oatey','Ply Gem','Polyset','Proflex','Trex','W.R. Meadows','Waterworks']);
+
 // * * * 
 // utility for specifying an intent handler 
 // 
@@ -32,6 +35,10 @@ function addAppIntent(intent, func) {
     app.intent(intent.name,
         intent.utterances, (slots, attr, data) => {
             return exception.try(() => {
+                logger.info('Intent invoked: ' + intent.name); 
+                logger.info('Data: ' + JSON.stringify(data)); 
+                logger.info('Slots: ' + JSON.stringify(slots)); 
+                logger.info('Session: ' + JSON.stringify(attr)); 
                 return func(slots, attr, data); 
             });
         }
@@ -41,6 +48,7 @@ function addAppIntent(intent, func) {
 // Startup
 app.onStart(() => {
     return exception.try(() => {
+        logger.info('App launched'); 
         return responseBuilder.responseWithCard(config.ui.text.launchPrompt, config.ui.cards.launchPrompt); 
     });
 });
