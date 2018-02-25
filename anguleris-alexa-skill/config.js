@@ -6,6 +6,7 @@ module.exports = {
 
     //Settings 
     listOutputGroupSize: configUtil.getSetting('LIST_OUTPUT_GROUP_SIZE', 5),
+    clientSkillId: configUtil.getSetting('CLIENT_SKILL_ID', 'amzn1.ask.skill.7d8d4528-2a07-4d49-8026-4fa4a81aee51'),
 
     // Intents
     intents: {
@@ -83,40 +84,61 @@ module.exports = {
             utterances: [
                 "stop"
             ]
+        },
+        help: {
+            name: 'HelpIntent', 
+            utterances: [
+                "help"
+            ]
         }
     },
 
     // UI elements
     ui: {
-        useCards: true,
-
-        clientSkillId: configUtil.getSetting('CLIENT_SKILL_ID', 'amzn1.ask.skill.7d8d4528-2a07-4d49-8026-4fa4a81aee51'),
-
-        text: {
-            launchPrompt: configUtil.getSetting('TEXT_LAUNCH_PROMPT', "Welcome to the Anguleris Alexa Skill. This skill is to be a development base for what's to come. For now, try asking 'what is the current version?', 'get a list of categories', or 'get a list of manufacturers'."),
-            launchReprompt: configUtil.getSetting('TEXT_LAUNCH_REPROMPT', "Try asking 'what is the current version?'"),
-            errorReprompt: configUtil.getSetting('TEXT_ERROR_REPROMPT', 'Sorry, an error has occurred. Want to try again?'),
-            unknownIntent: configUtil.getSetting('TEXT_UNKNOWN_INTENT', 'Sorry, your request was not recognized.'),
-            helpText: configUtil.getSetting('TEXT_HELP', "Try asking 'Alexa, ask Anguleris what's the current version?"),
-            generalError: configUtil.getSetting('TEXT_GENERAL_ERROR', 'Sorry, an error has occurred.'),
-            getVersion: configUtil.getSetting('TEXT_GET_VERSION', 'Anguleris Alexa Skill version {version}, copyright Anguleris Technologies 2018'),
-            pause: configUtil.getSetting('TEXT_PAUSE', 'Pause'),
-            resume: configUtil.getSetting('TEXT_RESUME', 'Resume'),
-            noResultsFound: configUtil.getSetting('TEXT_NO_RESULTS', 'Sorry, no results found for your query. Do you want to try that again?'), 
+        launchPrompt: {
+            text: configUtil.getSetting('TEXT_LAUNCH_PROMPT', "Welcome to the Anguleris Alexa Skill. This skill is to be a development base for what's to come. For now, try asking 'what is the current version?', 'get a list of categories', or 'get a list of manufacturers'."),
+            reprompt: configUtil.getSetting('REPROMPT_LAUNCH', "Try asking 'what is the current version?'"),
+            card: configUtil.getSetting('CARD_LAUNCH_PROMPT', 'Launch')
         },
-
-        cards : {
-            launchPrompt: configUtil.getSetting('CARD_LAUNCH_PROMPT', 'Launch'),
-            getVersion: configUtil.getSetting('CARD_GET_VERSION', 'Get Version'),
-            unknownIntent: configUtil.getSetting('CARD_UNKNOWN_INTENT', 'Unknown Intent'),
-            helpText: configUtil.getSetting('CARD_HELP', 'Help'),
-            generalError: configUtil.getSetting('CARD_GENERAL_ERROR', 'General Error'),
-            pause: configUtil.getSetting('CARD_PAUSE', 'Pause'),
-            resume: configUtil.getSetting('CARD_RESUME', 'Resume'),
-            mediaOutput: configUtil.getSetting('CARD_MEDIA_OUTPUT', 'Media Output'),
-            categoriesList: configUtil.getSetting('CARD_CATEGORIES_LIST', 'Categories List'),
-            manufacturersList: configUtil.getSetting('CARD_MANUFACTURERS_LIST', 'Manufacturers List'),
-            noResultsFound: configUtil.getSetting('CARD_NO_RESULTS', 'No Results Found'), 
+        unknownIntent: {
+            text: configUtil.getSetting('TEXT_UNKNOWN_INTENT', 'Sorry, your request was not recognized.'),
+            reprompt: configUtil.getSetting('REPROMPT_UNKNOWN', 'Sorry, your request was not recognized. Want to try again?'),
+            card: configUtil.getSetting('CARD_UNKNOWN_INTENT', 'Unknown Intent')
+        },
+        help: {
+            text: configUtil.getSetting('TEXT_HELP', "You can ask for a list of categories, or a list of manufacturers. Navigation commands will help you to navigate through lists of results. Furthermore, you can ask for details for a specific category, or manufacturers for a specific category. Example: get manufacturers for category Access Security."),
+            reprompt: configUtil.getSetting('REPROMPT_HELP', "Try this command: list all categories."),
+            card: configUtil.getSetting('CARD_HELP', 'Help')
+        },
+        getVersion: {
+            text: configUtil.getSetting('TEXT_GET_VERSION', 'Anguleris Alexa Skill version {version}, copyright Anguleris Technologies 2018'),
+            reprompt: null,
+            card: configUtil.getSetting('CARD_GET_VERSION', 'Get Version')
+        },
+        noResultsFound: {
+            text: configUtil.getSetting('TEXT_NO_RESULTS', 'Sorry, no results found for your query. Do you want to try that again?'), 
+            reprompt: configUtil.getSetting('REPROMPT_NO_RESULTS', 'Sorry, no results found for your query. Do you want to try that again?'),
+            card: configUtil.getSetting('CARD_NO_RESULTS', 'No Results Found')
+        },
+        generalError: {
+            text: configUtil.getSetting('TEXT_GENERAL_ERROR', 'Sorry, an error has occurred.'),
+            reprompt: configUtil.getSetting('REPROMPT_GENERAL_ERROR', 'Sorry, an error has occurred. Want to try again?'),
+            card: configUtil.getSetting('CARD_GENERAL_ERROR', 'General Error')
+        },
+        manufacturersForCategory: {
+            text: configUtil.getSetting('TEXT_MFG_FOR_CATEGORY', 'Manufacturers for Category.'),
+            reprompt: null,
+            card: configUtil.getSetting('CARD_MFG_FOR_CATEGORY', 'Manufacturers for Category')
+        },
+        pause: {
+            text: configUtil.getSetting('TEXT_PAUSE', 'Pause'),
+            reprompt: null,
+            card: configUtil.getSetting('CARD_PAUSE', 'Pause'),
+        },
+        resume: {
+            text: configUtil.getSetting('TEXT_RESUME', 'Resume'),
+            reprompt: null,
+            card: configUtil.getSetting('CARD_RESUME', 'Resume')
         }
     },
 };

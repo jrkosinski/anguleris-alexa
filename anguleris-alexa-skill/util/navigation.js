@@ -32,10 +32,11 @@ const responseBuilder = require('./responseBuilder');
 //    title: string,
 //    textProperty: string
 // }
-function getNavParamsForQuery(query) {
+function getNavArgsForQuery(query) {
     var output = {
         preText: 'Results {start} to {end} of {count}. ',
         postText: 'Say next, previous, start over, or stop. ',
+        reprompt: 'Say next, previous, start over, or stop. ',
         title: 'Results {start} to {end} of {count}',
         textProperty: 'name'
     };
@@ -69,7 +70,7 @@ function navigate(session, navigationCommand) {
             if (session.querySubject && !common.types.isUndefinedOrNull(session.startIndex)) {
                 var results = query.runQuery(session.querySubject); 
                 var index = common.types.tryParseInt(session.startIndex); 
-                var navParams = getNavParamsForQuery(session.querySubject);
+                var navArgs = getNavArgsForQuery(session.querySubject);
 
                 if (navigationCommand === enums.navigationCommand.next)
                     index += config.listOutputGroupSize; 
@@ -88,13 +89,11 @@ function navigate(session, navigationCommand) {
 
                 if (results && results.length) {
                     return responseBuilder.responseListGroup(
+                        //TODO: add reprompt
                         results, 
                         { subject: session.querySubject, params: session.queryParams }, 
-                        navParams.textProperty, 
-                        navParams.title, 
                         index, 
-                        navParams.preText, 
-                        navParams.postText
+                        navArgs
                     ); 
                 }
                 else{
@@ -189,7 +188,8 @@ function getDetails(session, parameter) {
             details = 'no details found for ' + parameter;
         }
             
-        return responseBuilder.responseWithCard(details, 'Category Details: ' + parameter, session); 
+        //TODO: add reprompt
+        return responseBuilder.responseWithCard(details, 'Category Details: ' + parameter, null, session); 
     });
 }
 

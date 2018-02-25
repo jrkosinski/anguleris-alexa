@@ -24,7 +24,7 @@ const config = require('../config');
 //  shouldEndSession: true to end session after response; false is the default 
 //
 // returns: json object (Alexa response format) 
-function responseWithCard(text, title, session, shouldEndSession) {
+function responseWithCard(text, title, reprompt, session, shouldEndSession) {
     return exception.try(() => {
         var output = {
             text: text,
@@ -32,6 +32,7 @@ function responseWithCard(text, title, session, shouldEndSession) {
                 title: title,
                 content: text
             },
+            reprompt: reprompt,
             shouldEndSession: shouldEndSession ? true : false
         };
 
@@ -52,18 +53,31 @@ function responseWithCard(text, title, session, shouldEndSession) {
 }
 
 // * * * 
+// forms a standard speech response, with card 
+//
+// args
+//  propertyName: example: 'help' - automatically gets the appropriate text, title, & reprompt from config
+//  session: session attributes from request
+//  shouldEndSession: true to end session after response; false is the default 
+//
+// returns: json object (Alexa response format) 
+function responseWithCardShortcut(propertyName, session, shouldEndSession) {
+    return exception.try(() => {
+        return responseWithCard(config.ui[propertyName].text, config.ui[propertyName].card, config.ui[propertyName].reprompt, session, shouldEndSession);
+    });
+}
+
+// * * * 
 // forms a standard speech response, with card, specific for a navigable list of results 
 // 
 // args
 //  list: the full results list 
 //  querySubject: subject of the query that got the original list
-//  textProperty: the name of the property of each list object, that contains the text to speak (e.g. 'name')
 //  startIndex: the list index to return in the response's session attributes
-//  preText: text to speak as a preamble to the list contents
-//  postText: text to speak after the list contents 
+//  navArgs: 
 //
 // returns: json object (Alexa response format) 
-function responseListGroup(list, query, textProperty, title, startIndex, preText, postText) {
+function responseListGroup(list, query, startIndex, navArgs) {
     return exception.try(() => {
 
         var text = '';
@@ -90,13 +104,19 @@ function responseListGroup(list, query, textProperty, title, startIndex, preText
             var endIndex = (startIndex + (config.listOutputGroupSize - 1));
             if (endIndex > (list.length - 1))
                 endIndex = list.length - 1;
+                
+
+            var replaceText = (s) => {
+                if (s)
+                    return s.replaceAll('{start}', startIndex+1).replaceAll('{end}', endIndex+1).replaceAll('{count}', list.length);
+            };
 
             //build the text
-            text += preText.replaceAll('{start}', startIndex+1).replaceAll('{end}', endIndex+1).replaceAll('{count}', list.length);
+            text += replaceText(navArgs.preText); //.replaceAll('{start}', startIndex+1).replaceAll('{end}', endIndex+1).replaceAll('{count}', list.length);
             var bodyItems = [];
             for (var n = startIndex; n <= endIndex; n++) {
-                if (list[n][textProperty]) {
-                    bodyItems.push(list[n][textProperty].trim());
+                if (list[n][navArgs.textProperty]) {
+                    bodyItems.push(list[n][navArgs.textProperty].trim());
                 }
             }
 
@@ -113,11 +133,13 @@ function responseListGroup(list, query, textProperty, title, startIndex, preText
             }
 
             text += body;
-            text += postText + ' ';
+            text += navArgs.postText + ' ';
 
             //build the response body
-            title = title.replaceAll('{start}', startIndex+1).replaceAll('{end}', endIndex+1).replaceAll('{count}', list.length);
-            var output = responseWithCard(text, title, sessionAttr);
+            var title = replaceText(navArgs.title); //.replaceAll('{start}', startIndex+1).replaceAll('{end}', endIndex+1).replaceAll('{count}', list.length);
+            var reprompt = replaceText(navArgs.title); //.replaceAll('{start}', startIndex+1).replaceAll('{end}', endIndex+1).replaceAll('{count}', list.length);
+
+            var output = responseWithCard(text, title, reprompt, sessionAttr);
 
             return output;
         }
@@ -132,7 +154,7 @@ function responseListGroup(list, query, textProperty, title, startIndex, preText
 //
 // returns: json object (Alexa response format) 
 function generalError(session) {
-    return responseWithCard(config.ui.text.generalError, config.ui.cards.generalError, session, true); 
+    return responseWithCardShortcut('generalError', session); 
 }
 
 // * * * 
@@ -144,7 +166,7 @@ function generalError(session) {
 //
 // returns: json object (Alexa response format) 
 function noResultsResponse(session, shouldEndSession) {
-    return responseWithCard(config.ui.text.noResultsFound, config.ui.cards.noResultsFound, session, shouldEndSession); 
+    return responseWithCardShortcut('noResultsFound', session); 
 }
 
 // * * * 
@@ -155,9 +177,9 @@ function noResultsResponse(session, shouldEndSession) {
 //  title: the card title
 //  session: session attributes to return
 //  shouldEndSession: true to end session after response; false is the default 
-//
+// 
 // returns: json object (Alexa response format) 
-function listToText(list, title, session, shouldEndSession) {
+function listToText(list, title, reprompt, session, shouldEndSession) {
     return exception.try(() => {
         if (!list || !list.length){
             return noResultsResponse(session);
@@ -170,13 +192,26 @@ function listToText(list, title, session, shouldEndSession) {
             }
         }
 
-        return responseWithCard(text, title, session); 
+        return responseWithCard(text, title, reprompt, session); 
     });
 }
+
+// * * * 
+// builds the response for built-in Help request 
+// 
+// args
+//  session: session attributes to return
+//
+// returns: json object (Alexa response format) 
+function buildHelpResponse(session) {
+    return responseWithCardShortcut('help', session); 
+}
+
 
 module.exports = {
     responseWithCard: responseWithCard,
     responseListGroup: responseListGroup,
     generalError: generalError, 
-    listToText: listToText
+    listToText: listToText,
+    buildHelpResponse: buildHelpResponse
 }

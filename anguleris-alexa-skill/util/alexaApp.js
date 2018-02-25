@@ -49,89 +49,102 @@ function addAppIntent(intent, func) {
 app.onStart(() => {
     return exception.try(() => {
         logger.info('App launched'); 
-        return responseBuilder.responseWithCard(config.ui.text.launchPrompt, config.ui.cards.launchPrompt); 
+        return responseBuilder.responseWithCardShortcut('launchPrompt'); 
     });
 });
 
 // GetVersion
-addAppIntent(config.intents.getVersion, (slots, attrs, data) => {
-    var versionText = config.ui.text.getVersion.replaceAll('{version}', pkg.version);
-    return responseBuilder.responseWithCard(versionText, config.ui.cards.getVersion); 
+addAppIntent(config.intents.getVersion, (slots, session, data) => {
+    var versionText = config.ui.getVersion.text.replaceAll('{version}', pkg.version);
+    return responseBuilder.responseWithCard(versionText, config.ui.getVersion.card, null, null, true); 
 });
 
 // GetCategories
-addAppIntent(config.intents.getCategories, (slots, attrs, data) => {
+addAppIntent(config.intents.getCategories, (slots, session, data) => {
     var categories = query.runQuery(enums.querySubject.categories)
     
     return responseBuilder.responseListGroup (
         categories, 
         { subject: enums.querySubject.categories },
-        'name', 
-        config.ui.cards.categoriesList, 
         0, 
-        'Found {count} categories. Results {start} to {end} of {count}. ',
-        'Say next, previous, start over, or stop. '
+        {
+            textProperty: 'name', 
+            preText: 'Found {count} categories. Results {start} to {end} of {count}. ', 
+            postText: 'Say next, get details for category, or get manufacturers for category. ', 
+            reprompt: 'Say next, get details for category, or get manufacturers for category. ',
+            title: 'Results {start} to {end} of {count}'
+        }
     ); 
 });
 
 // GetManufacturers
-addAppIntent(config.intents.getManufacturers, (slots, attrs, data) => {
+addAppIntent(config.intents.getManufacturers, (slots, session, data) => {
     var manufacturers = query.runQuery(enums.querySubject.manufacturers)
     
     return responseBuilder.responseListGroup (
         manufacturers, 
         { subject: enums.querySubject.manufacturers},
-        'name', 
-        config.ui.cards.manufacturersList, 
         0, 
-        'Found {count} manufacturers. Results {start} to {end} of {count}. ',
-        'Say next, previous, start over, or stop. '
+        {
+            textProperty: 'name', 
+            preText: 'Found {count} categories. Results {start} to {end} of {count}. ', 
+            postText: 'Say next to move to next results group. ', 
+            reprompt: 'Say next to move to next results group. ',
+            title: 'Results {start} to {end} of {count}'
+        }
     ); 
 });
 
 // GetManufacturersForCategory
-addAppIntent(config.intents.getManufacturersForCategory, (slots, attrs, data) => {
+addAppIntent(config.intents.getManufacturersForCategory, (slots, session, data) => {
     var queryParams = { category: slots.entity}; 
     var manufacturers = query.runQuery(enums.querySubject.manufacturers, queryParams); 
     
-    return responseBuilder.listToText(manufacturers, config.ui.text.manufacturersForCategory, attrs); 
+    //TODO: add reprompt
+    return responseBuilder.listToText(manufacturers, config.ui.manufacturersForCategory.card, '', session); 
 });
 
 // GetDetails
-addAppIntent(config.intents.getDetails, (slots, attrs, data) => {
+addAppIntent(config.intents.getDetails, (slots, session, data) => {
     var categories = query.runQuery(enums.querySubject.categories)
     
-    return navigation.getDetails(attrs, slots.entity); 
+    return navigation.getDetails(session, slots.entity); 
 });
 
 // Repeat
-addAppIntent(config.intents.repeat, (slots, attrs, data) => {
-    if (attrs.text) {
+addAppIntent(config.intents.repeat, (slots, session, data) => {
+    if (session.text) {
+        //TODO: add reprompt?
         return responseBuilder.responseWithCard(text, 'Repeat'); 
     }
     else {
-        return responseBuilder.responseWithCard(config.ui.text.launchPrompt, config.ui.cards.launchPrompt); 
+        return responseBuilder.responseWithCardShortcut('launchPrompt'); 
     }
 });
 
 // Next
-addAppIntent(config.intents.moveNext, (slots, attrs, data) => {
-    return navigation.moveNext(attrs); 
+addAppIntent(config.intents.moveNext, (slots, session, data) => {
+    return navigation.moveNext(session); 
 });
 
 // Prev
-addAppIntent(config.intents.movePrev, (slots, attrs, data) => {
-    return navigation.movePrev(attrs); 
+addAppIntent(config.intents.movePrev, (slots, session, data) => {
+    return navigation.movePrev(session); 
 });
 
 // Start Over
-addAppIntent(config.intents.moveFirst, (slots, attrs, data) => {
-    return navigation.moveFirst(attrs); 
+addAppIntent(config.intents.moveFirst, (slots, session, data) => {
+    return navigation.moveFirst(session); 
 });
 
 // Stop
-addAppIntent(config.intents.stop, (slots, attrs, data) => {
-    return navigation.stop(attrs); 
+addAppIntent(config.intents.stop, (slots, session, data) => {
+    return navigation.stop(session); 
+});
+
+// Help 
+addAppIntent(config.intents.help, (slots, session, data) => {
+    return responseBuilder.buildHelpResponse(session); 
 });
 
 
