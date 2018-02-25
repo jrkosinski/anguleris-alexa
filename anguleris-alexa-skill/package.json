@@ -1,6 +1,6 @@
 {
   "name": "anguleris-alexa-skill",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "description": "alexa skill lambda",
   "main": "index.js",
   "scripts": {

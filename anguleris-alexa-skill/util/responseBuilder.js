@@ -46,6 +46,7 @@ function responseWithCard(text, title, session, shouldEndSession) {
             output.text = text;
         }
 
+        logger.info('response: ' + JSON.stringify(output)); 
         return output;
     });
 }
@@ -165,7 +166,7 @@ function listToText(list, title, session, shouldEndSession) {
         var text = list[0]; 
         if (list.length > 1){
             for(var n=1; n<list.length; n++){
-                text += ', ' + list[n][textProperty]; 
+                text += ', ' + list[n]; 
             }
         }
 

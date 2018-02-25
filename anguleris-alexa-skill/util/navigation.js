@@ -171,12 +171,16 @@ function getDetails(session, parameter) {
         switch (session.querySubject) {
             case enums.querySubject.categories: 
                 var obj = query.runQuery(enums.querySubject.categories, {name:parameter}); 
-                if (obj)
+                if (!obj)
+                    logger.warning('category ' + parameter + ' not found.'); 
+                else
                     details = obj.description;
                 break; 
             case enums.querySubject.manufacturers: 
                 var obj = query.runQuery(enums.querySubject.manufacturers, {name:parameter}); 
-                if (obj)
+                if (!obj)
+                    logger.warning('manufacturer ' + parameter + ' not found.'); 
+                else
                     details = obj.description;
                 break;
         }

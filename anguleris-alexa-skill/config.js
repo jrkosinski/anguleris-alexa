@@ -44,13 +44,13 @@ module.exports = {
         getManufacturersForCategory: {
             name: 'GetManufacturersForCategoryIntent',
             utterances: [
-                "get a list of manufacturers for {Entity:Entity}"
+                "get a list of manufacturers for {entity:Entity}"
             ]
         },
         getDetails: {
             name: 'GetDetailsIntent',
             utterances: [
-                "get details for {Entity:Entity}"
+                "get details for {entity:Entity}"
             ]
         },
         repeat: {
@@ -93,7 +93,7 @@ module.exports = {
         clientSkillId: configUtil.getSetting('CLIENT_SKILL_ID', 'amzn1.ask.skill.7d8d4528-2a07-4d49-8026-4fa4a81aee51'),
 
         text: {
-            launchPrompt: configUtil.getSetting('TEXT_LAUNCH_PROMPT', "Welcome to the Anguleris Alexa Skill. This skill is to be a development base for what's to come. For now, try asking 'what is the current version?' or 'get a list of categories'."),
+            launchPrompt: configUtil.getSetting('TEXT_LAUNCH_PROMPT', "Welcome to the Anguleris Alexa Skill. This skill is to be a development base for what's to come. For now, try asking 'what is the current version?', 'get a list of categories', or 'get a list of manufacturers'."),
             launchReprompt: configUtil.getSetting('TEXT_LAUNCH_REPROMPT', "Try asking 'what is the current version?'"),
             errorReprompt: configUtil.getSetting('TEXT_ERROR_REPROMPT', 'Sorry, an error has occurred. Want to try again?'),
             unknownIntent: configUtil.getSetting('TEXT_UNKNOWN_INTENT', 'Sorry, your request was not recognized.'),
