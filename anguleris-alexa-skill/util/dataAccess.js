@@ -208,7 +208,6 @@ function Manufacturers() {
         { name: 'Armstrong Flooring' },
         { name: 'Behr' },
         { name: 'Boon Edam USA' },
-        { name: 'Chalfant' },
         { name: 'Clark Dietrich' },
         { name: 'Delta Turnstiles' },
         { name: 'Dow Corning' },

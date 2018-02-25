@@ -88,8 +88,8 @@ addAppIntent(config.intents.getManufacturers, (slots, session, data) => {
         {
             textProperty: 'name', 
             preText: 'Found {count} manufacturers. Results {start} to {end} of {count}. ', 
-            postText: 'Say next to move to next results group. ', 
-            reprompt: 'Say next to move to next results group. ',
+            postText: 'Say next to move to next results group. Or ask a different question. ', 
+            reprompt: 'Say next to move to next results group. Or ask a different question. ',
             title: 'Results {start} to {end} of {count}'
         }
     ); 
@@ -106,8 +106,6 @@ addAppIntent(config.intents.getManufacturersForCategory, (slots, session, data) 
 
 // GetDetails
 addAppIntent(config.intents.getDetails, (slots, session, data) => {
-    var categories = query.runQuery(enums.querySubject.categories)
-    
     return navigation.getDetails(session, slots.entity); 
 });
 
@@ -149,7 +147,7 @@ addAppIntent(config.intents.help, (slots, session, data) => {
 
 // FreeText
 addAppIntent(config.intents.freeText, (slots, session, data) => {
-    return responseBuilder.responseWithCard('ram a log in it', 'FreeText', null, null, true);
+    return responseBuilder.responseWithCard("I think now that we've established a solid code foundation for retrieving and navigating result sets, and handling user input, it would be good to move on to more complex types of queries. For this I think it would be essential to get access to the actual data and querying mechanisms. We could also do a bit more brainstorming and analyzing to determine what's possible. Otherwise, I am open to suggestions. It might be worth our while to do a quick call this week to discuss.", 'FreeText', null, null, true);
 });
 
 

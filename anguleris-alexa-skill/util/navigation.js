@@ -153,7 +153,7 @@ function moveFirst(session) {
 // 
 // returns: json object (Alexa response format) 
 function stop(session) {
-    return navigate(session, enums.navigationCommand.stop); 
+    return responseBuilder.responseWithCard('stopping', 'Stop', null, null, true);
 }
 
 // * * * 
@@ -176,14 +176,14 @@ function getDetails(session, parameter) {
             case enums.querySubject.categories: 
                 var obj = query.runQuery(enums.querySubject.categories, {name:parameter}); 
                 if (!obj)
-                    logger.warning('category ' + parameter + ' not found.'); 
+                    logger.warn('category ' + parameter + ' not found.'); 
                 else
                     details = obj.description;
                 break; 
             case enums.querySubject.manufacturers: 
                 var obj = query.runQuery(enums.querySubject.manufacturers, {name:parameter}); 
                 if (!obj)
-                    logger.warning('manufacturer ' + parameter + ' not found.'); 
+                    logger.warn('manufacturer ' + parameter + ' not found.'); 
                 else
                     details = obj.description;
                 break;
