@@ -13,10 +13,10 @@ const await = require('asyncawait/await');
 const common = require('anguleris-common');
 const exception = common.exceptions('NAV');
 const logger = common.logger('NAV');
+const enums = common.enums;
 
 const config = require('../config');
 const query = require('./query');
-const enums = require('./enums');
 const responseBuilder = require('./responseBuilder');
 
 // * * * 
@@ -216,48 +216,62 @@ function getManufacturerAddress(session, manufacturerName) {
     });
 }
 
-function getProductsForManufacturer() {
-    return exception.try(() => {
-        var text =null;
-        
-        var mfg = query.runQuery(enums.querySubject.manufacturers, {name:manufacturerName}); 
-
-        if (mfg) {
-            if (mfg.properties)
-        }
-        else{
-            //manufacturer not found 
-            text = config.ui.manufacturerNotFound.text.replaceAll('{name', manufacturerName); 
-        }
-    }); 
-}
-
 // * * * 
 function getManufacturerProperty(session, manufacturerName, propertyName, foundText, notFoundText) {
     return exception.try(() => {
         var text =null;
+        var card = null;
         
         var mfg = query.runQuery(enums.querySubject.manufacturers, {name:manufacturerName}); 
         if (mfg) {
             if (mfg[propertyName] && mfg[propertyName].trim().length){
-                text = notFoundText.replaceAll('{name}', manufacturerName).replaceAll('{value}', mfg[propertyName].trim()); 
+                card = foundText.card.replaceAll('{name}', manufacturerName).replaceAll('{value}', mfg[propertyName].trim()); 
+                text = foundText.text.replaceAll('{name}', manufacturerName).replaceAll('{value}', mfg[propertyName].trim()); 
                 //text = manufacturerName + "'s phone number is " + mfg[propertyName].trim() + '.'; 
             }
             else{
                 //no phone number available 
-                text = notFoundText.replaceAll('{name}', manufacturerName); 
+                card = notFoundText.card.replaceAll('{name}', manufacturerName); 
+                text = notFoundText.text.replaceAll('{name}', manufacturerName); 
                 //text = 'Sorry, no phone number is available for ' + manufacturerName; 
             }
         }
         else{
             //manufacturer not found 
+            card = config.ui.manufacturerNotFound.card.replaceAll('{name', manufacturerName); 
             text = config.ui.manufacturerNotFound.text.replaceAll('{name', manufacturerName); 
             //text = 'Sorry, a manufacturer by the name of ' + manufacturerName + ' was not found.'; 
         }
 
         //TODO: add reprompt
-        return responseBuilder.responseWithCard(text, 'Manufacturer Phone: ' + manufacturerName, null, session); 
+        return responseBuilder.responseWithCard(text, card, null, session); 
     });
+}
+
+function getProductsForManufacturer(session, manufacturerName) {
+    return exception.try(() => {
+        var text =null;
+        
+        var mfg = query.runQuery(enums.querySubject.manufacturers, {name:manufacturerName}); 
+
+        if (mfg) {
+            if (mfg.products && mfg.products.length) {
+                //TODO: should be full list 
+                return responseBuilder.listToText(mfg.products, config.ui.productsForManufacturer, config.ui.productsForManufacturer.reprompt, session, false);
+            }
+            else {
+                text = config.ui.noProductsForManufacturer.text.replaceAll('{name}', manufacturerName); 
+                card = config.ui.noProductsForManufacturer.card.replaceAll('{name}', manufacturerName); 
+            }
+        }
+        else{
+            //manufacturer not found 
+            text = config.ui.manufacturerNotFound.text.replaceAll('{name', manufacturerName); 
+            card = config.ui.manufacturerNotFound.card.replaceAll('{name', manufacturerName); 
+        }
+
+        return responseBuilder.responseWithCard(text, card, null, session); 
+    }); 
 }
 
 // * * * 

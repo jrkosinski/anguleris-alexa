@@ -14,9 +14,9 @@ const guid = require('uuid/v4');
 
 const common = require('anguleris-common');
 const exception = common.exceptions('TEST'); 
+const enums = common.enums;
 
 const config = require('../config');
-const enums = require('../util/enums');
 const app = require('../util/alexaApp').app; 
 
 var _failedAssertions = 0;

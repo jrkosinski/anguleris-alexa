@@ -181,23 +181,37 @@ module.exports = {
             text: configUtil.getSetting('TEXT_NO_DETAILS_FOR_MFG', 'Sorry, no details are available for this manufacturer.')
         },
         manufacturerNotFound: {
-            text: configUtil.getSetting('TEXT_MFG_NOT_FOUND', 'Sorry, no manufacturer by the name {name} was found.')
+            text: configUtil.getSetting('TEXT_MFG_NOT_FOUND', 'Sorry, no manufacturer by the name {name} was found.'),
+            card: configUtil.getSetting('CARD_MFG_NOT_FOUND', 'Manufacturer Not Found') 
         }, 
         categoryNotFound: {
-            text: configUtil.getSetting('TEXT_CATEGORY_NOT_FOUND', 'Sorry, no category by the name {name} was found.')
+            text: configUtil.getSetting('TEXT_CATEGORY_NOT_FOUND', 'Sorry, no category by the name {name} was found.'),
+            card: configUtil.getSetting('CARD_CATEGORY_NOT_FOUND', 'Category Not Found')
         },
         manufacturerPhoneNumberFound: {
-            text: configUtil.getSetting('TEXT_MFG_PHONE_FOUND', 'The phone number for {name} is {value}.')
+            text: configUtil.getSetting('TEXT_MFG_PHONE_FOUND', 'The phone number for {name} is {value}.'),
+            card: configUtil.getSetting('CARD_MFG_PHONE_FOUND', 'Phone Number for {name}')
         },
         manufacturerPhoneNumberNotFound: {
-            text: configUtil.getSetting('TEXT_MFG_PHONE_NOT_FOUND', 'Sorry, no phone number is available for {name}.')
+            text: configUtil.getSetting('TEXT_MFG_PHONE_NOT_FOUND', 'Sorry, no phone number is available for {name}.'),
+            card: configUtil.getSetting('CARD_MFG_PHONE_NOT_FOUND', 'Phone Number Not Found')
         },
         manufacturerAddressFound: {
-            text: configUtil.getSetting('TEXT_MFG_ADDR_FOUND', 'The street address for {name} is {value}.')
+            text: configUtil.getSetting('TEXT_MFG_ADDR_FOUND', 'The street address for {name} is {value}.'),
+            card: configUtil.getSetting('CARD_MFG_ADDDR_FOUND', 'Address for {name}')
         },
         manufacturerAddressNotFound: {
-            text: configUtil.getSetting('TEXT_MFG_ADDR_NOT_FOUND', 'Sorry, no street address is available for {name}.')
+            text: configUtil.getSetting('TEXT_MFG_ADDR_NOT_FOUND', 'Sorry, no street address is available for {name}.'),
+            card: configUtil.getSetting('CARD_MFG_ADDR_NOT_FOUND', 'Address Not Found')
         },
+        productsForManufacturer: {
+            text: configUtil.getSetting('TEXT_PRODUCTS_FOR_MFG', 'Found {count} products for {name}.'),
+            card: configUtil.getSetting('CARD_PRODUCTS_FOR_MFG', 'Products for {name}')
+        },
+        noProductsForManufacturer: {
+            text: configUtil.getSetting('TEXT_NO_PRODUCTS_FOR_MFG', 'Sorry, no products were found for {name}.'),
+            card: configUtil.getSetting('CARD_NO_PRODUCTS_FOR_MFG', 'No Products Found')
+        }
     },
 };
 

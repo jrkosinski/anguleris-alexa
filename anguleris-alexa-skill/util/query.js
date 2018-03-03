@@ -14,9 +14,9 @@ const dataAccess = require('anguleris-data-access');
 const common = require('anguleris-common');
 const exception = common.exceptions('QUERY');
 const logger = common.logger('QUERY');
+const enums = common.enums;
 
 const config = require('../config');
-const enums = require('./enums');
 
 // * * * 
 // runs the given query and returns the resulting object or objects

@@ -15,12 +15,12 @@ const app = alexa.createApp('anguleris-alexa-skill', { shouldEndSessionByDefault
 const common = require('anguleris-common');
 const exception = common.exceptions('APP');
 const logger = common.logger('APP');
+const enums = common.enums;
 const stringUtil = common.strings;
 
 const config = require('../config');
 const navigation = require('./navigation');
 const query = require('./query');
-const enums = require('./enums');
 const responseBuilder = require('./responseBuilder');
 const pkg = require('../package.json');
 
@@ -120,12 +120,12 @@ addAppIntent(config.intents.getDetails, (slots, session, data) => {
 
 // GetManufacturerPhone
 addAppIntent(config.intents.getDetails, (slots, session, data) => {
-    return navigation.getManufacturerProperty(session, slots.entity); 
+    return navigation.getManufacturerPhone(session, slots.entity); 
 });
 
 // GetManufacturerAddress
 addAppIntent(config.intents.getDetails, (slots, session, data) => {
-    return navigation.getManufacturerProperty(session, slots.entity); 
+    return navigation.getManufacturerAddress(session, slots.entity); 
 });
 
 // Repeat

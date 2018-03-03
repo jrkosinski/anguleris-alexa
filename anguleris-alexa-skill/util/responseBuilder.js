@@ -174,12 +174,12 @@ function noResultsResponse(session, shouldEndSession) {
 // 
 // args
 //  list: the list to format as text (array of strings) 
-//  title: the card title
+//  text: the config ui text node (config.ui...)
 //  session: session attributes to return
 //  shouldEndSession: true to end session after response; false is the default 
 // 
 // returns: json object (Alexa response format) 
-function listToText(list, title, reprompt, session, shouldEndSession) {
+function listToText(list, text, session, shouldEndSession) {
     return exception.try(() => {
         if (!list || !list.length){
             return noResultsResponse(session);
@@ -192,7 +192,10 @@ function listToText(list, title, reprompt, session, shouldEndSession) {
             }
         }
 
-        return responseWithCard(text, title, reprompt, session); 
+        text = text.text + ' ' + text; 
+        var reprompt = shouldEndSession ? null : text.reprompt;
+
+        return responseWithCard(text, text.card, reprompt, session); 
     });
 }
 
