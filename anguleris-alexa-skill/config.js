@@ -48,6 +48,12 @@ module.exports = {
                 "get a list of manufacturers for {entity:Entity}"
             ]
         },
+        getCategoriesForManufacturer: {
+            name: 'GetCategoriesForManufacturerIntent',
+            utterances: [
+                "get a list of categories for {entity:Entity}"
+            ]
+        },
         getDetails: {
             name: 'GetDetailsIntent',
             utterances: [
@@ -135,6 +141,11 @@ module.exports = {
             text: configUtil.getSetting('TEXT_MFG_FOR_CATEGORY', 'Manufacturers for Category.'),
             reprompt: null,
             card: configUtil.getSetting('CARD_MFG_FOR_CATEGORY', 'Manufacturers for Category')
+        },
+        categoriesForManufacturer: {
+            text: configUtil.getSetting('TEXT_CATEGORY_FOR_MFG', 'Categories for Manufacturer.'),
+            reprompt: null,
+            card: configUtil.getSetting('CARD_CATEGORY_FOR_MFG', 'Categories for Manufacturer')
         },
         pause: {
             text: configUtil.getSetting('TEXT_PAUSE', 'Pause'),

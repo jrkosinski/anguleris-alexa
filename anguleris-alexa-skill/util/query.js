@@ -34,8 +34,14 @@ function runQuery(querySubject, queryParams) {
         }
 
         switch(querySubject) {
-            case enums.querySubject.categories: {  
-                return dataAccess.getCategories(name); 
+            case enums.querySubject.categories: {    
+                if (queryParams && queryParams.manufacturer) {
+                    var categories = dataAccess.getCategoriesForManufacturer(queryParams.manufacturer); 
+                    return categories;
+                }
+                else {
+                    return dataAccess.getCategories(name); 
+                }
             }
             case enums.querySubject.manufacturers: {            
                 if (queryParams && queryParams.category) {

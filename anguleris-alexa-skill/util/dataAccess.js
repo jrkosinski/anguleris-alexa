@@ -262,6 +262,37 @@ function getManufacturers(name) {
     });
 }
 
+// * * * 
+// gets a list of categories that have the given manufacturer as a manufacturer
+//
+// args
+//  manufacturerName: the name of the manufacturer in question 
+// 
+// returns: array of categories 
+function getCategoriesForManufacturer(manufacturerName) {
+    return exception.try(() => {
+        manufacturerName = manufacturerName.trim().toLowerCase(); 
+        var output = [];
+
+        var categories = _categories.all(); 
+        for(var i=0; i<categories.length; i++) {
+            var category = categories[i]; 
+
+            if (category.manufacturers) {
+                for (var n=0; n<category.manufacturers.length; n++){
+                    var mfg = category.manufacturers[i]; 
+                    if (mfg.name.toLowerCase().trim() === manufacturerName){
+                        output.push(category); 
+                        break;
+                    }
+                }
+            }
+        }
+        
+        return output; 
+    });
+}
+
 
 module.exports = {
     getCategories: getCategories,

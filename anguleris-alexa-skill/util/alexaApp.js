@@ -104,6 +104,15 @@ addAppIntent(config.intents.getManufacturersForCategory, (slots, session, data) 
     return responseBuilder.listToText(manufacturers, config.ui.manufacturersForCategory.card, '', session); 
 });
 
+// GetCategoriesForManufacturer
+addAppIntent(config.intents.getCategoriesForManufacturer, (slots, session, data) => {
+    var queryParams = { manufacturer: slots.entity}; 
+    var categories = query.runQuery(enums.querySubject.categories, queryParams); 
+    
+    //TODO: add reprompt
+    return responseBuilder.listToText(categories, config.ui.categoriesForManufacturer.card, '', session); 
+});
+
 // GetDetails
 addAppIntent(config.intents.getDetails, (slots, session, data) => {
     return navigation.getDetails(session, slots.entity); 
