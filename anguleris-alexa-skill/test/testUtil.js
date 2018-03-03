@@ -105,6 +105,22 @@ function createManufacturersForCategoryRequest(querySubject, parameter, startInd
     }; 
 }
 
+function createCategoriesForManufacturerRequest(querySubject, parameter, startIndex) {
+    return {
+        type: 'IntentRequest',
+        name: config.intents.getCategoriesForManufacturer.name,
+        slots: { entity: parameter },
+        attrs: { querySubject: querySubject, startIndex:startIndex},
+        appId: 'amzn1.echo-sdk-123456',
+        sessionId: 'SessionId.357a6s7',
+        userId: 'amzn1.account.abc123',
+        requestId: 'EdwRequestId.abc123456',
+        timestamp: '2016-06-16T14:38:46Z',
+        locale: 'en-US',
+        new: false
+    }; 
+}
+
 function createNavigationRequest(querySubject, navigationCommand, startIndex) {
     var intentNames = {}; 
     intentNames[enums.navigationCommand.next] = config.intents.moveNext.name;
@@ -446,6 +462,17 @@ const runUnitTests = async((handler) => {
         async(() => {
             var request = createManufacturersForCategoryRequest(enums.querySubject.manufacturers, 'Ceilings', 5); 
             await(runTest('manufacturers for category 1', request, [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes,
+                assertions.hasStartIndexAttribute,
+                assertions.listIndexIsExpected(5)
+            ])); 
+        }), 
+
+        //categories for manufacturer 1
+        async(() => {
+            var request = createCategoriesForManufacturerRequest(enums.querySubject.categories, 'Kenmore', 5); 
+            await(runTest('categories for manufacturer 1', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
                 assertions.hasStartIndexAttribute,

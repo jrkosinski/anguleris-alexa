@@ -60,6 +60,18 @@ module.exports = {
                 "get details for {entity:Entity}"
             ]
         },
+        getManufacturerPhone: {
+            name: 'GetManufacturerPhoneIntent',
+            utterances: [
+                "get phone number for {entity:Entity}"
+            ]
+        },
+        getManufacturerAddress: {
+            name: 'GetManufacturerAddressIntent',
+            utterances: [
+                "get address for {entity:Entity}"
+            ]
+        },
         repeat: {
             name: 'RepeatIntent',
             utterances: [
@@ -161,7 +173,31 @@ module.exports = {
             text: configUtil.getSetting('TEXT_NOT_IN_LIST', "Sorry, that's not a valid command, because we're not currently navigating a list result. Do you want to try that again?"),
             reprompt: configUtil.getSetting('REPROMPT_NOT_IN_LIST', 'Do you want to try again?'),
             card: configUtil.getSetting('CARD_INVALID_REQUEST', 'Invalid Request')
-        }
+        },
+        noDetailsForCategory: {
+            text: configUtil.getSetting('TEXT_NO_DETAILS_FOR_CATEGORY', 'Sorry, no details are available for this category.')
+        },
+        noDetailsForManufacturer: {
+            text: configUtil.getSetting('TEXT_NO_DETAILS_FOR_MFG', 'Sorry, no details are available for this manufacturer.')
+        },
+        manufacturerNotFound: {
+            text: configUtil.getSetting('TEXT_MFG_NOT_FOUND', 'Sorry, no manufacturer by the name {name} was found.')
+        }, 
+        categoryNotFound: {
+            text: configUtil.getSetting('TEXT_CATEGORY_NOT_FOUND', 'Sorry, no category by the name {name} was found.')
+        },
+        manufacturerPhoneNumberFound: {
+            text: configUtil.getSetting('TEXT_MFG_PHONE_FOUND', 'The phone number for {name} is {value}.')
+        },
+        manufacturerPhoneNumberNotFound: {
+            text: configUtil.getSetting('TEXT_MFG_PHONE_NOT_FOUND', 'Sorry, no phone number is available for {name}.')
+        },
+        manufacturerAddressFound: {
+            text: configUtil.getSetting('TEXT_MFG_ADDR_FOUND', 'The street address for {name} is {value}.')
+        },
+        manufacturerAddressNotFound: {
+            text: configUtil.getSetting('TEXT_MFG_ADDR_NOT_FOUND', 'Sorry, no street address is available for {name}.')
+        },
     },
 };
 

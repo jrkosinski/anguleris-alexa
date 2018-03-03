@@ -118,6 +118,16 @@ addAppIntent(config.intents.getDetails, (slots, session, data) => {
     return navigation.getDetails(session, slots.entity); 
 });
 
+// GetManufacturerPhone
+addAppIntent(config.intents.getDetails, (slots, session, data) => {
+    return navigation.getManufacturerProperty(session, slots.entity); 
+});
+
+// GetManufacturerAddress
+addAppIntent(config.intents.getDetails, (slots, session, data) => {
+    return navigation.getManufacturerProperty(session, slots.entity); 
+});
+
 // Repeat
 addAppIntent(config.intents.repeat, (slots, session, data) => {
     if (session.text) {

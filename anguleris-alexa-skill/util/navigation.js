@@ -175,17 +175,21 @@ function getDetails(session, parameter) {
         switch (session.querySubject) {
             case enums.querySubject.categories: 
                 var obj = query.runQuery(enums.querySubject.categories, {name:parameter}); 
-                if (!obj)
+                if (!obj) {
                     logger.warn('category ' + parameter + ' not found.'); 
+                    details = config.ui.categoryNotFound.text.replaceAll('{name}', parameter);
+                }
                 else
-                    details = obj.description;
+                    details = formatCategoryDetails(obj);
                 break; 
             case enums.querySubject.manufacturers: 
                 var obj = query.runQuery(enums.querySubject.manufacturers, {name:parameter}); 
-                if (!obj)
+                if (!obj) {
                     logger.warn('manufacturer ' + parameter + ' not found.'); 
+                    details = config.ui.manufacturerNotFound.text.replaceAll('{name}', parameter);
+                }
                 else
-                    details = obj.description;
+                    details = formatManufacturerDetails(obj);
                 break;
         }
 
@@ -198,11 +202,118 @@ function getDetails(session, parameter) {
     });
 }
 
+// * * * 
+function getManufacturerPhone(session, manufacturerName) {
+    return exception.try(() => {
+        return getManufacturerProperty(session, manufacturerName, 'address', config.ui.manufacturerAddressFound, config.ui.manufacturerAddressNotFound); 
+    });
+}
+
+// * * * 
+function getManufacturerAddress(session, manufacturerName) {
+    return exception.try(() => {
+        return getManufacturerProperty(session, manufacturerName, 'phone', config.ui.manufacturerPhoneNumberFound, config.ui.manufacturerPhoneNumberNotFound); 
+    });
+}
+
+function getProductsForManufacturer() {
+    return exception.try(() => {
+        var text =null;
+        
+        var mfg = query.runQuery(enums.querySubject.manufacturers, {name:manufacturerName}); 
+
+        if (mfg) {
+            if (mfg.properties)
+        }
+        else{
+            //manufacturer not found 
+            text = config.ui.manufacturerNotFound.text.replaceAll('{name', manufacturerName); 
+        }
+    }); 
+}
+
+// * * * 
+function getManufacturerProperty(session, manufacturerName, propertyName, foundText, notFoundText) {
+    return exception.try(() => {
+        var text =null;
+        
+        var mfg = query.runQuery(enums.querySubject.manufacturers, {name:manufacturerName}); 
+        if (mfg) {
+            if (mfg[propertyName] && mfg[propertyName].trim().length){
+                text = notFoundText.replaceAll('{name}', manufacturerName).replaceAll('{value}', mfg[propertyName].trim()); 
+                //text = manufacturerName + "'s phone number is " + mfg[propertyName].trim() + '.'; 
+            }
+            else{
+                //no phone number available 
+                text = notFoundText.replaceAll('{name}', manufacturerName); 
+                //text = 'Sorry, no phone number is available for ' + manufacturerName; 
+            }
+        }
+        else{
+            //manufacturer not found 
+            text = config.ui.manufacturerNotFound.text.replaceAll('{name', manufacturerName); 
+            //text = 'Sorry, a manufacturer by the name of ' + manufacturerName + ' was not found.'; 
+        }
+
+        //TODO: add reprompt
+        return responseBuilder.responseWithCard(text, 'Manufacturer Phone: ' + manufacturerName, null, session); 
+    });
+}
+
+// * * * 
+// creates a speech string for category details
+// 
+// args
+//  category: category object
+//
+// returns: string 
+function formatCategoryDetails(category) {
+    return exception.try(() => {
+        var output = '';
+
+        if (category.description && category.description.trim().length) {
+            output = category.description;
+        }
+        else {
+            output = config.ui.noDetailsForCategory.text; 
+        }
+
+        return output; 
+    });
+}
+
+// * * * 
+// creates a speech string for manufacturer details
+// 
+// args
+//  category: manufacturer object
+//
+// returns: string 
+function formatManufacturerDetails(manufacturer) {
+    return exception.try(() => {
+        var output = ''; 
+        output = manufacturer.name.trim() + '. '; 
+
+        if (manufacturer.phone && manufacturer.phone.trim().length) {
+            output += 'phone number: ' + manufacturer.phone.trim() + '. '; 
+        }
+        if (manufacturer.address && manufacturer.address.trim().length) {
+            output += 'address: ' + manufacturer.address.trim() + '. '; 
+        }
+        if (manufacturer.description && manufacturer.description.trim().length){
+            output += manufacturer.description;
+        }
+
+        return output; 
+    });
+}
+
 
 module.exports = {
     moveNext: moveNext,
     movePrev : movePrev,
     moveFirst : moveFirst,
     stop : stop,
-    getDetails: getDetails
+    getDetails: getDetails,
+    getManufacturerProperty: getManufacturerProperty
 };

@@ -99,7 +99,7 @@ function Categories() {
         {
             name: 'Cable Tray',
             subcategories: [],
-            manufacturers: ['Chalfant'],
+            manufacturers: ['Chalfant', 'Kenmore'],
             description: ''
         },
         {
@@ -205,25 +205,101 @@ function Categories() {
 // 22 Feb 2018
 function Manufacturers() {
     const _all = [
-        { name: 'Armstrong Flooring' },
-        { name: 'Behr' },
-        { name: 'Boon Edam USA' },
-        { name: 'Clark Dietrich' },
-        { name: 'Delta Turnstiles' },
-        { name: 'Dow Corning' },
-        { name: 'Epilay' },
-        { name: 'Fabral' },
-        { name: 'Grabber' },
-        { name: 'Kenmore' },
-        { name: 'Moen' },
-        { name: 'National Gypsum' },
-        { name: 'Oatey' },
-        { name: 'Ply Gem' },
-        { name: 'Polyset' },
-        { name: 'Proflex' },
-        { name: 'Trex' },
-        { name: 'W.R. Meadows' },
-        { name: 'Waterworks' }
+        { name: 'Armstrong Flooring',
+            address:'2500 Columbia Ave (Bldg 402), Lancaster, PA 17603, United States', 
+            phone: '+1-888-276-7876', 
+            description:'Armstrong is a leader in the design and manufacture of commercial flooring. Our innovative and award-winning commercial flooring designs and our comprehensive solutions enable our customers to deliver exceptional interior spaces that surpass their clients’ expectations. We proudly serve: Interior Designers, Building Owners, Architects, Facility Managers, Contractors, Main Street Locations, Sustainability Commitment - Armstrong Flooring is committed to systematically reducing our environmental footprint, while providing innovative products and services that enable our customers to create sustainable indoor environments.  Learn about our sustainability initiatives'
+        },
+        { name: 'Behr' ,
+            address:'3400 W. Segerstrom Avenue, Santa Ana, CA 92704, United States', 
+            phone: '+1-714-545-7101', 
+            description: 'BEHR carries a full line of Architectural and Professional Grade Paints, Primers, and specialty products designed to meet the demands of all types of construction and project conditions. Over 40 of our BEHR and KILZ products have achieved the UL Environmental GREENGUARD and the prestigious GREENGUARD Gold Product Certification.  Our GREENGUARD Gold Certified products are approved by  Collaborative for High Performance Schools (CHPS) for K-12 schools.  Many BEHR products qualify for the USGBC’s LEED v.9 and LEED v.4, for Healthcare, the NAHB Green Building Guidelines and Green Globe; they also meet the requirements of many other building codes, standards and specifications.'
+        },
+        { name: 'Boon Edam USA',
+            address:'402 McKinney Parkway, Lillington, NC 27546, United States', 
+            phone: '+1-910-814-3800', 
+            description:'Royal Boon Edam is a global market leader in entry solutions. Headquartered in the Netherlands, with 140 years of experience in engineering quality, we have gained extensive expertise in managing the movement of people through office buildings, airports, healthcare facilities, hotels and many other types of buildings. We are focused on providing an optimal experience for our clients and their clients. By working together with you, our client, we help determine the exact requirements for the mobility hotspot in and around your building and develop a solution that is customized for you in three key areas: Sustainability, Security and Service.'
+        },
+        { name: 'Clark Dietrich',
+            address:'', 
+            phone: '', 
+            description:''
+        },
+        { name: 'Delta Turnstiles',
+            address:'', 
+            phone: '', 
+            description:''
+        },
+        { name: 'Dow Corning',
+            address:'2200 W. Salzburg Rd., PO Box 994 Auburn, MI 48611, United States', 
+            phone: '+1-989-496-4400', 
+            description:'Dow Performance Silicones is a global leader in the development of silicon-based materials for façade construction. As the boundaries of architectural opportunity extend, Dow‘s innovative solutions make a significant contribution toward optimizing the performance of modern architecture. Our silicone solutions for high performance façades are expansive to meet different needs and local performance requirements.'
+        },
+        { name: 'Epilay',
+            address:'', 
+            phone: '', 
+            description:''
+        },
+        { name: 'Fabral',
+            address:'', 
+            phone: '', 
+            description:''
+        },
+        { name: 'Grabber',
+            address:'', 
+            phone: '', 
+            description:''
+        },
+        { name: 'Kenmore',
+            address:'', 
+            phone: '', 
+            description:''
+        },
+        { name: 'Moen',
+            address:'', 
+            phone: '', 
+            description:''
+        },
+        { name: 'National Gypsum',
+            address:'', 
+            phone: '', 
+            description:''
+        },
+        { name: 'Oatey',
+            address:'', 
+            phone: '', 
+            description:''
+        },
+        { name: 'Ply Gem',
+            address:'', 
+            phone: '', 
+            description:''
+        },
+        { name: 'Polyset',
+            address:'', 
+            phone: '', 
+            description:''
+        },
+        { name: 'Proflex',
+            address:'', 
+            phone: '', 
+            description:''
+        },
+        { name: 'Trex',
+            address:'', 
+            phone: '', 
+            description:''
+        },
+        { name: 'W.R. Meadows',
+            address:'', 
+            phone: '', 
+            description:''
+        },
+        { name: 'Waterworks',
+            address:'', 
+            phone: '', 
+            description:''
+        }
     ];
 
     return new DataTable(_all);
@@ -288,7 +364,7 @@ function getCategoriesForManufacturer(manufacturerName) {
                 }
             }
         }
-        
+
         return output; 
     });
 }
