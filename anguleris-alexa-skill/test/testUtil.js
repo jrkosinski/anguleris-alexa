@@ -62,11 +62,11 @@ function createIntentRequest(intentName, attrs, slots) {
     }; 
 }
 
-function createNavIntentRequest(intentName, querySubject, startIndex, parameter) {    
+function createNavIntentRequest(intentName, querySubject, startIndex, entity, queryParams) {    
     return createIntentRequest(
         intentName, 
-        { querySubject: querySubject, startIndex:startIndex},
-        { entity: parameter }
+        { querySubject: querySubject, startIndex:startIndex, queryParams:queryParams },
+        { entity:entity}
     );
 }
 
@@ -84,7 +84,7 @@ function createCategoriesForManufacturerRequest(parameter, startIndex) {
     );
 }
 
-function createNavigationRequest(querySubject, navigationCommand, startIndex) {
+function createNavigationRequest(querySubject, navigationCommand, startIndex, parameters) {
     var intentNames = {}; 
     intentNames[enums.navigationCommand.next] = config.intents.moveNext.name;
     intentNames[enums.navigationCommand.prev] = config.intents.movePrev.name;
@@ -93,7 +93,7 @@ function createNavigationRequest(querySubject, navigationCommand, startIndex) {
 
     return createNavIntentRequest(
         intentNames[navigationCommand], 
-        querySubject, startIndex 
+        querySubject, startIndex, null, parameters
     );
 }
 
@@ -130,7 +130,8 @@ const runTest = async((testName, request, assertions) => {
             for (var n = 0; n < assertions.length; n++) {
                 var a = assertions[n];
                 exception.try(() => {
-                    if (a.assert(response)) {
+                    var r = a.assert(response);
+                    if (r) {
                         console.log('assertion ' + a.name + ' succeeded');
                         successCount++;
                     }
@@ -458,22 +459,53 @@ const runUnitTests = async((handler) => {
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
                 assertions.hasStartIndexAttribute,
-                assertions.listIndexIsExpected(5)
+                assertions.listIndexIsExpected(0)
             ])); 
         }), 
 
-        //products for manufacturer
+        //products move next 1
         async(() => {
-            var request = createNavIntentRequest(config.intents.getProducts.name, enums.querySubject.manufacturers, 5, 'Kenmore'); 
-            await(runTest('products for category (Access Security)', request, [
+            var request = createNavigationRequest(enums.querySubject.products, enums.navigationCommand.next, 0, {category:'Access Security'}); 
+            await(runTest('products next 1', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
                 assertions.hasStartIndexAttribute,
-                assertions.listIndexIsExpected(5)
+                assertions.listIndexIsExpected(1)
+            ])); 
+        }),
+
+        //products for manufacturer
+        async(() => {
+            var request = createNavIntentRequest(config.intents.getProducts.name, enums.querySubject.manufacturers, 5, 'Boon Edam USA'); 
+            await(runTest('products for manufacturer (Boon Edam USA)', request, [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes,
+                assertions.hasStartIndexAttribute,
+                assertions.listIndexIsExpected(0)
+            ])); 
+        }), 
+
+        //products for manufacturer none
+        async(() => {
+            var request = createNavIntentRequest(config.intents.getProducts.name, enums.querySubject.manufacturers, 1, 'Behr'); 
+            await(runTest('products for manufacturer (Behr)', request, [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes,
+                assertions.hasStartIndexAttribute,
+                assertions.listIndexIsExpected(1)
             ])); 
         }), 
 
         //product details 
+        async(() => {
+            var request = createNavIntentRequest(config.intents.getProducts.name, enums.querySubject.manufacturers, 1, 'Boon Edam USA');
+            await(runTest('product details', request, [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes,
+                assertions.hasStartIndexAttribute,
+                assertions.listIndexIsExpected(1)
+            ])); 
+        }), 
     ];
 
     //RUN TESTS 

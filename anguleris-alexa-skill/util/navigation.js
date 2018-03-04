@@ -34,6 +34,7 @@ const responseBuilder = require('./responseBuilder');
 //    title: string,
 //    textProperty: string
 // }
+//TODO: is this still necessary? 
 function getNavArgsForQuery(query) {
     var output = {
         preText: 'Results {start} to {end} of {count}. ',
@@ -43,12 +44,19 @@ function getNavArgsForQuery(query) {
         textProperty: 'name'
     };
 
+    //TODO: hard-coded text 
     switch(query) {
         case enums.querySubject.categories: 
             output.preText = 'Categories {start} to {end} of {count}. ';
             output.title = 'Categories {start} to {end} of {count}';
             break;
         case enums.querySubject.manufacturers: 
+            output.preText = 'Manufacturers {start} to {end} of {count}. ';
+            output.title = 'Manufacturers {start} to {end} of {count}';
+            break;
+        case enums.querySubject.products: 
+            output.preText = 'Product {start} of {count}. ';
+            output.title = 'Product {start} of {count}';
             break;
     }
 
@@ -70,7 +78,7 @@ function navigate(session, navigationCommand) {
         
         if (session) {
             if (session.querySubject && !common.types.isUndefinedOrNull(session.startIndex)) {
-                var results = query.runQuery(session.querySubject); 
+                var results = query.runQuery(session.querySubject, session.queryParams); 
                 var index = common.types.tryParseInt(session.startIndex); 
                 var navArgs = getNavArgsForQuery(session.querySubject);
 

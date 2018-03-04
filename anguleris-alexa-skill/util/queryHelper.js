@@ -150,19 +150,20 @@ function getProductsForEntity(session, entityName) {
         
         //products for category
         if (session.querySubject === enums.querySubject.categories) {
-            products = dataAccess.getProductsForCategory(entityName); 
+            products = query.runQuery(enums.querySubject.products, {category:entityName}); 
             foundText = config.ui.productsForCategory;
             notFoundText = config.ui.noProductsForCategory;
         }
 
         //products for manufacturer
         else if (session.querySubject === enums.querySubject.manufacturers) {
-            products = dataAccess.getProductsForManufacturer(entityName); 
+            products = query.runQuery(enums.querySubject.products, {manufacturer:entityName}); 
             foundText = config.ui.productsForManufacturer;
             notFoundText = config.ui.noProductsForManufacturer;
         }
 
         if (!common.arrays.nullOrEmpty(products)) {
+            session.startIndex = 0; 
             return responseBuilder.responseListGroup (
                 products, 
                 { subject: enums.querySubject.products},
@@ -170,10 +171,10 @@ function getProductsForEntity(session, entityName) {
                 0, 
                 {
                     textProperty: 'name', 
-                    preText: 'Found {count} products. Results {start} to {end} of {count}. ', 
+                    preText: 'Found {count} products. Result {start} of {count}. ', 
                     postText: 'Say next to move to next result. Or ask a different question. ', 
                     reprompt: 'Say next to move to next result. Or ask a different question. ',
-                    title: 'Results {start} to {end} of {count}'
+                    title: 'Result {start} of {count}'
                 }
             ); 
         }

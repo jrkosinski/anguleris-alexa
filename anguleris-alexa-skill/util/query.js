@@ -54,6 +54,16 @@ function runQuery(querySubject, queryParams) {
                     return dataAccess.getManufacturers(name); 
                 }
             }
+            case enums.querySubject.products: {
+                if (queryParams) {
+                    if (queryParams.category) {
+                        return dataAccess.getProductsForCategory(queryParams.category); 
+                    }
+                    if (queryParams.manufacturer) {
+                        return dataAccess.getProductsForManufacturer(queryParams.manufacturer); 
+                    }
+                }
+            }
         }
 
         return null;

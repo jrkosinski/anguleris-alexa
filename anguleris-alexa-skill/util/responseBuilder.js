@@ -219,5 +219,6 @@ module.exports = {
     responseListGroup: responseListGroup,
     generalError: generalError, 
     listToText: listToText,
-    buildHelpResponse: buildHelpResponse
+    buildHelpResponse: buildHelpResponse,
+    noResultsResponse: noResultsResponse
 }
