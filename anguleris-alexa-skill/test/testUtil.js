@@ -41,12 +41,17 @@ function sendRequest(request) {
     });
 }
 
-function createGetVersionRequest() {
+function createIntentRequest(intentName, attrs, slots) {
+    if (!slots)
+        slots = {};
+    if (!attrs)
+        attrs = {};
+
     return {
         type: 'IntentRequest',
-        name: config.intents.getVersion.name,
-        slots: {},
-        attrs: {},
+        name: intentName,
+        slots: slots,
+        attrs: attrs,
         appId: 'amzn1.echo-sdk-123456',
         sessionId: 'SessionId.357a6s7',
         userId: 'amzn1.account.abc123',
@@ -57,68 +62,26 @@ function createGetVersionRequest() {
     }; 
 }
 
-function createGetCategoriesRequest() {
-    return {
-        type: 'IntentRequest',
-        name: config.intents.getCategories.name,
-        slots: {},
-        attrs: {},
-        appId: 'amzn1.echo-sdk-123456',
-        sessionId: 'SessionId.357a6s7',
-        userId: 'amzn1.account.abc123',
-        requestId: 'EdwRequestId.abc123456',
-        timestamp: '2016-06-16T14:38:46Z',
-        locale: 'en-US',
-        new: false
-    }; 
+function createNavIntentRequest(intentName, querySubject, startIndex, parameter) {    
+    return createIntentRequest(
+        intentName, 
+        { querySubject: querySubject, startIndex:startIndex},
+        { entity: parameter }
+    );
 }
 
-function createGetManufacturersRequest() {
-    return {
-        type: 'IntentRequest',
-        name: config.intents.getManufacturers.name,
-        slots: {},
-        attrs: {},
-        appId: 'amzn1.echo-sdk-123456',
-        sessionId: 'SessionId.357a6s7',
-        userId: 'amzn1.account.abc123',
-        requestId: 'EdwRequestId.abc123456',
-        timestamp: '2016-06-16T14:38:46Z',
-        locale: 'en-US',
-        new: false
-    }; 
+function createManufacturersForCategoryRequest(parameter, startIndex) {
+    return createNavIntentRequest(
+        config.intents.getManufacturersForCategory.name, 
+        enums.querySubject.manufacturers, startIndex, parameter
+    );
 }
 
-function createManufacturersForCategoryRequest(querySubject, parameter, startIndex) {
-    return {
-        type: 'IntentRequest',
-        name: config.intents.getManufacturersForCategory.name,
-        slots: { entity: parameter },
-        attrs: { querySubject: querySubject, startIndex:startIndex},
-        appId: 'amzn1.echo-sdk-123456',
-        sessionId: 'SessionId.357a6s7',
-        userId: 'amzn1.account.abc123',
-        requestId: 'EdwRequestId.abc123456',
-        timestamp: '2016-06-16T14:38:46Z',
-        locale: 'en-US',
-        new: false
-    }; 
-}
-
-function createCategoriesForManufacturerRequest(querySubject, parameter, startIndex) {
-    return {
-        type: 'IntentRequest',
-        name: config.intents.getCategoriesForManufacturer.name,
-        slots: { entity: parameter },
-        attrs: { querySubject: querySubject, startIndex:startIndex},
-        appId: 'amzn1.echo-sdk-123456',
-        sessionId: 'SessionId.357a6s7',
-        userId: 'amzn1.account.abc123',
-        requestId: 'EdwRequestId.abc123456',
-        timestamp: '2016-06-16T14:38:46Z',
-        locale: 'en-US',
-        new: false
-    }; 
+function createCategoriesForManufacturerRequest(parameter, startIndex) {
+    return createNavIntentRequest(
+        config.intents.getCategoriesForManufacturer.name, 
+        enums.querySubject.categories, startIndex, parameter
+    );
 }
 
 function createNavigationRequest(querySubject, navigationCommand, startIndex) {
@@ -128,51 +91,26 @@ function createNavigationRequest(querySubject, navigationCommand, startIndex) {
     intentNames[enums.navigationCommand.moveFirst] = config.intents.moveFirst.name;
     intentNames[enums.navigationCommand.stop] = config.intents.stop.name;
 
-    return {
-        type: 'IntentRequest',
-        name: intentNames[navigationCommand],
-        slots: {},
-        attrs: { querySubject: querySubject, startIndex: startIndex},
-        appId: 'amzn1.echo-sdk-123456',
-        sessionId: 'SessionId.357a6s7',
-        userId: 'amzn1.account.abc123',
-        requestId: 'EdwRequestId.abc123456',
-        timestamp: '2016-06-16T14:38:46Z',
-        locale: 'en-US',
-        new: false
-    }; 
+    return createNavIntentRequest(
+        intentNames[navigationCommand], 
+        querySubject, startIndex 
+    );
 }
 
 function createDetailsRequest(querySubject, parameter, startIndex) {
-    return {
-        type: 'IntentRequest',
-        name: config.intents.getDetails.name,
-        slots: { entity: parameter},
-        attrs: { querySubject: querySubject, startIndex: startIndex},
-        appId: 'amzn1.echo-sdk-123456',
-        sessionId: 'SessionId.357a6s7',
-        userId: 'amzn1.account.abc123',
-        requestId: 'EdwRequestId.abc123456',
-        timestamp: '2016-06-16T14:38:46Z',
-        locale: 'en-US',
-        new: false
-    }; 
+    return createIntentRequest(
+        config.intents.getDetails.name, 
+        { querySubject: querySubject, startIndex:startIndex},
+        { entity: parameter }
+    );
 }
 
 function createRepeatRequest(querySubject, parameter, startIndex, text) {
-    return {
-        type: 'IntentRequest',
-        name: config.intents.repeat.name,
-        slots: { entity: parameter},
-        attrs: { querySubject: querySubject, startIndex: startIndex, text:text},
-        appId: 'amzn1.echo-sdk-123456',
-        sessionId: 'SessionId.357a6s7',
-        userId: 'amzn1.account.abc123',
-        requestId: 'EdwRequestId.abc123456',
-        timestamp: '2016-06-16T14:38:46Z',
-        locale: 'en-US',
-        new: false
-    }; 
+    return createIntentRequest(
+        config.intents.repeat.name, 
+        { querySubject: querySubject, startIndex:startIndex, text:text},
+        { entity: parameter }
+    );
 }
 
 function assert(expr) {
@@ -267,7 +205,7 @@ const runUnitTests = async((handler) => {
     const unitTests = [
         //get version
         async(() => {
-            await(runTest('get version', createGetVersionRequest(), [
+            await(runTest('get version', createIntentRequest(config.intents.getVersion.name), [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes
             ])); 
@@ -275,7 +213,7 @@ const runUnitTests = async((handler) => {
 
         //get categories
         async(() => {
-            await(runTest('get categories', createGetCategoriesRequest(), [
+            await(runTest('get categories', createIntentRequest(config.intents.getCategories.name), [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
                 assertions.hasStartIndexAttribute
@@ -395,7 +333,7 @@ const runUnitTests = async((handler) => {
 
         //get manufacturers
         async(() => {
-            await(runTest('get manufacturers', createGetManufacturersRequest(), [
+            await(runTest('get manufacturers', createIntentRequest(config.intents.getManufacturers.name), [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
                 assertions.hasStartIndexAttribute
@@ -460,7 +398,7 @@ const runUnitTests = async((handler) => {
 
         //manufacturers for category 1
         async(() => {
-            var request = createManufacturersForCategoryRequest(enums.querySubject.manufacturers, 'Ceilings', 5); 
+            var request = createManufacturersForCategoryRequest('Ceilings', 5); 
             await(runTest('manufacturers for category 1', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
@@ -471,14 +409,47 @@ const runUnitTests = async((handler) => {
 
         //categories for manufacturer 1
         async(() => {
-            var request = createCategoriesForManufacturerRequest(enums.querySubject.categories, 'Kenmore', 5); 
+            var request = createCategoriesForManufacturerRequest('Kenmore', 5); 
             await(runTest('categories for manufacturer 1', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
                 assertions.hasStartIndexAttribute,
                 assertions.listIndexIsExpected(5)
             ])); 
-        })
+        }), 
+
+        //manufacturer phone 
+        async(() => {
+            var request = createNavIntentRequest(config.intents.getManufacturerPhone.name, enums.querySubject.categories, 5, 'Kenmore'); 
+            await(runTest('manufacturer phone (Kenmore)', request, [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes,
+                assertions.hasStartIndexAttribute,
+                assertions.listIndexIsExpected(5)
+            ])); 
+        }), 
+
+        //manufacturer address 
+        async(() => {
+            var request = createNavIntentRequest(config.intents.getManufacturerAddress.name, enums.querySubject.categories, 5, 'Kenmore'); 
+            await(runTest('manufacturer address (Kenmore)', request, [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes,
+                assertions.hasStartIndexAttribute,
+                assertions.listIndexIsExpected(5)
+            ])); 
+        }), 
+
+        //manufacturer details 
+        async(() => {
+            var request = createDetailsRequest(enums.querySubject.manufacturers, 'Kenmore', 5); 
+            await(runTest('manufacturer details (Kenmore)', request, [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes,
+                assertions.hasStartIndexAttribute,
+                assertions.listIndexIsExpected(5)
+            ])); 
+        }), 
     ];
 
     //RUN TESTS 

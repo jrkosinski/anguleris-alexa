@@ -72,6 +72,12 @@ module.exports = {
                 "get address for {entity:Entity}"
             ]
         },
+        getProducts: {
+            name: 'GetProductsIntent',
+            utterances: [
+                "get products for {entity:Entity}"
+            ]
+        },
         repeat: {
             name: 'RepeatIntent',
             utterances: [
@@ -150,12 +156,12 @@ module.exports = {
             card: configUtil.getSetting('CARD_GENERAL_ERROR', 'General Error')
         },
         manufacturersForCategory: {
-            text: configUtil.getSetting('TEXT_MFG_FOR_CATEGORY', 'Manufacturers for Category.'),
+            text: configUtil.getSetting('TEXT_MFG_FOR_CATEGORY', 'Manufacturers for {name}: '),
             reprompt: null,
             card: configUtil.getSetting('CARD_MFG_FOR_CATEGORY', 'Manufacturers for Category')
         },
         categoriesForManufacturer: {
-            text: configUtil.getSetting('TEXT_CATEGORY_FOR_MFG', 'Categories for Manufacturer.'),
+            text: configUtil.getSetting('TEXT_CATEGORY_FOR_MFG', 'Categories for {name}: '),
             reprompt: null,
             card: configUtil.getSetting('CARD_CATEGORY_FOR_MFG', 'Categories for Manufacturer')
         },
@@ -188,11 +194,11 @@ module.exports = {
             text: configUtil.getSetting('TEXT_CATEGORY_NOT_FOUND', 'Sorry, no category by the name {name} was found.'),
             card: configUtil.getSetting('CARD_CATEGORY_NOT_FOUND', 'Category Not Found')
         },
-        manufacturerPhoneNumberFound: {
+        manufacturerPhoneFound: {
             text: configUtil.getSetting('TEXT_MFG_PHONE_FOUND', 'The phone number for {name} is {value}.'),
             card: configUtil.getSetting('CARD_MFG_PHONE_FOUND', 'Phone Number for {name}')
         },
-        manufacturerPhoneNumberNotFound: {
+        manufacturerPhoneNotFound: {
             text: configUtil.getSetting('TEXT_MFG_PHONE_NOT_FOUND', 'Sorry, no phone number is available for {name}.'),
             card: configUtil.getSetting('CARD_MFG_PHONE_NOT_FOUND', 'Phone Number Not Found')
         },
@@ -211,6 +217,14 @@ module.exports = {
         noProductsForManufacturer: {
             text: configUtil.getSetting('TEXT_NO_PRODUCTS_FOR_MFG', 'Sorry, no products were found for {name}.'),
             card: configUtil.getSetting('CARD_NO_PRODUCTS_FOR_MFG', 'No Products Found')
+        },
+        productsForCategory: {
+            text: configUtil.getSetting('TEXT_PRODUCTS_FOR_CAT', 'Found {count} products for {name}.'),
+            card: configUtil.getSetting('CARD_PRODUCTS_FOR_CAT', 'Products for {name}')
+        },
+        noProductsForCategory: {
+            text: configUtil.getSetting('TEXT_NO_PRODUCTS_FOR_CAT', 'Sorry, no products were found for {name}.'),
+            card: configUtil.getSetting('CARD_NO_PRODUCTS_FOR_CAT', 'No Products Found')
         }
     },
 };

@@ -1,5 +1,7 @@
 'use strict';
 
+//TODO: think about renaming this or breaking it up 
+
 // * * * * * 
 // navigation - utilities related to navigation through responses lists 
 // 
@@ -205,14 +207,14 @@ function getDetails(session, parameter) {
 // * * * 
 function getManufacturerPhone(session, manufacturerName) {
     return exception.try(() => {
-        return getManufacturerProperty(session, manufacturerName, 'address', config.ui.manufacturerAddressFound, config.ui.manufacturerAddressNotFound); 
+        return getManufacturerProperty(session, manufacturerName, 'phone', config.ui.manufacturerPhoneFound, config.ui.manufacturerPhoneNotFound); 
     });
 }
 
 // * * * 
 function getManufacturerAddress(session, manufacturerName) {
     return exception.try(() => {
-        return getManufacturerProperty(session, manufacturerName, 'phone', config.ui.manufacturerPhoneNumberFound, config.ui.manufacturerPhoneNumberNotFound); 
+        return getManufacturerProperty(session, manufacturerName, 'address', config.ui.manufacturerAddressFound, config.ui.manufacturerAddressNotFound); 
     });
 }
 
@@ -248,29 +250,53 @@ function getManufacturerProperty(session, manufacturerName, propertyName, foundT
     });
 }
 
-function getProductsForManufacturer(session, manufacturerName) {
+// * * * 
+function getProductsForEntity(session, entityName) {
     return exception.try(() => {
         var text =null;
         
-        var mfg = query.runQuery(enums.querySubject.manufacturers, {name:manufacturerName}); 
+        var cat = query.runQuery(enums.querySubject.categories, {name:entityName}); 
+        var mfg = query.runQuery(enums.querySubject.manufacturers, {name:entityName}); 
+        var products = null;
 
-        if (mfg) {
-            if (mfg.products && mfg.products.length) {
-                //TODO: should be full list 
-                return responseBuilder.listToText(mfg.products, config.ui.productsForManufacturer, config.ui.productsForManufacturer.reprompt, session, false);
+        if (cat) {
+            if (cat.products && cat.products.length) {
+                products = cat.products;
+                text = config.ui.productsForCategory; 
             }
             else {
-                text = config.ui.noProductsForManufacturer.text.replaceAll('{name}', manufacturerName); 
-                card = config.ui.noProductsForManufacturer.card.replaceAll('{name}', manufacturerName); 
+                text = config.ui.noProductsForCategory.text.replaceAll('{name}', entityName); 
+                card = config.ui.noProductsForCategory.card.replaceAll('{name}', entityName); 
             }
         }
-        else{
-            //manufacturer not found 
-            text = config.ui.manufacturerNotFound.text.replaceAll('{name', manufacturerName); 
-            card = config.ui.manufacturerNotFound.card.replaceAll('{name', manufacturerName); 
+        else if (mfg) {
+            if (mfg.products && mfg.products.length) {
+                products = mfg.products;
+                text = config.ui.productsForManufacturer;
+            }
+            else {
+                text = config.ui.noProductsForManufacturer.text.replaceAll('{name}', entityName); 
+                card = config.ui.noProductsForManufacturer.card.replaceAll('{name}', entityName); 
+            }
+        }
+        else {
+            //entity not found 
+            text = config.ui.entityNotFound.text.replaceAll('{name', entityName); 
+            card = config.ui.entityNotFound.card.replaceAll('{name', entityName); 
         }
 
-        return responseBuilder.responseWithCard(text, card, null, session); 
+        //TODO: should be full list 
+        if (products)
+            return responseBuilder.listToText(
+                products, 
+                text.text.replaceAll('{name}', entityName), 
+                null, 
+                text.card, 
+                session, 
+                false
+            );
+        else
+            return responseBuilder.responseWithCard(text, card, null, session); 
     }); 
 }
 
@@ -329,5 +355,7 @@ module.exports = {
     moveFirst : moveFirst,
     stop : stop,
     getDetails: getDetails,
+    getManufacturerPhone: getManufacturerPhone,
+    getManufacturerAddress: getManufacturerAddress,
     getManufacturerProperty: getManufacturerProperty
 };

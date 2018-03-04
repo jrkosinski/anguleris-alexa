@@ -179,23 +179,26 @@ function noResultsResponse(session, shouldEndSession) {
 //  shouldEndSession: true to end session after response; false is the default 
 // 
 // returns: json object (Alexa response format) 
-function listToText(list, text, session, shouldEndSession) {
+function listToText(list, preText, postText, title, session, shouldEndSession) {
     return exception.try(() => {
         if (!list || !list.length){
             return noResultsResponse(session);
         }
         
-        var text = list[0]; 
+        var speech = list[0]; 
         if (list.length > 1){
             for(var n=1; n<list.length; n++){
-                text += ', ' + list[n]; 
+                speech += ', ' + list[n]; 
             }
         }
 
-        text = text.text + ' ' + text; 
-        var reprompt = shouldEndSession ? null : text.reprompt;
+        if (preText && preText.length)
+            speech = preText + ' ' + speech; 
 
-        return responseWithCard(text, text.card, reprompt, session); 
+        if (postText && postText.length)
+            speech = speech + '. ' + postText;
+
+        return responseWithCard(speech, title, null, session); 
     });
 }
 

@@ -101,7 +101,13 @@ addAppIntent(config.intents.getManufacturersForCategory, (slots, session, data) 
     var manufacturers = query.runQuery(enums.querySubject.manufacturers, queryParams); 
     
     //TODO: add reprompt
-    return responseBuilder.listToText(manufacturers, config.ui.manufacturersForCategory.card, '', session); 
+    return responseBuilder.listToText(
+        manufacturers, 
+        config.ui.manufacturersForCategory.text.replaceAll('{name}', queryParams.category), 
+        null, 
+        config.ui.manufacturersForCategory.card, 
+        session
+    ); 
 });
 
 // GetCategoriesForManufacturer
@@ -110,7 +116,17 @@ addAppIntent(config.intents.getCategoriesForManufacturer, (slots, session, data)
     var categories = query.runQuery(enums.querySubject.categories, queryParams); 
     
     //TODO: add reprompt
-    return responseBuilder.listToText(categories, config.ui.categoriesForManufacturer.card, '', session); 
+    if (categories) {
+        categories = common.arrays.select(categories, 'name'); 
+    }
+
+    return responseBuilder.listToText(
+        categories, 
+        config.ui.categoriesForManufacturer.text.replaceAll('{name}', queryParams.manufacturer), 
+        null, 
+        config.ui.categoriesForManufacturer.card, 
+        session
+    ); 
 });
 
 // GetDetails
@@ -119,13 +135,18 @@ addAppIntent(config.intents.getDetails, (slots, session, data) => {
 });
 
 // GetManufacturerPhone
-addAppIntent(config.intents.getDetails, (slots, session, data) => {
+addAppIntent(config.intents.getManufacturerPhone, (slots, session, data) => {
     return navigation.getManufacturerPhone(session, slots.entity); 
 });
 
 // GetManufacturerAddress
-addAppIntent(config.intents.getDetails, (slots, session, data) => {
+addAppIntent(config.intents.getManufacturerAddress, (slots, session, data) => {
     return navigation.getManufacturerAddress(session, slots.entity); 
+});
+
+// GetProducts
+addAppIntent(config.intents.getProducts, (slots, session, data) => {
+    return navigation.getProductsForEntity(session, slots.entity); 
 });
 
 // Repeat
