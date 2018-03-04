@@ -25,9 +25,9 @@ const queryHelper = require('./queryHelper');
 const responseBuilder = require('./responseBuilder');
 const pkg = require('../package.json');
 
-
+//TODO: make this a data access query 
 app.customSlot('Entity', ['Access Security','Appliances','AV','Cable Tray','Ceilings','Countertops','Door Hardware','Doors','Drains','Flooring','Furniture','Mailboxes','Lighting','Paints & Coatings','Piping','Railings','Roofing','Security Cameras','Skylights','Alucobond','Behr','Boon Edam USA','Chalfant','Clark Dietrich','Delta Turnstiles','Dow Corning','Epilay','Fabral','Grabber','Kenmore','Moen','National Gypsum','Oatey','Ply Gem','Polyset','Proflex','Trex','W.R. Meadows','Waterworks']);
-app.customSlot('Feature', ['color', 'color temperature']);
+app.customSlot('Feature', enums.toArray(enums.productFeature)); 
 
 // * * * 
 // utility for specifying an intent handler 
