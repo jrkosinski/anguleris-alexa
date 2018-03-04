@@ -131,22 +131,22 @@ addAppIntent(config.intents.getCategoriesForManufacturer, (slots, session, data)
 
 // GetDetails
 addAppIntent(config.intents.getDetails, (slots, session, data) => {
-    return navigation.getDetails(session, slots.entity); 
+    return query.getDetails(session, slots.entity); 
 });
 
 // GetManufacturerPhone
 addAppIntent(config.intents.getManufacturerPhone, (slots, session, data) => {
-    return navigation.getManufacturerPhone(session, slots.entity); 
+    return query.getManufacturerPhone(session, slots.entity); 
 });
 
 // GetManufacturerAddress
 addAppIntent(config.intents.getManufacturerAddress, (slots, session, data) => {
-    return navigation.getManufacturerAddress(session, slots.entity); 
+    return query.getManufacturerAddress(session, slots.entity); 
 });
 
 // GetProducts
 addAppIntent(config.intents.getProducts, (slots, session, data) => {
-    return navigation.getProductsForEntity(session, slots.entity); 
+    return query.getProductsForEntity(session, slots.entity); 
 });
 
 // Repeat
