@@ -57,7 +57,15 @@ module.exports = {
         getDetails: {
             name: 'GetDetailsIntent',
             utterances: [
-                "get details for {entity:Entity}"
+                "get details for {entity:Entity}",
+                "get details"
+            ]
+        },
+        getProductFeatures: {
+            name: 'GetProductFeaturesIntent',
+            utterances: [
+                "what {feature:Feature} does it come in",
+                "what {feature:Feature} does {product:Product} come in"
             ]
         },
         getManufacturerPhone: {
@@ -76,6 +84,12 @@ module.exports = {
             name: 'GetProductsIntent',
             utterances: [
                 "get products for {entity:Entity}"
+            ]
+        },
+        getProductsCount: {
+            name: 'GetProductsCountIntent',
+            utterances: [
+                "how many products for {entity:Entity}"
             ]
         },
         repeat: {
@@ -181,50 +195,91 @@ module.exports = {
             card: configUtil.getSetting('CARD_INVALID_REQUEST', 'Invalid Request')
         },
         noDetailsForCategory: {
-            text: configUtil.getSetting('TEXT_NO_DETAILS_FOR_CATEGORY', 'Sorry, no details are available for this category.')
+            text: configUtil.getSetting('TEXT_NO_DETAILS_FOR_CATEGORY', 'Sorry, no details are available for this category.'),
+            reprompt: configUtil.getSetting('REPROMPT_NO_DETAILS_FOR_CATEGORY', '')
         },
         noDetailsForManufacturer: {
-            text: configUtil.getSetting('TEXT_NO_DETAILS_FOR_MFG', 'Sorry, no details are available for this manufacturer.')
+            text: configUtil.getSetting('TEXT_NO_DETAILS_FOR_MFG', 'Sorry, no details are available for this manufacturer.'),
+            reprompt: configUtil.getSetting('REPROMPT_NO_DETAILS_FOR_MFG', '')
+        },
+        noDetailsForProduct: {
+            text: configUtil.getSetting('TEXT_NO_DETAILS_FOR_PROD', 'Sorry, no details are available for this product.'),
+            reprompt: configUtil.getSetting('REPROMPT_NO_DETAILS_FOR_MFG', '')
         },
         manufacturerNotFound: {
             text: configUtil.getSetting('TEXT_MFG_NOT_FOUND', 'Sorry, no manufacturer by the name {name} was found.'),
+            reprompt: configUtil.getSetting('REPROMPT_MFG_NOT_FOUND', ''),
             card: configUtil.getSetting('CARD_MFG_NOT_FOUND', 'Manufacturer Not Found') 
         }, 
         categoryNotFound: {
             text: configUtil.getSetting('TEXT_CATEGORY_NOT_FOUND', 'Sorry, no category by the name {name} was found.'),
+            reprompt: configUtil.getSetting('REPROMPT_CATEGORY_NOT_FOUND', ''),
             card: configUtil.getSetting('CARD_CATEGORY_NOT_FOUND', 'Category Not Found')
+        },
+        productNotFound: {
+            text: configUtil.getSetting('TEXT_PRODUCT_NOT_FOUND', 'Sorry, no product by the name {name} was found.'),
+            reprompt: configUtil.getSetting('REPROMPT_PRODUCT_NOT_FOUND', ''),
+            card: configUtil.getSetting('CARD_PRODUCT_NOT_FOUND', 'Product Not Found')
         },
         manufacturerPhoneFound: {
             text: configUtil.getSetting('TEXT_MFG_PHONE_FOUND', 'The phone number for {name} is {value}.'),
+            reprompt: configUtil.getSetting('REPROMPT_MFG_PHONE_FOUND', ''),
             card: configUtil.getSetting('CARD_MFG_PHONE_FOUND', 'Phone Number for {name}')
         },
         manufacturerPhoneNotFound: {
             text: configUtil.getSetting('TEXT_MFG_PHONE_NOT_FOUND', 'Sorry, no phone number is available for {name}.'),
+            reprompt: configUtil.getSetting('REPROMPT_MFG_PHONE_NOT_FOUND', ''),
             card: configUtil.getSetting('CARD_MFG_PHONE_NOT_FOUND', 'Phone Number Not Found')
         },
         manufacturerAddressFound: {
             text: configUtil.getSetting('TEXT_MFG_ADDR_FOUND', 'The street address for {name} is {value}.'),
+            reprompt: configUtil.getSetting('REPROMPT_MFG_ADDR_FOUND', ''),
             card: configUtil.getSetting('CARD_MFG_ADDDR_FOUND', 'Address for {name}')
         },
         manufacturerAddressNotFound: {
             text: configUtil.getSetting('TEXT_MFG_ADDR_NOT_FOUND', 'Sorry, no street address is available for {name}.'),
+            reprompt: configUtil.getSetting('REPROMPT_MFG_ADDR_NOT_FOUND', ''),
             card: configUtil.getSetting('CARD_MFG_ADDR_NOT_FOUND', 'Address Not Found')
         },
         productsForManufacturer: {
             text: configUtil.getSetting('TEXT_PRODUCTS_FOR_MFG', 'Found {count} products for {name}.'),
+            reprompt: configUtil.getSetting('REPROMPT_PRODUCTS_FOR_MFG', ''),
             card: configUtil.getSetting('CARD_PRODUCTS_FOR_MFG', 'Products for {name}')
         },
         noProductsForManufacturer: {
             text: configUtil.getSetting('TEXT_NO_PRODUCTS_FOR_MFG', 'Sorry, no products were found for {name}.'),
+            reprompt: configUtil.getSetting('REPROMPT_NO_PRODUCTS_FOR_MFG', ''),
             card: configUtil.getSetting('CARD_NO_PRODUCTS_FOR_MFG', 'No Products Found')
         },
         productsForCategory: {
             text: configUtil.getSetting('TEXT_PRODUCTS_FOR_CAT', 'Found {count} products for {name}.'),
+            reprompt: configUtil.getSetting('REPROMPT_PRODUCTS_FOR_CAT', ''),
             card: configUtil.getSetting('CARD_PRODUCTS_FOR_CAT', 'Products for {name}')
         },
         noProductsForCategory: {
             text: configUtil.getSetting('TEXT_NO_PRODUCTS_FOR_CAT', 'Sorry, no products were found for {name}.'),
+            reprompt: configUtil.getSetting('REPROMPT_NO_PRODUCTS_FOR_CAT', ''),
             card: configUtil.getSetting('CARD_NO_PRODUCTS_FOR_CAT', 'No Products Found')
+        },
+        numProductsForCategory: {
+            text: configUtil.getSetting('TEXT_NUM_PRODUCTS_FOR_CAT', '{count} products found for {name}.'),
+            reprompt: configUtil.getSetting('REPROMPT_NUM_PRODUCTS_FOR_CAT', ''),
+            card: configUtil.getSetting('CARD_NUM_PRODUCTS_FOR_CAT', '{count} products found for {name}')
+        },
+        numProductsForManufacturer: {
+            text: configUtil.getSetting('TEXT_NUM_PRODUCTS_FOR_MFG', '{count} products found for {name}.'),
+            reprompt: configUtil.getSetting('REPROMPT_NUM_PRODUCTS_FOR_MFG', ''),
+            card: configUtil.getSetting('CARD_NUM_PRODUCTS_FOR_MFG', '{count} products found for {name}')
+        },
+        featureNotSupported: {
+            text: configUtil.getSetting('TEXT_FEATURE_NOT_SUPPORTED', 'Sorry, the feature {feature} is not supported for product {name}.'),
+            reprompt: configUtil.getSetting('REPROMPT_FEATURE_NOT_SUPPORTED', ''),
+            card: configUtil.getSetting('CARD_FEATURE_NOT_SUPPORTED', 'Feature Not Supported')
+        },
+        featureSupported: {
+            text: configUtil.getSetting('TEXT_FEATURE_SUPPORTED', 'Product {name} supports the following {feature}: {value}'),
+            reprompt: configUtil.getSetting('REPROMPT_FEATURE_SUPPORTED', ''),
+            card: configUtil.getSetting('CARD_FEATURE_SUPPORTED', 'Feature Supported')
         }
     },
 };

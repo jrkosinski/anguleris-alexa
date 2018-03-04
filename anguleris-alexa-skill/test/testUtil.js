@@ -506,6 +506,46 @@ const runUnitTests = async((handler) => {
                 assertions.listIndexIsExpected(1)
             ])); 
         }), 
+
+        //mfg product count (Boon Edam USA)
+        async(() => {
+            var request = createNavIntentRequest(config.intents.getProductsCount.name, enums.querySubject.manufacturers, 1, 'Boon Edam USA');
+            await(runTest('mfg product count (Boon Edam USA)', request, [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes
+            ])); 
+        }), 
+
+        //mfg product count (Behr)
+        async(() => {
+            var request = createNavIntentRequest(config.intents.getProductsCount.name, enums.querySubject.manufacturers, 1, 'Behr');
+            await(runTest('mfg product count (Behr)', request, [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes
+            ])); 
+        }), 
+
+        //mfg product features (colors) by mfg
+        async(() => {
+            var request = createIntentRequest(config.intents.getProductFeatures.name, 
+            {startIndex:0, querySubject:enums.querySubject.products, queryParams: {manufacturer:'Boon Edam USA'}},
+            {entity:'Boon Edam USA', feature:'colors'});
+            await(runTest('mfg product features (colors) by mfg', request, [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes
+            ])); 
+        }), 
+
+        //mfg product features (colors) by name
+        async(() => {
+            var request = createIntentRequest(config.intents.getProductFeatures.name, 
+            {startIndex:0, querySubject:enums.querySubject.products},
+            {product:'Speedlane Slide', feature:'colors'});
+            await(runTest('mfg product features (colors) by name', request, [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes
+            ])); 
+        })
     ];
 
     //RUN TESTS 

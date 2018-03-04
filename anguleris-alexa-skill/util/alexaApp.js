@@ -27,6 +27,7 @@ const pkg = require('../package.json');
 
 
 app.customSlot('Entity', ['Access Security','Appliances','AV','Cable Tray','Ceilings','Countertops','Door Hardware','Doors','Drains','Flooring','Furniture','Mailboxes','Lighting','Paints & Coatings','Piping','Railings','Roofing','Security Cameras','Skylights','Alucobond','Behr','Boon Edam USA','Chalfant','Clark Dietrich','Delta Turnstiles','Dow Corning','Epilay','Fabral','Grabber','Kenmore','Moen','National Gypsum','Oatey','Ply Gem','Polyset','Proflex','Trex','W.R. Meadows','Waterworks']);
+app.customSlot('Feature', ['color', 'color temperature']);
 
 // * * * 
 // utility for specifying an intent handler 
@@ -139,6 +140,11 @@ addAppIntent(config.intents.getDetails, (slots, session, data) => {
     return queryHelper.getDetails(session, slots.entity); 
 });
 
+// GetProductFeatures
+addAppIntent(config.intents.getProductFeatures, (slots, session, data) => {
+    return queryHelper.getProductFeatures(session, slots.feature, slots.product); 
+});
+
 // GetManufacturerPhone
 addAppIntent(config.intents.getManufacturerPhone, (slots, session, data) => {
     return queryHelper.getManufacturerPhone(session, slots.entity); 
@@ -152,6 +158,11 @@ addAppIntent(config.intents.getManufacturerAddress, (slots, session, data) => {
 // GetProducts
 addAppIntent(config.intents.getProducts, (slots, session, data) => {
     return queryHelper.getProductsForEntity(session, slots.entity); 
+});
+
+// GetProductsCount
+addAppIntent(config.intents.getProductsCount, (slots, session, data) => {
+    return queryHelper.getProductsCountForEntity(session, slots.entity); 
 });
 
 // Repeat
