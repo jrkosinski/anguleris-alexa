@@ -21,6 +21,7 @@ const stringUtil = common.strings;
 const config = require('../config');
 const navigation = require('./navigation');
 const query = require('./query');
+const queryHelper = require('./queryHelper');
 const responseBuilder = require('./responseBuilder');
 const pkg = require('../package.json');
 
@@ -63,9 +64,11 @@ addAppIntent(config.intents.getVersion, (slots, session, data) => {
 addAppIntent(config.intents.getCategories, (slots, session, data) => {
     var categories = query.runQuery(enums.querySubject.categories)
     
+    //TODO: hard-coded text 
     return responseBuilder.responseListGroup (
         categories, 
         { subject: enums.querySubject.categories },
+        navigation.getGroupSize(enums.querySubject.categories),
         0, 
         {
             textProperty: 'name', 
@@ -81,9 +84,11 @@ addAppIntent(config.intents.getCategories, (slots, session, data) => {
 addAppIntent(config.intents.getManufacturers, (slots, session, data) => {
     var manufacturers = query.runQuery(enums.querySubject.manufacturers)
     
+    //TODO: hard-coded text 
     return responseBuilder.responseListGroup (
         manufacturers, 
         { subject: enums.querySubject.manufacturers},
+        navigation.getGroupSize(enums.querySubject.manufacturers),
         0, 
         {
             textProperty: 'name', 
@@ -131,22 +136,22 @@ addAppIntent(config.intents.getCategoriesForManufacturer, (slots, session, data)
 
 // GetDetails
 addAppIntent(config.intents.getDetails, (slots, session, data) => {
-    return query.getDetails(session, slots.entity); 
+    return queryHelper.getDetails(session, slots.entity); 
 });
 
 // GetManufacturerPhone
 addAppIntent(config.intents.getManufacturerPhone, (slots, session, data) => {
-    return query.getManufacturerPhone(session, slots.entity); 
+    return queryHelper.getManufacturerPhone(session, slots.entity); 
 });
 
 // GetManufacturerAddress
 addAppIntent(config.intents.getManufacturerAddress, (slots, session, data) => {
-    return query.getManufacturerAddress(session, slots.entity); 
+    return queryHelper.getManufacturerAddress(session, slots.entity); 
 });
 
 // GetProducts
 addAppIntent(config.intents.getProducts, (slots, session, data) => {
-    return query.getProductsForEntity(session, slots.entity); 
+    return queryHelper.getProductsForEntity(session, slots.entity); 
 });
 
 // Repeat

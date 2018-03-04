@@ -373,10 +373,10 @@ const runUnitTests = async((handler) => {
             ])); 
         }),
 
-        //category details 1
+        //category details (Ceilings)
         async(() => {
             var request = createDetailsRequest(enums.querySubject.categories, 'Ceilings', 5); 
-            await(runTest('category details 1', request, [
+            await(runTest('category details (Ceilings)', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
                 assertions.hasStartIndexAttribute,
@@ -384,7 +384,7 @@ const runUnitTests = async((handler) => {
             ])); 
         }),
 
-        //repeat 1
+        //repeat 
         async(() => {
             var request = createRepeatRequest(enums.querySubject.categories, 'Ceilings', 5, "abc 123"); 
             await(runTest('repeat 1', request, [
@@ -396,10 +396,10 @@ const runUnitTests = async((handler) => {
             ])); 
         }),
 
-        //manufacturers for category 1
+        //manufacturers for category (Ceilings)
         async(() => {
             var request = createManufacturersForCategoryRequest('Ceilings', 5); 
-            await(runTest('manufacturers for category 1', request, [
+            await(runTest('manufacturers for category (Ceilings)', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
                 assertions.hasStartIndexAttribute,
@@ -407,10 +407,10 @@ const runUnitTests = async((handler) => {
             ])); 
         }), 
 
-        //categories for manufacturer 1
+        //categories for manufacturer (Kenmore)
         async(() => {
             var request = createCategoriesForManufacturerRequest('Kenmore', 5); 
-            await(runTest('categories for manufacturer 1', request, [
+            await(runTest('categories for manufacturer (Kenmore)', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
                 assertions.hasStartIndexAttribute,
@@ -418,7 +418,7 @@ const runUnitTests = async((handler) => {
             ])); 
         }), 
 
-        //manufacturer phone 
+        //manufacturer phone (Kenmore)
         async(() => {
             var request = createNavIntentRequest(config.intents.getManufacturerPhone.name, enums.querySubject.categories, 5, 'Kenmore'); 
             await(runTest('manufacturer phone (Kenmore)', request, [
@@ -429,7 +429,7 @@ const runUnitTests = async((handler) => {
             ])); 
         }), 
 
-        //manufacturer address 
+        //manufacturer address (Kenmore)
         async(() => {
             var request = createNavIntentRequest(config.intents.getManufacturerAddress.name, enums.querySubject.categories, 5, 'Kenmore'); 
             await(runTest('manufacturer address (Kenmore)', request, [
@@ -440,7 +440,7 @@ const runUnitTests = async((handler) => {
             ])); 
         }), 
 
-        //manufacturer details 
+        //manufacturer details (Kenmore)
         async(() => {
             var request = createDetailsRequest(enums.querySubject.manufacturers, 'Kenmore', 5); 
             await(runTest('manufacturer details (Kenmore)', request, [
@@ -450,6 +450,30 @@ const runUnitTests = async((handler) => {
                 assertions.listIndexIsExpected(5)
             ])); 
         }), 
+
+        //products for category (Access Security)
+        async(() => {
+            var request = createNavIntentRequest(config.intents.getProducts.name, enums.querySubject.categories, 5, 'Access Security'); 
+            await(runTest('products for category (Access Security)', request, [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes,
+                assertions.hasStartIndexAttribute,
+                assertions.listIndexIsExpected(5)
+            ])); 
+        }), 
+
+        //products for manufacturer
+        async(() => {
+            var request = createNavIntentRequest(config.intents.getProducts.name, enums.querySubject.manufacturers, 5, 'Kenmore'); 
+            await(runTest('products for category (Access Security)', request, [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes,
+                assertions.hasStartIndexAttribute,
+                assertions.listIndexIsExpected(5)
+            ])); 
+        }), 
+
+        //product details 
     ];
 
     //RUN TESTS 

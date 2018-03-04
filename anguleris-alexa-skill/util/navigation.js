@@ -74,11 +74,13 @@ function navigate(session, navigationCommand) {
                 var index = common.types.tryParseInt(session.startIndex); 
                 var navArgs = getNavArgsForQuery(session.querySubject);
 
+                var groupSize = getGroupSize(session.querySubject); 
+
                 if (navigationCommand === enums.navigationCommand.next)
-                    index += config.listOutputGroupSize; 
+                    index += groupSize; 
 
                 else if (navigationCommand === enums.navigationCommand.prev) {
-                    index -= config.listOutputGroupSize; 
+                    index -= groupSize; 
                     if (index < 0)
                         index = 0;
 
@@ -94,6 +96,7 @@ function navigate(session, navigationCommand) {
                         //TODO: add reprompt
                         results, 
                         { subject: session.querySubject, params: session.queryParams }, 
+                        groupSize, 
                         index, 
                         navArgs
                     ); 
@@ -158,10 +161,26 @@ function stop(session) {
     return responseBuilder.responseWithCard('stopping', 'Stop', null, null, true);
 }
 
+// * * * 
+// gets the navigation list group size appropriate to the given query subject. 
+//
+// args
+//  querySubject: what we're querying and getting a list of 
+//
+// returns: number 
+function getGroupSize(querySubject) {
+    var output = config.listOutputGroupSize;
+    if (querySubject === enums.querySubject.products)
+        output =1;
+
+    return output; 
+}
+
 
 module.exports = {
     moveNext: moveNext,
     movePrev : movePrev,
     moveFirst : moveFirst,
-    stop : stop
+    stop : stop,
+    getGroupSize: getGroupSize
 };

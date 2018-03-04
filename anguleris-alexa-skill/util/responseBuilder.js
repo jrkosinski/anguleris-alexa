@@ -77,7 +77,7 @@ function responseWithCardShortcut(propertyName, session, shouldEndSession) {
 //  navArgs: 
 //
 // returns: json object (Alexa response format) 
-function responseListGroup(list, query, startIndex, navArgs) {
+function responseListGroup(list, query, groupSize, startIndex, navArgs) {
     return exception.try(() => {
 
         var text = '';
@@ -101,11 +101,10 @@ function responseListGroup(list, query, startIndex, navArgs) {
             }
 
             //get end index
-            var endIndex = (startIndex + (config.listOutputGroupSize - 1));
+            var endIndex = (startIndex + (groupSize - 1));
             if (endIndex > (list.length - 1))
                 endIndex = list.length - 1;
                 
-
             var replaceText = (s) => {
                 if (s)
                     return s.replaceAll('{start}', startIndex+1).replaceAll('{end}', endIndex+1).replaceAll('{count}', list.length);
