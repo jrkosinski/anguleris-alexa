@@ -45,13 +45,13 @@ module.exports = {
         getManufacturersForCategory: {
             name: 'GetManufacturersForCategoryIntent',
             utterances: [
-                "get a list of manufacturers for {entity:Entity}"
+                "get a list of manufacturers for {category:Category}"
             ]
         },
         getCategoriesForManufacturer: {
             name: 'GetCategoriesForManufacturerIntent',
             utterances: [
-                "get a list of categories for {entity:Entity}"
+                "get a list of categories for {manufacturer:Manufacturer}"
             ]
         },
         getDetails: {
@@ -96,6 +96,12 @@ module.exports = {
             name: 'GetProductsCountIntent',
             utterances: [
                 "how many products for {entity:Entity}"
+            ]
+        },
+        queryProductByFeature: {//TODO: add to interaction model in skill 
+            name: 'QueryProductByFeatureIntent',
+            utterances: [
+                "what {category:Category} by {manufacturer:Manufacturer} have a {feature:Feature} of {featureValue:AMAZON.LITERAL}"
             ]
         },
         repeat: {
@@ -157,7 +163,7 @@ module.exports = {
         },
         help: {
             //TODO: add more examples
-            text: configUtil.getSetting('TEXT_HELP', "You can ask for a list of categories, or a list of manufacturers. Navigation commands will help you to navigate through lists of results. Furthermore, you can ask for details for a specific category, or manufacturers for a specific category. Following is a list of example commands: " + 
+            text: configUtil.getSetting('TEXT_HELP', "You can ask for a list of categories, or a list of manufacturers. Navigation commands will help you to navigate through lists of results. Following is a list of example commands: " + 
                 "List all categories. " + 
                 "List all manufacturers. " + 
                 "What products are in Access Security? " + 
