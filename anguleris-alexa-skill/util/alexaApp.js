@@ -150,6 +150,11 @@ addAppIntent(config.intents.getProductFeatures, (slots, session, data) => {
     return queryHelper.getProductFeatures(session, slots.feature, slots.product); 
 });
 
+// GetAllProductFeatures
+addAppIntent(config.intents.getAllProductFeatures, (slots, session, data) => {
+    return queryHelper.getAllProductFeatures(session, slots.product); 
+});
+
 // GetManufacturerPhone
 addAppIntent(config.intents.getManufacturerPhone, (slots, session, data) => {
     return queryHelper.getManufacturerPhone(session, slots.entity); 

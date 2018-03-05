@@ -68,6 +68,12 @@ module.exports = {
                 "what {feature:Feature} does {product:Product} come in"
             ]
         },
+        getAllProductFeatures: { //TODO: add to interaction model in skill 
+            name: 'GetAllProductFeaturesIntent',
+            utterances: [
+                "what features does {product:Product} support"
+            ]
+        },
         getManufacturerPhone: {
             name: 'GetManufacturerPhoneIntent',
             utterances: [
@@ -140,8 +146,8 @@ module.exports = {
     // UI elements
     ui: {
         launchPrompt: {
-            text: configUtil.getSetting('TEXT_LAUNCH_PROMPT', "Welcome to the Anguleris Alexa Skill. This skill is to be a development base for what's to come. For now, try asking 'what is the current version?', 'get a list of categories', or 'get a list of manufacturers'."),
-            reprompt: configUtil.getSetting('REPROMPT_LAUNCH', "Try asking 'what is the current version?'"),
+            text: configUtil.getSetting('TEXT_LAUNCH_PROMPT', "Welcome to the Anguleris Alexa Skill version {version}. Ask for 'help' to get a list of commands."),
+            reprompt: configUtil.getSetting('REPROMPT_LAUNCH', "Try asking for a list of categories or manufacturers"),
             card: configUtil.getSetting('CARD_LAUNCH_PROMPT', 'Launch')
         },
         unknownIntent: {
@@ -150,8 +156,20 @@ module.exports = {
             card: configUtil.getSetting('CARD_UNKNOWN_INTENT', 'Unknown Intent')
         },
         help: {
-            text: configUtil.getSetting('TEXT_HELP', "You can ask for a list of categories, or a list of manufacturers. Navigation commands will help you to navigate through lists of results. Furthermore, you can ask for details for a specific category, or manufacturers for a specific category. Example: get manufacturers for category Access Security."),
-            reprompt: configUtil.getSetting('REPROMPT_HELP', "Try this command: list all categories."),
+            //TODO: add more examples
+            text: configUtil.getSetting('TEXT_HELP', "You can ask for a list of categories, or a list of manufacturers. Navigation commands will help you to navigate through lists of results. Furthermore, you can ask for details for a specific category, or manufacturers for a specific category. Following is a list of example commands: " + 
+                "List all categories. " + 
+                "List all manufacturers. " + 
+                "What products are in Access Security? " + 
+                "What products does Kenmore have? " + 
+                "How many products does Kenmore have? " + 
+                "How many products are there in Access Security? " + 
+                "What finishes does 24 inch Built-In Dishwasher by Kenmore come in? ",
+                "What features does Speedlane Slide by Boon Edam USA support? ",
+                "What dishwashers by Kenmore come in Stainless Steel finish? ",
+                "What manufacturers have products for Access Security? ", 
+                "What categories does Kenmore have products for? "),
+            reprompt: configUtil.getSetting('REPROMPT_HELP', "Try this command: list all categories. "),
             card: configUtil.getSetting('CARD_HELP', 'Help')
         },
         getVersion: {
@@ -221,6 +239,11 @@ module.exports = {
             reprompt: configUtil.getSetting('REPROMPT_PRODUCT_NOT_FOUND', ''),
             card: configUtil.getSetting('CARD_PRODUCT_NOT_FOUND', 'Product Not Found')
         },
+        entityNotFound: {
+            text: configUtil.getSetting('TEXT_ENTITY_NOT_FOUND', 'Sorry, {name} could not be found.'),
+            reprompt: configUtil.getSetting('REPROMPT_ENTITY_NOT_FOUND', ''),
+            card: configUtil.getSetting('CARD_ENTITY_NOT_FOUND', '{name} Not Found')
+        },
         manufacturerPhoneFound: {
             text: configUtil.getSetting('TEXT_MFG_PHONE_FOUND', 'The phone number for {name} is {value}.'),
             reprompt: configUtil.getSetting('REPROMPT_MFG_PHONE_FOUND', ''),
@@ -251,6 +274,11 @@ module.exports = {
             reprompt: configUtil.getSetting('REPROMPT_NO_PRODUCTS_FOR_MFG', ''),
             card: configUtil.getSetting('CARD_NO_PRODUCTS_FOR_MFG', 'No Products Found')
         },
+        numProductsForManufacturer: {
+            text: configUtil.getSetting('TEXT_NUM_PRODUCTS_FOR_MFG', '{count} products found for {name}.'),
+            reprompt: configUtil.getSetting('REPROMPT_NUM_PRODUCTS_FOR_MFG', ''),
+            card: configUtil.getSetting('CARD_NUM_PRODUCTS_FOR_MFG', '{count} products found for {name}')
+        },
         productsForCategory: {
             text: configUtil.getSetting('TEXT_PRODUCTS_FOR_CAT', 'Found {count} products for {name}.'),
             reprompt: configUtil.getSetting('REPROMPT_PRODUCTS_FOR_CAT', ''),
@@ -266,10 +294,20 @@ module.exports = {
             reprompt: configUtil.getSetting('REPROMPT_NUM_PRODUCTS_FOR_CAT', ''),
             card: configUtil.getSetting('CARD_NUM_PRODUCTS_FOR_CAT', '{count} products found for {name}')
         },
-        numProductsForManufacturer: {
-            text: configUtil.getSetting('TEXT_NUM_PRODUCTS_FOR_MFG', '{count} products found for {name}.'),
-            reprompt: configUtil.getSetting('REPROMPT_NUM_PRODUCTS_FOR_MFG', ''),
-            card: configUtil.getSetting('CARD_NUM_PRODUCTS_FOR_MFG', '{count} products found for {name}')
+        productsForEntity: {
+            text: configUtil.getSetting('TEXT_PRODUCTS_FOR_ENTITY', 'Found {count} products for {name}.'),
+            reprompt: configUtil.getSetting('REPROMPT_PRODUCTS_FOR_ENTITY', ''),
+            card: configUtil.getSetting('CARD_PRODUCTS_FOR_ENTITY', 'Products for {name}')
+        },
+        noProductsForEntity: {
+            text: configUtil.getSetting('TEXT_NO_PRODUCTS_FOR_ENTITY', 'Sorry, no products were found for {name}.'),
+            reprompt: configUtil.getSetting('REPROMPT_NO_PRODUCTS_FOR_ENTITY', ''),
+            card: configUtil.getSetting('CARD_NO_PRODUCTS_FOR_ENTITY', 'No Products Found')
+        },
+        numProductsForEntity: {
+            text: configUtil.getSetting('TEXT_NUM_PRODUCTS_FOR_ENTITY', '{count} products found for {name}.'),
+            reprompt: configUtil.getSetting('REPROMPT_NUM_PRODUCTS_FOR_ENTITY', ''),
+            card: configUtil.getSetting('CARD_NUM_PRODUCTS_FOR_ENTITY', '{count} products found for {name}')
         },
         featureNotSupported: {
             text: configUtil.getSetting('TEXT_FEATURE_NOT_SUPPORTED', 'Sorry, the feature {feature} is not supported for product {name}.'),
@@ -280,6 +318,16 @@ module.exports = {
             text: configUtil.getSetting('TEXT_FEATURE_SUPPORTED', 'Product {name} supports the following {feature}: {value}'),
             reprompt: configUtil.getSetting('REPROMPT_FEATURE_SUPPORTED', ''),
             card: configUtil.getSetting('CARD_FEATURE_SUPPORTED', 'Feature Supported')
+        },
+        noFeatures: {
+            text: configUtil.getSetting('TEXT_NO_FEATURES', 'No features are listed for {name}'),
+            reprompt: configUtil.getSetting('REPROMPT_NO_FEATURES', ''),
+            card: configUtil.getSetting('CARD_NO_FEATURES', 'No Features Listed')
+        },
+        productAllFeatures: {
+            text: configUtil.getSetting('TEXT_ALL_FEATURES', 'Product {name} supports the following features: {content}'),
+            reprompt: configUtil.getSetting('REPROMPT_ALL_FEATURES', ''),
+            card: configUtil.getSetting('CARD_ALL_FEATURES', 'Features for {name}')
         }
     },
 };

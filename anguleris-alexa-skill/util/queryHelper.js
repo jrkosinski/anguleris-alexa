@@ -79,6 +79,7 @@ function getDetails(session, parameter) {
     });
 }
 
+// * * * 
 function getProductFeatures(session, featureName, productName) {
     return exception.try(() => {
         var product = getProductFromSession(session, productName); 
@@ -117,6 +118,47 @@ function getProductFeatures(session, featureName, productName) {
                     config.ui.featureSupported.text.replaceAll('{name}', product.name).replaceAll('{feature}', featureName).replaceAll('{value}', content), 
                     config.ui.featureSupported.card.replaceAll('{name}', product.name).replaceAll('{feature}', featureName).replaceAll('{value}', content),
                     config.ui.featureSupported.reprompt,
+                    session 
+                );
+            }
+        }
+        else {
+            return responseBuilder.responseWithCard(config.ui.productNotFound.text, config.ui.productNotFound.card, config.ui.productNotFound.reprompt, session);
+        }
+    });
+}
+
+// * * * 
+function getAllProductFeatures(session, featureName, productName) {
+    return exception.try(() => {
+        var product = getProductFromSession(session, productName); 
+        var content = null;
+
+        if (product) {
+            if (product.features) {
+                var contentArray = []; 
+
+                for (var p in product.features) {
+                    contentArray.push(p + ': ' + product.features[p]); 
+                }
+
+                content = common.arrays.toText(contentArray);
+            }
+
+            //if no content, no features supported
+            if (!content || !content.length){
+                return responseBuilder.responseWithCard(
+                    config.ui.noFeatures.text.replaceAll('{name}', product.name), 
+                    config.ui.noFeatures.card.replaceAll('{name}', product.name), 
+                    config.ui.noFeatures.reprompt,
+                    session
+                ); 
+            }
+            else {
+                return responseBuilder.responseWithCard(
+                    config.ui.productAllFeatures.text.replaceAll('{name}', product.name).replaceAll('{content}', content), 
+                    config.ui.productAllFeatures.card.replaceAll('{name}', product.name).replaceAll('{content}', content),
+                    config.ui.productAllFeatures.reprompt,
                     session 
                 );
             }
