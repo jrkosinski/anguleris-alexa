@@ -1,7 +1,5 @@
 'use strict';
 
-//TODO: think about renaming this or breaking it up 
-
 // * * * * * 
 // navigation - utilities related to navigation through responses lists 
 // 
@@ -57,6 +55,7 @@ function getNavArgsForQuery(query) {
         case enums.querySubject.products: 
             output.preText = 'Product {start} of {count}. ';
             output.title = 'Product {start} of {count}';
+            output.textProperty = 'simpleName';
             break;
     }
 
@@ -72,7 +71,6 @@ function getNavArgsForQuery(query) {
 // 
 // returns: json object (Alexa response format) 
 function navigate(session, navigationCommand) {
-    //TODO: proper error msgs & responses 
     return exception.try(() => {
         logger.info('navigating ' + navigationCommand); 
         
@@ -100,8 +98,8 @@ function navigate(session, navigationCommand) {
                 }
 
                 if (results && results.length) {
+                    //TODO: add reprompt
                     return responseBuilder.responseListGroup(
-                        //TODO: add reprompt
                         results, 
                         { subject: session.querySubject, params: session.queryParams }, 
                         groupSize, 

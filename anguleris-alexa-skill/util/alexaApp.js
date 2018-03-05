@@ -12,6 +12,7 @@ const await = require('asyncawait/await');
 const alexa = require("alexia");
 const app = alexa.createApp('anguleris-alexa-skill', { shouldEndSessionByDefault: false });
 
+const dataAccess = require('anguleris-data-access');
 const common = require('anguleris-common');
 const exception = common.exceptions('APP');
 const logger = common.logger('APP');
@@ -25,9 +26,9 @@ const queryHelper = require('./queryHelper');
 const responseBuilder = require('./responseBuilder');
 const pkg = require('../package.json');
 
-//TODO: make this a data access query 
-app.customSlot('Entity', ['Access Security','Appliances','AV','Cable Tray','Ceilings','Countertops','Door Hardware','Doors','Drains','Flooring','Furniture','Mailboxes','Lighting','Paints & Coatings','Piping','Railings','Roofing','Security Cameras','Skylights','Alucobond','Behr','Boon Edam USA','Chalfant','Clark Dietrich','Delta Turnstiles','Dow Corning','Epilay','Fabral','Grabber','Kenmore','Moen','National Gypsum','Oatey','Ply Gem','Polyset','Proflex','Trex','W.R. Meadows','Waterworks']);
-app.customSlot('Feature', enums.toArray(enums.productFeature)); 
+app.customSlot('Entity', common.arrays.merge(dataAccess.getAllCategoryNames(), dataAccess.getAllManufacturerNames())); //['Access Security','Appliances','AV','Cable Tray','Ceilings','Countertops','Door Hardware','Doors','Drains','Flooring','Furniture','Mailboxes','Lighting','Paints & Coatings','Piping','Railings','Roofing','Security Cameras','Skylights','Alucobond','Behr','Boon Edam USA','Chalfant','Clark Dietrich','Delta Turnstiles','Dow Corning','Epilay','Fabral','Grabber','Kenmore','Moen','National Gypsum','Oatey','Ply Gem','Polyset','Proflex','Trex','W.R. Meadows','Waterworks']);
+app.customSlot('Feature', enums.allProductFeatureNames()); 
+app.customSlot('Product', dataAccess.getAllProductNames()); 
 
 // * * * 
 // utility for specifying an intent handler 
@@ -51,7 +52,11 @@ function addAppIntent(intent, func) {
 app.onStart(() => {
     return exception.try(() => {
         logger.info('App launched'); 
-        return responseBuilder.responseWithCardShortcut('launchPrompt'); 
+        return responseBuilder.responseWithCard(
+            config.ui.launchPrompt.text.replaceAll('{version}', pkg.version), 
+            config.ui.launchPrompt.card.replaceAll('{version}', pkg.version), 
+            null, null, true
+        ); 
     });
 });
 
@@ -103,13 +108,13 @@ addAppIntent(config.intents.getManufacturers, (slots, session, data) => {
 
 // GetManufacturersForCategory
 addAppIntent(config.intents.getManufacturersForCategory, (slots, session, data) => {
-    var queryParams = { category: slots.entity}; 
-    var manufacturers = query.runQuery(enums.querySubject.manufacturers, queryParams); 
+    session.queryParams = { category: slots.entity};
+    var manufacturers = query.runQuery(enums.querySubject.manufacturers, session.queryParams); 
     
     //TODO: add reprompt
     return responseBuilder.listToText(
         manufacturers, 
-        config.ui.manufacturersForCategory.text.replaceAll('{name}', queryParams.category), 
+        config.ui.manufacturersForCategory.text.replaceAll('{name}', session.queryParams.category), 
         null, 
         config.ui.manufacturersForCategory.card, 
         session
@@ -118,8 +123,8 @@ addAppIntent(config.intents.getManufacturersForCategory, (slots, session, data) 
 
 // GetCategoriesForManufacturer
 addAppIntent(config.intents.getCategoriesForManufacturer, (slots, session, data) => {
-    var queryParams = { manufacturer: slots.entity}; 
-    var categories = query.runQuery(enums.querySubject.categories, queryParams); 
+    session.queryParams = { manufacturer: slots.entity};
+    var categories = query.runQuery(enums.querySubject.categories, session.queryParams); 
     
     //TODO: add reprompt
     if (categories) {
@@ -128,7 +133,7 @@ addAppIntent(config.intents.getCategoriesForManufacturer, (slots, session, data)
 
     return responseBuilder.listToText(
         categories, 
-        config.ui.categoriesForManufacturer.text.replaceAll('{name}', queryParams.manufacturer), 
+        config.ui.categoriesForManufacturer.text.replaceAll('{name}', session.queryParams.manufacturer), 
         null, 
         config.ui.categoriesForManufacturer.card, 
         session

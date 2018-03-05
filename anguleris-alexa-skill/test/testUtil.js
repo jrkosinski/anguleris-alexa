@@ -525,27 +525,27 @@ const runUnitTests = async((handler) => {
             ])); 
         }), 
 
-        //mfg product features (colors) by mfg
+        //mfg product features (color) by mfg
         async(() => {
             var request = createIntentRequest(config.intents.getProductFeatures.name, 
             {startIndex:0, querySubject:enums.querySubject.products, queryParams: {manufacturer:'Boon Edam USA'}},
-            {entity:'Boon Edam USA', feature:'colors'});
-            await(runTest('mfg product features (colors) by mfg', request, [
+            {entity:'Boon Edam USA', feature:'color'});
+            await(runTest('mfg product features (color) by mfg', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes
             ])); 
         }), 
 
-        //mfg product features (colors) by name
+        //mfg product features (color) by name
         async(() => {
             var request = createIntentRequest(config.intents.getProductFeatures.name, 
             {startIndex:0, querySubject:enums.querySubject.products},
-            {product:'Speedlane Slide', feature:'colors'});
-            await(runTest('mfg product features (colors) by name', request, [
+            {product:'Speedlane Slide', feature:'color'});
+            await(runTest('mfg product features (color) by name', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes
             ])); 
-        })
+        })  
     ];
 
     //RUN TESTS 

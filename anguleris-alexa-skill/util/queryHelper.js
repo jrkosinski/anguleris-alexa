@@ -39,7 +39,8 @@ function getDetails(session, parameter) {
 
         switch (session.querySubject) {
             case enums.querySubject.categories:
-                var cat = query.runQuery(enums.querySubject.categories, { name: parameter });
+                session.queryParams = {name: parameter};
+                var cat = query.runQuery(enums.querySubject.categories, session.queryParams);
                 if (!cat) {
                     logger.warn('category ' + parameter + ' not found.');
                     details = config.ui.categoryNotFound.text.replaceAll('{name}', parameter);
@@ -48,7 +49,8 @@ function getDetails(session, parameter) {
                     details = formatCategoryDetails(cat);
                 break;
             case enums.querySubject.manufacturers:
-                var mfg = query.runQuery(enums.querySubject.manufacturers, { name: parameter });
+                session.queryParams = {name: parameter};
+                var mfg = query.runQuery(enums.querySubject.manufacturers, session.queryParams);
                 if (!mfg) {
                     logger.warn('manufacturer ' + parameter + ' not found.');
                     details = config.ui.manufacturerNotFound.text.replaceAll('{name}', parameter);
@@ -169,7 +171,8 @@ function getManufacturerProperty(session, manufacturerName, propertyName, foundT
         var text = null;
         var card = null;
 
-        var mfg = query.runQuery(enums.querySubject.manufacturers, { name: manufacturerName });
+        session.queryParams = {name:manufacturerName}; 
+        var mfg = query.runQuery(enums.querySubject.manufacturers, session.queryParams);
         if (mfg) {
             if (mfg[propertyName] && mfg[propertyName].trim().length) {
                 card = foundText.card.replaceAll('{name}', manufacturerName).replaceAll('{value}', mfg[propertyName].trim());
@@ -204,27 +207,52 @@ function getProductsForEntity(session, entityName) {
         var foundText = null;
         var notFoundText = null;
 
-        //TODO: handle entity not found 
-
         //products for category
         if (session.querySubject === enums.querySubject.categories) {
-            products = query.runQuery(enums.querySubject.products, { category: entityName });
-            foundText = config.ui.productsForCategory;
-            notFoundText = config.ui.noProductsForCategory;
+            if (dataAccess.getCategories(entityName)){
+                notFoundText = config.ui.categoryNotFound;
+            }
+            else {
+                session.queryParams = { category: entityName };
+                products = query.runQuery(enums.querySubject.products, session.queryParams);
+                foundText = config.ui.productsForCategory;
+                notFoundText = config.ui.noProductsForCategory;
+            }
         }
 
         //products for manufacturer
         else if (session.querySubject === enums.querySubject.manufacturers) {
-            products = query.runQuery(enums.querySubject.products, { manufacturer: entityName });
-            foundText = config.ui.productsForManufacturer;
-            notFoundText = config.ui.noProductsForManufacturer;
+            if (dataAccess.getCategories(entityName)){
+                notFoundText = config.ui.manufacturerNotFound;
+            }
+            else {
+                session.queryParams = { manufacturer: entityName }; 
+                products = query.runQuery(enums.querySubject.products, session.queryParams);
+                foundText = config.ui.productsForManufacturer;
+                notFoundText = config.ui.noProductsForManufacturer;
+            }
+        }        
+
+        //if not found, try both
+        if (common.arrays.nullOrEmpty(products)) {
+            session.queryParams = { category: entityName }; 
+            products = query.runQuery(enums.querySubject.products, session.queryParams);
+            foundText = config.ui.productsForCategory;
+            notFoundText = config.ui.noProductsForEntity;
+
+            if (common.arrays.nullOrEmpty(products))  {
+                session.queryParams = { manufacturer: entityName }; 
+                products = query.runQuery(enums.querySubject.products, session.queryParams);
+                foundText = config.ui.productsForManufacturer;
+                notFoundText = config.ui.noProductsForEntity;
+            }
         }
 
         if (!common.arrays.nullOrEmpty(products)) {
             session.startIndex = 0;
             return responseBuilder.responseListGroup(
                 products,
-                { subject: enums.querySubject.products },
+                { subject: enums.querySubject.products, params:session.queryParams },
                 navigation.getGroupSize(enums.querySubject.products),
                 0,
                 {
@@ -257,16 +285,33 @@ function getProductsCountForEntity(session, entityName) {
 
         //products for category
         if (session.querySubject === enums.querySubject.categories) {
-            products = query.runQuery(enums.querySubject.products, { category: entityName });
+            session.queryParams = { category: entityName }; 
+            products = query.runQuery(enums.querySubject.products, session.queryParams);
             foundText = config.ui.numProductsForCategory;
             notFoundText = config.ui.noProductsForCategory;
         }
 
         //products for manufacturer
         else if (session.querySubject === enums.querySubject.manufacturers) {
-            products = query.runQuery(enums.querySubject.products, { manufacturer: entityName });
+            session.queryParams = { manufacturer: entityName }; 
+            products = query.runQuery(enums.querySubject.products, session.queryParams);
             foundText = config.ui.numProductsForManufacturer;
             notFoundText = config.ui.noProductsForManufacturer;
+        }
+
+        //if not found, try both
+        if (common.arrays.nullOrEmpty(products)) {
+            session.queryParams = { category: entityName }; 
+            products = query.runQuery(enums.querySubject.products, session.queryParams);
+            foundText = config.ui.numProductsForCategory;
+            notFoundText = config.ui.noProductsForEntity;
+
+            if (common.arrays.nullOrEmpty(products))  {
+                session.queryParams = { manufacturer: entityName };
+                products = query.runQuery(enums.querySubject.products, session.queryParams);
+                foundText = config.ui.numProductsForManufacturer;
+                notFoundText = config.ui.noProductsForEntity;
+            }
         }
 
         var text = (common.arrays.nullOrEmpty(products)) ? notFoundText : foundText;
