@@ -26,11 +26,15 @@ const queryHelper = require('./queryHelper');
 const responseBuilder = require('./responseBuilder');
 const pkg = require('../package.json');
 
-app.customSlot('Category', dataAccess.getAllCategoryNames());
-app.customSlot('Manufacturer', dataAccess.getAllManufacturerNames());
-app.customSlot('Entity', common.arrays.merge(dataAccess.getAllCategoryNames(), dataAccess.getAllManufacturerNames())); //['Optical Turnstiles','Appliances','AV','Cable Tray','Ceilings','Countertops','Door Hardware','Doors','Drains','Flooring','Furniture','Mailboxes','Lighting','Paints & Coatings','Piping','Railings','Roofing','Security Cameras','Skylights','Alucobond','Behr','Boon Edam USA','Chalfant','Clark Dietrich','Delta Turnstiles','Dow Corning','Epilay','Fabral','Grabber','Kenmore','Moen','National Gypsum','Oatey','Ply Gem','Polyset','Proflex','Trex','W.R. Meadows','Waterworks']);
+var categoryNames = dataAccess.getAllCategoryNames();
+var manufacturerNames = dataAccess.getAllManufacturerNames(); 
+var productNames = dataAccess.getAllProductNames(); 
+
+app.customSlot('Category', categoryNames);
+app.customSlot('Manufacturer', manufacturerNames);
+app.customSlot('Product', productNames); 
+app.customSlot('Entity', common.arrays.merge(common.arrays.merge(categoryNames, manufacturerNames), productNames)); 
 app.customSlot('Feature', enums.allProductFeatureNames()); 
-app.customSlot('Product', dataAccess.getAllProductNames()); 
 
 // * * * 
 // utility for specifying an intent handler 
@@ -195,7 +199,6 @@ addAppIntent(config.intents.getCategoriesForManufacturer, (slots, session, data)
 //      get details for {entity}
 //      details
 //
-//TODO: how can this get for product if the slot is entity?
 addAppIntent(config.intents.getDetails, (slots, session, data) => {
     return queryHelper.getDetails(session, slots.entity); 
 });
@@ -241,7 +244,6 @@ addAppIntent(config.intents.getAllProductFeatures, (slots, session, data) => {
 // example text: 
 //      what is the phone number of {manufacturer}? 
 //
-//TODO: change from entity to manufacturer 
 addAppIntent(config.intents.getManufacturerPhone, (slots, session, data) => {
     return queryHelper.getManufacturerPhone(session, slots.entity); 
 });
@@ -256,7 +258,6 @@ addAppIntent(config.intents.getManufacturerPhone, (slots, session, data) => {
 // example text: 
 //      what is the address of {manufacturer}? 
 //
-//TODO: change from entity to manufacturer 
 addAppIntent(config.intents.getManufacturerAddress, (slots, session, data) => {
     return queryHelper.getManufacturerAddress(session, slots.entity); 
 });

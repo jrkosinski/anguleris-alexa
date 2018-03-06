@@ -77,13 +77,13 @@ module.exports = {
         getManufacturerPhone: {
             name: 'GetManufacturerPhoneIntent',
             utterances: [
-                "get phone number for {entity:Entity}"
+                "get phone number for {manufacturer:Manufacturer}"
             ]
         },
         getManufacturerAddress: {
             name: 'GetManufacturerAddressIntent',
             utterances: [
-                "get address for {entity:Entity}"
+                "get address for {manufacturer:Manufacturer}"
             ]
         },
         getProducts: {
