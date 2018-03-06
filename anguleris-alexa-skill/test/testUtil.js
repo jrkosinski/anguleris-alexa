@@ -540,7 +540,7 @@ const runUnitTests = async((handler) => {
         async(() => {
             var request = createIntentRequest(config.intents.getProductFeatures.name, 
             {startIndex:0, querySubject:enums.querySubject.products},
-            {product:'Speedlane Slide', feature:'color'});
+            {product:'Speed lane Slide', feature:'color'});
             await(runTest('mfg product features (color) by name', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes

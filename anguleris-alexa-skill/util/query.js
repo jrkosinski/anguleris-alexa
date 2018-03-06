@@ -34,33 +34,42 @@ function runQuery(querySubject, queryParams) {
             name = queryParams.name;
         }
 
-        switch(querySubject) {
-            case enums.querySubject.categories: {    
-                if (queryParams && queryParams.manufacturer) {
-                    var categories = dataAccess.getCategoriesForManufacturer(queryParams.manufacturer); 
-                    return categories;
-                }
-                else {
-                    return dataAccess.getCategories(name); 
-                }
+        //anonymous querySubject
+        if (!querySubject) {
+            if (name) {
+                var entity = dataAccess.getEntityByName(name); 
+                return entity;
             }
-            case enums.querySubject.manufacturers: {            
-                if (queryParams && queryParams.category) {
-                    var category = dataAccess.getCategories(queryParams.category); 
-                    if (category)
-                        return category.manufacturers; 
-                }
-                else{
-                    return dataAccess.getManufacturers(name); 
-                }
-            }
-            case enums.querySubject.products: {
-                if (queryParams) {
-                    if (queryParams.category) {
-                        return dataAccess.getProductsForCategory(queryParams.category); 
+        }
+        else {
+            switch(querySubject) {
+                case enums.querySubject.categories: {    
+                    if (queryParams && queryParams.manufacturer) {
+                        var categories = dataAccess.getCategoriesForManufacturer(queryParams.manufacturer); 
+                        return categories;
                     }
-                    if (queryParams.manufacturer) {
-                        return dataAccess.getProductsForManufacturer(queryParams.manufacturer); 
+                    else {
+                        return dataAccess.getCategories(name); 
+                    }
+                }
+                case enums.querySubject.manufacturers: {            
+                    if (queryParams && queryParams.category) {
+                        var category = dataAccess.getCategories(queryParams.category); 
+                        if (category)
+                            return category.manufacturers; 
+                    }
+                    else{
+                        return dataAccess.getManufacturers(name); 
+                    }
+                }
+                case enums.querySubject.products: {
+                    if (queryParams) {
+                        if (queryParams.category) {
+                            return dataAccess.getProductsForCategory(queryParams.category); 
+                        }
+                        if (queryParams.manufacturer) {
+                            return dataAccess.getProductsForManufacturer(queryParams.manufacturer); 
+                        }
                     }
                 }
             }

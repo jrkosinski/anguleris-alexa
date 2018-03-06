@@ -34,40 +34,28 @@ function getDetails(session, parameter) {
 
         if (!session)
             session = {};
-        if (!session.querySubject)
-            session.querySubject = enums.querySubject.categories;
+        
+        if (parameter) {
+            session.queryParams = {name: parameter};
+        }
 
-        switch (session.querySubject) {
-            case enums.querySubject.categories:
-                session.queryParams = {name: parameter};
-                var cat = query.runQuery(enums.querySubject.categories, session.queryParams);
-                if (!cat) {
-                    logger.warn('category ' + parameter + ' not found.');
-                    details = config.ui.categoryNotFound.text.replaceAll('{name}', parameter);
-                }
-                else
-                    details = formatCategoryDetails(cat);
-                break;
-            case enums.querySubject.manufacturers:
-                session.queryParams = {name: parameter};
-                var mfg = query.runQuery(enums.querySubject.manufacturers, session.queryParams);
-                if (!mfg) {
-                    logger.warn('manufacturer ' + parameter + ' not found.');
-                    details = config.ui.manufacturerNotFound.text.replaceAll('{name}', parameter);
-                }
-                else
-                    details = formatManufacturerDetails(mfg);
-                break;
-            case enums.querySubject.products: 
-                var product = getProductFromSession(session);
+        var entity = query.runQuery(null, session.queryParams); 
 
-                if (!product) {
-                    logger.warn('product not found'); 
-                    details = config.ui.productNotFound.text;
-                }
-                else
-                    details = formatProductDetails(product); 
-                break;
+        if (entity) {
+            switch(entity.type) {
+                case enums.entityType.category: 
+                    details = formatCategoryDetails(entity);
+                    break;
+                case enums.entityType.manufacturer: 
+                    details = formatManufacturerDetails(entity);
+                    break;
+                case enums.entityType.product: 
+                    details = formatProductDetails(entity);
+                    break;
+            }
+        }
+        else{
+            details = config.ui.entityNotFound.text.replaceAll('{name}', parameter);
         }
 
         if (!details || !details.length) {
@@ -75,7 +63,8 @@ function getDetails(session, parameter) {
         }
 
         //TODO: add reprompt
-        return responseBuilder.responseWithCard(details, 'Category Details: ' + parameter, null, session);
+        //TODO: hard-coded text here 
+        return responseBuilder.responseWithCard(details, 'Entity Details: ' + parameter, null, session);
     });
 }
 

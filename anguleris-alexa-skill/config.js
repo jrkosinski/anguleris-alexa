@@ -171,7 +171,7 @@ module.exports = {
                 "How many products does Kenmore have? " + 
                 "How many products are there in Optical Turnstiles? " + 
                 "What finishes does 24 inch Built-In Dishwasher by Kenmore come in? ",
-                "What features does Speedlane Slide by Boon Edam USA support? ",
+                "What features does Speed lane Slide by Boon Edam USA support? ",
                 "What dishwashers by Kenmore come in Stainless Steel finish? ",
                 "What manufacturers have products for Optical Turnstiles? ", 
                 "What categories does Kenmore have products for? "),
