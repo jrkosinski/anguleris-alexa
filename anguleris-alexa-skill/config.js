@@ -68,7 +68,7 @@ module.exports = {
                 "what {feature:Feature} does {product:Product} come in"
             ]
         },
-        getAllProductFeatures: { //TODO: add to interaction model in skill 
+        getAllProductFeatures: { 
             name: 'GetAllProductFeaturesIntent',
             utterances: [
                 "what features does {product:Product} support"
@@ -98,8 +98,14 @@ module.exports = {
                 "how many products for {entity:Entity}"
             ]
         },
-        queryProductByFeature: {//TODO: add to interaction model in skill 
+        queryProductByFeature: { 
             name: 'QueryProductByFeatureIntent',
+            utterances: [
+                "what {category:Category} have a {feature:Feature} of {featureValue:AMAZON.LITERAL}",
+            ]
+        },
+        queryProductByMfgFeature: {  
+            name: 'QueryProductByMfgFeatureIntent',
             utterances: [
                 "what {category:Category} by {manufacturer:Manufacturer} have a {feature:Feature} of {featureValue:AMAZON.LITERAL}"
             ]
@@ -334,6 +340,11 @@ module.exports = {
             text: configUtil.getSetting('TEXT_ALL_FEATURES', 'Product {name} supports the following features: {content}'),
             reprompt: configUtil.getSetting('REPROMPT_ALL_FEATURES', ''),
             card: configUtil.getSetting('CARD_ALL_FEATURES', 'Features for {name}')
+        },
+        productQueryNoResults: {
+            text: configUtil.getSetting('TEXT_QUERY_PROD_NO_RESULTS', 'No products were found for your query.'),
+            reprompt: configUtil.getSetting('REPROMPT_QUERY_PROD_NO_RESULTS', ''),
+            card: configUtil.getSetting('CARD_QUERY_PROD_NO_RESULTS', 'No Results for Product Query')
         }
     },
 };

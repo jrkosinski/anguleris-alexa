@@ -64,18 +64,55 @@ function runQuery(querySubject, queryParams) {
                 }
                 case enums.querySubject.products: {
                     if (queryParams) {
+                        var products = null;
                         if (queryParams.category) {
-                            return dataAccess.getProductsForCategory(queryParams.category); 
+                            products = dataAccess.getProductsForCategory(queryParams.category); 
                         }
                         if (queryParams.manufacturer) {
-                            return dataAccess.getProductsForManufacturer(queryParams.manufacturer); 
+                            if (products)
+                                products = filterProductsByManufacturer(products, manufacturer);
+                            else
+                                products = dataAccess.getProductsForManufacturer(queryParams.manufacturer); 
                         }
+                        if (queryParams.feature && queryParams.featureValue) {
+                            if (!products) 
+                                products = dataAccess.getProducts(); 
+                            products = filterProductsByFeature(products, queryParams.feature, queryParams.featureValue);
+                        }
+
+                        return products;
                     }
                 }
             }
         }
 
         return null;
+    });
+}
+
+function filterProductsByManufacturer(products, manufacturer) {
+    return exception.try(() => {
+        manufacturer = manufacturer.trim().toLoweCase(); 
+
+        return common.arrays.where(products, (p) => {
+            return (p.manufacturer && p.manufacturer.trim().toLowerCase() === manufacturer); 
+        }); 
+    });
+}
+
+function filterProductsByFeature(products, feature, featureValue){
+    return exception.try(() => {
+        if (featureValue)
+            featureValue = featureValue.trim().toLowerCase(); 
+        
+        return common.arrays.where(products, (p) => {
+            if (p.features && p.features[feature]) {
+                if (!featureValue)
+                    return true; 
+                
+                return (p.features[feature].trim().toLowerCase() === featureValue); 
+            }
+        }); 
     });
 }
 

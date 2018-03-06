@@ -245,7 +245,7 @@ addAppIntent(config.intents.getAllProductFeatures, (slots, session, data) => {
 //      what is the phone number of {manufacturer}? 
 //
 addAppIntent(config.intents.getManufacturerPhone, (slots, session, data) => {
-    return queryHelper.getManufacturerPhone(session, slots.entity); 
+    return queryHelper.getManufacturerPhone(session, slots.manufacturer); 
 });
 
 // GetManufacturerAddress
@@ -259,7 +259,7 @@ addAppIntent(config.intents.getManufacturerPhone, (slots, session, data) => {
 //      what is the address of {manufacturer}? 
 //
 addAppIntent(config.intents.getManufacturerAddress, (slots, session, data) => {
-    return queryHelper.getManufacturerAddress(session, slots.entity); 
+    return queryHelper.getManufacturerAddress(session, slots.manufacturer); 
 });
 
 // GetProducts
@@ -290,14 +290,24 @@ addAppIntent(config.intents.getProductsCount, (slots, session, data) => {
     return queryHelper.getProductsCountForEntity(session, slots.entity); 
 });
 
-// QueryProductsByFeature
+// QueryProductByFeature
 // ------------------------------------
 //
 // example text: 
-//      get
+//      get 
 //
 addAppIntent(config.intents.queryProductByFeature, (slots, session, data) => {
+    return queryHelper.queryProducts(session, slots.category, slots.feature, slots.featureValue); 
+}); 
 
+// QueryProductByMfgFeature
+// ------------------------------------
+//
+// example text: 
+//      get 
+//
+addAppIntent(config.intents.queryProductByMfgFeature, (slots, session, data) => {
+    return queryHelper.queryProducts(session, slots.category, slots.feature, slots.featureValue, slots.manufacturer); 
 }); 
 
 // Repeat

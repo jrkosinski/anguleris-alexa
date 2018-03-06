@@ -525,6 +525,17 @@ const runUnitTests = async((handler) => {
             ])); 
         }), 
 
+        //list all product features (speedlane slide)
+        async(() => {
+            var request = createIntentRequest(config.intents.getAllProductFeatures.name, 
+            {startIndex:0, querySubject:enums.querySubject.products, queryParams: {manufacturer:'Boon Edam USA'}},
+            {product:'speed lane slide by Boon Edam USA'});
+            await(runTest('list all product features (speedlane slide)', request, [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes
+            ])); 
+        }), 
+
         //mfg product features (color) by mfg
         async(() => {
             var request = createIntentRequest(config.intents.getProductFeatures.name, 
@@ -545,7 +556,18 @@ const runUnitTests = async((handler) => {
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes
             ])); 
-        })  
+        }) ,
+
+        //product query by feature value
+        async(() => {
+            var request = createIntentRequest(config.intents.queryProductByFeature.name, 
+            {startIndex:0, querySubject:enums.querySubject.products},
+            {category:'Optical Turnstiles', feature:'height', featureValue:'40 3/4 inches'});
+            await(runTest('product query by feature value', request, [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes
+            ])); 
+        }) 
     ];
 
     //RUN TESTS 

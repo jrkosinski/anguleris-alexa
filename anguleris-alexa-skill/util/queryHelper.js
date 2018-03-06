@@ -112,13 +112,18 @@ function getProductFeatures(session, featureName, productName) {
             }
         }
         else {
-            return responseBuilder.responseWithCard(config.ui.productNotFound.text, config.ui.productNotFound.card, config.ui.productNotFound.reprompt, session);
+            return responseBuilder.responseWithCard(
+                config.ui.productNotFound.text.replaceAll('{name}', productName), 
+                config.ui.productNotFound.card.replaceAll('{name}', productName), 
+                config.ui.productNotFound.reprompt.replaceAll('{name}', productName), 
+                session
+            );
         }
     });
 }
 
 // * * * 
-function getAllProductFeatures(session, featureName, productName) {
+function getAllProductFeatures(session, productName) {
     return exception.try(() => {
         var product = getProductFromSession(session, productName); 
         var content = null;
@@ -128,7 +133,7 @@ function getAllProductFeatures(session, featureName, productName) {
                 var contentArray = []; 
 
                 for (var p in product.features) {
-                    contentArray.push(p + ': ' + product.features[p]); 
+                    contentArray.push(p + ': ' + product.features[p] + '.'); 
                 }
 
                 content = common.arrays.toText(contentArray);
@@ -153,7 +158,12 @@ function getAllProductFeatures(session, featureName, productName) {
             }
         }
         else {
-            return responseBuilder.responseWithCard(config.ui.productNotFound.text, config.ui.productNotFound.card, config.ui.productNotFound.reprompt, session);
+            return responseBuilder.responseWithCard(
+                config.ui.productNotFound.text.replaceAll('{name}', productName), 
+                config.ui.productNotFound.card.replaceAll('{name}', productName), 
+                config.ui.productNotFound.reprompt.replaceAll('{name}', productName), 
+                session
+            );
         }
     });
 }
@@ -355,6 +365,37 @@ function getProductsCountForEntity(session, entityName) {
         );
     });
 }
+    
+function queryProducts(session, category, feature, featureValue, manufacturer) {
+    return exception.try(() => {
+        session.querySubject = enums.querySubject.products; 
+        session.queryParams = { category: category, feature: feature, featureValue: featureValue, manufacturer: manufacturer}; 
+
+        var products = query.runQuery(session.querySubject, session.queryParams); 
+
+        if (!common.arrays.nullOrEmpty(products)) {
+            return responseBuilder.responseListGroup(
+                products,
+                { subject: enums.querySubject.products, params:session.queryParams },
+                navigation.getGroupSize(enums.querySubject.products),
+                0,
+                {
+                    textProperty: 'name',
+                    preText: 'Found {count} products. Result {start} of {count}. ',
+                    postText: 'Say next to move to next result. Or ask a different question. ',
+                    reprompt: 'Say next to move to next result. Or ask a different question. ',
+                    title: 'Result {start} of {count}'
+                }
+            );
+        }
+        else{
+            return responseBuilder.responseWithCardShortcut(
+                'productQueryNoResults',
+                session
+            );
+        }
+    }); 
+}
 
 // * * * 
 // 
@@ -450,5 +491,7 @@ module.exports = {
     getManufacturerAddress: getManufacturerAddress,
     getProductsForEntity: getProductsForEntity,
     getProductsCountForEntity: getProductsCountForEntity,
-    getProductFeatures: getProductFeatures
+    getProductFeatures: getProductFeatures,
+    getAllProductFeatures: getAllProductFeatures,
+    queryProducts: queryProducts
 };
