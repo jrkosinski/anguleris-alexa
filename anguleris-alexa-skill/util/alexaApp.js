@@ -28,7 +28,7 @@ const pkg = require('../package.json');
 
 app.customSlot('Category', dataAccess.getAllCategoryNames());
 app.customSlot('Manufacturer', dataAccess.getAllManufacturerNames());
-app.customSlot('Entity', common.arrays.merge(dataAccess.getAllCategoryNames(), dataAccess.getAllManufacturerNames())); //['Access Security','Appliances','AV','Cable Tray','Ceilings','Countertops','Door Hardware','Doors','Drains','Flooring','Furniture','Mailboxes','Lighting','Paints & Coatings','Piping','Railings','Roofing','Security Cameras','Skylights','Alucobond','Behr','Boon Edam USA','Chalfant','Clark Dietrich','Delta Turnstiles','Dow Corning','Epilay','Fabral','Grabber','Kenmore','Moen','National Gypsum','Oatey','Ply Gem','Polyset','Proflex','Trex','W.R. Meadows','Waterworks']);
+app.customSlot('Entity', common.arrays.merge(dataAccess.getAllCategoryNames(), dataAccess.getAllManufacturerNames())); //['Optical Turnstiles','Appliances','AV','Cable Tray','Ceilings','Countertops','Door Hardware','Doors','Drains','Flooring','Furniture','Mailboxes','Lighting','Paints & Coatings','Piping','Railings','Roofing','Security Cameras','Skylights','Alucobond','Behr','Boon Edam USA','Chalfant','Clark Dietrich','Delta Turnstiles','Dow Corning','Epilay','Fabral','Grabber','Kenmore','Moen','National Gypsum','Oatey','Ply Gem','Polyset','Proflex','Trex','W.R. Meadows','Waterworks']);
 app.customSlot('Feature', enums.allProductFeatureNames()); 
 app.customSlot('Product', dataAccess.getAllProductNames()); 
 

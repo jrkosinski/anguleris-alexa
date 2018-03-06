@@ -152,7 +152,7 @@ module.exports = {
     // UI elements
     ui: {
         launchPrompt: {
-            text: configUtil.getSetting('TEXT_LAUNCH_PROMPT', "Welcome to the Anguleris Alexa Skill version {version}. Ask for 'help' to get a list of commands."),
+            text: configUtil.getSetting('TEXT_LAUNCH_PROMPT', "Welcome to the Bimsmith Skill version {version}. Ask for 'help' to get a list of commands."),
             reprompt: configUtil.getSetting('REPROMPT_LAUNCH', "Try asking for a list of categories or manufacturers"),
             card: configUtil.getSetting('CARD_LAUNCH_PROMPT', 'Launch')
         },
@@ -166,14 +166,14 @@ module.exports = {
             text: configUtil.getSetting('TEXT_HELP', "You can ask for a list of categories, or a list of manufacturers. Navigation commands will help you to navigate through lists of results. Following is a list of example commands: " + 
                 "List all categories. " + 
                 "List all manufacturers. " + 
-                "What products are in Access Security? " + 
+                "What products are in Optical Turnstiles? " + 
                 "What products does Kenmore have? " + 
                 "How many products does Kenmore have? " + 
-                "How many products are there in Access Security? " + 
+                "How many products are there in Optical Turnstiles? " + 
                 "What finishes does 24 inch Built-In Dishwasher by Kenmore come in? ",
                 "What features does Speedlane Slide by Boon Edam USA support? ",
                 "What dishwashers by Kenmore come in Stainless Steel finish? ",
-                "What manufacturers have products for Access Security? ", 
+                "What manufacturers have products for Optical Turnstiles? ", 
                 "What categories does Kenmore have products for? "),
             reprompt: configUtil.getSetting('REPROMPT_HELP', "Try this command: list all categories. "),
             card: configUtil.getSetting('CARD_HELP', 'Help')

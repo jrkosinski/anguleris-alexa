@@ -452,10 +452,10 @@ const runUnitTests = async((handler) => {
             ])); 
         }), 
 
-        //products for category (Access Security)
+        //products for category (Optical Turnstiles)
         async(() => {
-            var request = createNavIntentRequest(config.intents.getProducts.name, enums.querySubject.categories, 5, 'Access Security'); 
-            await(runTest('products for category (Access Security)', request, [
+            var request = createNavIntentRequest(config.intents.getProducts.name, enums.querySubject.categories, 5, 'Optical Turnstiles'); 
+            await(runTest('products for category (Optical Turnstiles)', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
                 assertions.hasStartIndexAttribute,
@@ -465,7 +465,7 @@ const runUnitTests = async((handler) => {
 
         //products move next 1
         async(() => {
-            var request = createNavigationRequest(enums.querySubject.products, enums.navigationCommand.next, 0, {category:'Access Security'}); 
+            var request = createNavigationRequest(enums.querySubject.products, enums.navigationCommand.next, 0, {category:'Optical Turnstiles'}); 
             await(runTest('products next 1', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
