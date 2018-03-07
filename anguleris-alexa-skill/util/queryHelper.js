@@ -95,29 +95,21 @@ function getProductFeatures(session, featureName, productName) {
 
             //if no content, it's not supported 
             if (!content || !content.length){
-                return responseBuilder.responseWithCard(
-                    config.ui.featureNotSupported.text.replaceAll('{name}', product.name).replaceAll('{feature}', featureName), 
-                    config.ui.featureNotSupported.card, 
-                    config.ui.featureNotSupported.reprompt,
-                    session
-                ); 
+                return responseBuilder.responseWithCardShortcut('featureNotSupported', {
+                    name: product.name,
+                    feature: featureName
+                }, session); 
             }
             else{
-                return responseBuilder.responseWithCard(
-                    config.ui.featureSupported.text.replaceAll('{name}', product.name).replaceAll('{feature}', featureName).replaceAll('{value}', content), 
-                    config.ui.featureSupported.card.replaceAll('{name}', product.name).replaceAll('{feature}', featureName).replaceAll('{value}', content),
-                    config.ui.featureSupported.reprompt,
-                    session 
-                );
+                return responseBuilder.responseWithCardShortcut('featureSupported', {
+                    name: product.name,
+                    feature: featureName,
+                    value: content
+                }, session); 
             }
         }
         else {
-            return responseBuilder.responseWithCard(
-                config.ui.productNotFound.text.replaceAll('{name}', productName), 
-                config.ui.productNotFound.card.replaceAll('{name}', productName), 
-                config.ui.productNotFound.reprompt.replaceAll('{name}', productName), 
-                session
-            );
+            return responseBuilder.responseWithCardShortcut('productNotFound', {name: productName}, session); 
         }
     });
 }
@@ -141,29 +133,19 @@ function getAllProductFeatures(session, productName) {
 
             //if no content, no features supported
             if (!content || !content.length){
-                return responseBuilder.responseWithCard(
-                    config.ui.noFeatures.text.replaceAll('{name}', product.name), 
-                    config.ui.noFeatures.card.replaceAll('{name}', product.name), 
-                    config.ui.noFeatures.reprompt,
+                return responseBuilder.responseWithCardShortcut('noFeatures', {name: product.name}, session); 
+            }
+            else {
+                return responseBuilder.responseWithCardShortcut('productAllFeatures', {
+                        name: product.name,
+                        content: content
+                    }, 
                     session
                 ); 
             }
-            else {
-                return responseBuilder.responseWithCard(
-                    config.ui.productAllFeatures.text.replaceAll('{name}', product.name).replaceAll('{content}', content), 
-                    config.ui.productAllFeatures.card.replaceAll('{name}', product.name).replaceAll('{content}', content),
-                    config.ui.productAllFeatures.reprompt,
-                    session 
-                );
-            }
         }
         else {
-            return responseBuilder.responseWithCard(
-                config.ui.productNotFound.text.replaceAll('{name}', productName), 
-                config.ui.productNotFound.card.replaceAll('{name}', productName), 
-                config.ui.productNotFound.reprompt.replaceAll('{name}', productName), 
-                session
-            );
+            return responseBuilder.responseWithCardShortcut('productNotFound', {name: productName}, session); 
         }
     });
 }
@@ -245,32 +227,29 @@ function getProductsForEntity(session, entityName) {
     return exception.try(() => {
         var text = null;
         var products = [];
-        var foundText = null;
         var notFoundText = null;
 
         //products for category
         if (session.querySubject === enums.querySubject.categories) {
             if (dataAccess.getCategories(entityName)){
-                notFoundText = config.ui.categoryNotFound;
+                notFoundText ='categoryNotFound';
             }
             else {
                 session.queryParams = { category: entityName };
                 products = query.runQuery(enums.querySubject.products, session.queryParams);
-                foundText = config.ui.productsForCategory;
-                notFoundText = config.ui.noProductsForCategory;
+                notFoundText = 'noProductsForCategory';
             }
         }
 
         //products for manufacturer
         else if (session.querySubject === enums.querySubject.manufacturers) {
             if (dataAccess.getCategories(entityName)){
-                notFoundText = config.ui.manufacturerNotFound;
+                notFoundText = 'manufacturerNotFound';
             }
             else {
                 session.queryParams = { manufacturer: entityName }; 
                 products = query.runQuery(enums.querySubject.products, session.queryParams);
-                foundText = config.ui.productsForManufacturer;
-                notFoundText = config.ui.noProductsForManufacturer;
+                notFoundText = 'noProductsForManufacturer';
             }
         }        
 
@@ -278,14 +257,12 @@ function getProductsForEntity(session, entityName) {
         if (common.arrays.nullOrEmpty(products)) {
             session.queryParams = { category: entityName }; 
             products = query.runQuery(enums.querySubject.products, session.queryParams);
-            foundText = config.ui.productsForCategory;
-            notFoundText = config.ui.noProductsForEntity;
+            notFoundText = 'noProductsForEntity';
 
             if (common.arrays.nullOrEmpty(products))  {
                 session.queryParams = { manufacturer: entityName }; 
                 products = query.runQuery(enums.querySubject.products, session.queryParams);
-                foundText = config.ui.productsForManufacturer;
-                notFoundText = config.ui.noProductsForEntity;
+                notFoundText = 'noProductsForEntity';
             }
         }
 
@@ -306,12 +283,7 @@ function getProductsForEntity(session, entityName) {
             );
         }
         else {
-            return responseBuilder.responseWithCard(
-                notFoundText.text.replaceAll('{name}', entityName),
-                notFoundText.card.replaceAll('{name}', entityName),
-                null,
-                session
-            );
+            return responseBuilder.responseWithCardShortcut(notFoundText, {name: entityName}, session); 
         }
     });
 }
@@ -328,41 +300,64 @@ function getProductsCountForEntity(session, entityName) {
         if (session.querySubject === enums.querySubject.categories) {
             session.queryParams = { category: entityName }; 
             products = query.runQuery(enums.querySubject.products, session.queryParams);
-            foundText = config.ui.numProductsForCategory;
-            notFoundText = config.ui.noProductsForCategory;
+            foundText = 'numProductsForCategory';
+            notFoundText = 'noProductsForCategory';
         }
 
         //products for manufacturer
         else if (session.querySubject === enums.querySubject.manufacturers) {
             session.queryParams = { manufacturer: entityName }; 
             products = query.runQuery(enums.querySubject.products, session.queryParams);
-            foundText = config.ui.numProductsForManufacturer;
-            notFoundText = config.ui.noProductsForManufacturer;
+            foundText = 'numProductsForManufacturer';
+            notFoundText = 'noProductsForManufacturer';
         }
 
         //if not found, try both
         if (common.arrays.nullOrEmpty(products)) {
             session.queryParams = { category: entityName }; 
             products = query.runQuery(enums.querySubject.products, session.queryParams);
-            foundText = config.ui.numProductsForCategory;
-            notFoundText = config.ui.noProductsForEntity;
+            foundText = 'numProductsForCategory';
+            notFoundText = 'noProductsForEntity';
 
             if (common.arrays.nullOrEmpty(products))  {
                 session.queryParams = { manufacturer: entityName };
                 products = query.runQuery(enums.querySubject.products, session.queryParams);
-                foundText = config.ui.numProductsForManufacturer;
-                notFoundText = config.ui.noProductsForEntity;
+                foundText = 'numProductsForManufacturer';
+                notFoundText = 'noProductsForEntity';
             }
         }
 
         var text = (common.arrays.nullOrEmpty(products)) ? notFoundText : foundText;
 
-        return responseBuilder.responseWithCard(
-            text.text.replaceAll('{name}', entityName).replaceAll('{count}', products.length),
-            text.card.replaceAll('{name}', entityName).replaceAll('{count}', products.length),
-            null,
+        return responseBuilder.responseWithCardShortcut(text, {
+                name: entityName,
+                count: products.length
+            },
             session
-        );
+        ); 
+    });
+}
+
+function getFeatureValuesForCategory(session, categoryName, featureName) {
+    return exception.try(() => {
+        //check first that category exists 
+        if (!dataAccess.categoryExists(categoryName)) {
+            return responseBuilder.categoryNotFound(categoryName, session); 
+        }
+
+        var featureValues = query.runQuery(enums.querySubject.features, { feature:featureName, category:categoryName }); 
+
+        if (!common.arrays.nullOrEmpty(features)) {
+            return responseBuilder.listToText(featureValues, config.ui.categoriesByFeature.text)
+        }
+        else{
+            return responseBuilder.responseWithCardShortcut('featureNotSupportedByCategory', {
+                    feature: featureName,
+                    category: categoryName
+                },
+                session
+            );
+        }
     });
 }
     
@@ -391,6 +386,7 @@ function queryProducts(session, category, feature, featureValue, manufacturer) {
         else{
             return responseBuilder.responseWithCardShortcut(
                 'productQueryNoResults',
+                {},
                 session
             );
         }

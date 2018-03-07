@@ -35,6 +35,7 @@ app.customSlot('Manufacturer', manufacturerNames);
 app.customSlot('Product', productNames); 
 app.customSlot('Entity', common.arrays.merge(common.arrays.merge(categoryNames, manufacturerNames), productNames)); 
 app.customSlot('Feature', enums.allProductFeatureNames()); 
+app.customSlot('FeatureValue', ['Stainless Steel', 'A', 'B', 'C']);
 
 // * * * 
 // utility for specifying an intent handler 
@@ -64,11 +65,9 @@ function addAppIntent(intent, func) {
 app.onStart(() => {
     return exception.try(() => {
         logger.info('App launched'); 
-        return responseBuilder.responseWithCard(
-            config.ui.launchPrompt.text.replaceAll('{version}', pkg.version), 
-            config.ui.launchPrompt.card.replaceAll('{version}', pkg.version), 
-            null, null, true
-        ); 
+        return responseBuilder.responseWithCardShortcut('launchPrompt', {
+            version: pkg.version
+        });
     });
 });
 
@@ -81,7 +80,7 @@ app.onStart(() => {
 //
 addAppIntent(config.intents.getVersion, (slots, session, data) => {
     var versionText = config.ui.getVersion.text.replaceAll('{version}', pkg.version);
-    return responseBuilder.responseWithCard(versionText, config.ui.getVersion.card, null, null, true); 
+    return responseBuilder.responseWithCardShortcut('getVersion', {version: pkg.version}, null, true); 
 });
 
 // GetCategories
@@ -203,7 +202,7 @@ addAppIntent(config.intents.getDetails, (slots, session, data) => {
     return queryHelper.getDetails(session, slots.entity); 
 });
 
-// GetProductFeatureValues
+// GetProductFeatures
 // ------------------------------------
 // gets the values for the given feature of a given product 
 // 
@@ -289,6 +288,19 @@ addAppIntent(config.intents.getProducts, (slots, session, data) => {
 addAppIntent(config.intents.getProductsCount, (slots, session, data) => {
     return queryHelper.getProductsCountForEntity(session, slots.entity); 
 });
+
+addAppIntent(config.intents.getFinishesForCategory, (slots, session, data) => {
+    return queryHelper.getFeatureValuesForCategory(session, slots.category, 'finish'); 
+});
+/*
+addAppIntent(config.intents.getHeightsForCategory, (slots, session, data) => {
+    return queryHelper.getFeatureValuesForCategory(session, slots.category, 'height'); 
+});
+
+addAppIntent(config.intents.getWidthsForCategory, (slots, session, data) => {
+    return queryHelper.getFeatureValuesForCategory(session, slots.category, 'width'); 
+});
+*/
 
 // QueryProductByFeature
 // ------------------------------------
@@ -395,16 +407,6 @@ addAppIntent(config.intents.stop, (slots, session, data) => {
 //
 addAppIntent(config.intents.help, (slots, session, data) => {
     return responseBuilder.buildHelpResponse(session); 
-});
-
-// FreeText
-// ------------------------------------
-//
-// example text: 
-//      get
-//
-addAppIntent(config.intents.freeText, (slots, session, data) => {
-    return responseBuilder.responseWithCard("I think now that we've established a solid code foundation for retrieving and navigating result sets, and handling user input, it would be good to move on to more complex types of queries. For this I think it would be essential to get access to the actual data and querying mechanisms. We could also do a bit more brainstorming and analyzing to determine what's possible. Otherwise, I am open to suggestions. It might be worth our while to do a quick call this week to discuss.", 'FreeText', null, null, true);
 });
 
 

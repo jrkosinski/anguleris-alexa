@@ -113,12 +113,12 @@ function navigate(session, navigationCommand) {
             }
             else{
                 logger.warn('query and/or startIndex missing from request'); 
-                return responseBuilder.responseWithCardShortcut('notInList', session);
+                return responseBuilder.responseWithCardShortcut('notInList', {}, session);
             }
         }
         else{
             logger.warn('session not provided!'); 
-            return responseBuilder.responseWithCardShortcut('notInList', session);
+            return responseBuilder.responseWithCardShortcut('notInList', {}, session);
         }
     });
 }

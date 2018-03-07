@@ -70,7 +70,7 @@ function runQuery(querySubject, queryParams) {
                         }
                         if (queryParams.manufacturer) {
                             if (products)
-                                products = filterProductsByManufacturer(products, manufacturer);
+                                products = filterProductsByManufacturer(products, queryParams.manufacturer);
                             else
                                 products = dataAccess.getProductsForManufacturer(queryParams.manufacturer); 
                         }
@@ -92,7 +92,7 @@ function runQuery(querySubject, queryParams) {
 
 function filterProductsByManufacturer(products, manufacturer) {
     return exception.try(() => {
-        manufacturer = manufacturer.trim().toLoweCase(); 
+        manufacturer = manufacturer.trim().toLowerCase(); 
 
         return common.arrays.where(products, (p) => {
             return (p.manufacturer && p.manufacturer.trim().toLowerCase() === manufacturer); 

@@ -26,6 +26,17 @@ const config = require('../config');
 // returns: json object (Alexa response format) 
 function responseWithCard(text, title, reprompt, session, shouldEndSession) {
     return exception.try(() => {
+        if (!text)
+            text = ''; 
+        if (!reprompt)
+            reprompt = text; 
+        else {
+            //if (!shouldEndSession)
+            //    text += reprompt;
+        } 
+        if (!title)
+            title = text; 
+
         var output = {
             text: text,
             card: {
@@ -61,9 +72,13 @@ function responseWithCard(text, title, reprompt, session, shouldEndSession) {
 //  shouldEndSession: true to end session after response; false is the default 
 //
 // returns: json object (Alexa response format) 
-function responseWithCardShortcut(propertyName, session, shouldEndSession) {
+function responseWithCardShortcut(propertyName, replacements, session, shouldEndSession) {
     return exception.try(() => {
-        return responseWithCard(config.ui[propertyName].text, config.ui[propertyName].card, config.ui[propertyName].reprompt, session, shouldEndSession);
+        var text = config.ui[propertyName] && config.ui[propertyName].text ? config.ui[propertyName].text.replaceTokens(replacements) : null; 
+        var card = config.ui[propertyName] && config.ui[propertyName].card ? config.ui[propertyName].card.replaceTokens(replacements) : null; 
+        var reprompt = config.ui[propertyName] && config.ui[propertyName].reprompt ? config.ui[propertyName].reprompt.replaceTokens(replacements) : null; 
+        
+        return responseWithCard(text, card, reprompt, session, shouldEndSession);
     });
 }
 
@@ -153,7 +168,7 @@ function responseListGroup(list, query, groupSize, startIndex, navArgs) {
 //
 // returns: json object (Alexa response format) 
 function generalError(session) {
-    return responseWithCardShortcut('generalError', session); 
+    return responseWithCardShortcut('generalError', {}, session); 
 }
 
 // * * * 
@@ -165,7 +180,7 @@ function generalError(session) {
 //
 // returns: json object (Alexa response format) 
 function noResultsResponse(session, shouldEndSession) {
-    return responseWithCardShortcut('noResultsFound', session); 
+    return responseWithCardShortcut('noResultsFound', {}, session); 
 }
 
 // * * * 
@@ -209,7 +224,27 @@ function listToText(list, preText, postText, title, session, shouldEndSession) {
 //
 // returns: json object (Alexa response format) 
 function buildHelpResponse(session) {
-    return responseWithCardShortcut('help', session); 
+    return responseWithCardShortcut('help', {}, session); 
+}
+
+// * * * 
+function categoryNotFound(name, session) {
+    return responseWithCardShortcut('categoryNotFound', {name:name}, session); 
+}
+
+// * * * 
+function manufacturerNotFound(name, session) {
+    return responseWithCardShortcut('manufacturerNotFound', {name:name}, session); 
+}
+
+// * * * 
+function productNotFound(name, session) {
+    return responseWithCardShortcut('productNotFound', {name:name}, session); 
+}
+
+// * * * 
+function entityNotFound(name, session) {
+    return responseWithCardShortcut('entityNotFound', {name:name}, session); 
 }
 
 
