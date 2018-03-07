@@ -215,7 +215,7 @@ addAppIntent(config.intents.getDetails, (slots, session, data) => {
 //
 //TODO: change name of this intent
 addAppIntent(config.intents.getProductFeatures, (slots, session, data) => {
-    return queryHelper.getProductFeatures(session, slots.feature, slots.product); 
+    return queryHelper.getProductFeatureValues(session, slots.feature, slots.product); 
 });
 
 // GetAllProductFeatures

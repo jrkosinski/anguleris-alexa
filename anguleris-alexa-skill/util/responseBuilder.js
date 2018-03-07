@@ -249,11 +249,15 @@ function entityNotFound(name, session) {
 
 
 module.exports = {
-    responseWithCard: responseWithCard,
-    responseWithCardShortcut: responseWithCardShortcut,
-    responseListGroup: responseListGroup,
-    generalError: generalError, 
-    listToText: listToText,
-    buildHelpResponse: buildHelpResponse,
-    noResultsResponse: noResultsResponse
+    responseWithCard,
+    responseWithCardShortcut,
+    responseListGroup,
+    generalError, 
+    listToText,
+    buildHelpResponse,
+    noResultsResponse, 
+    categoryNotFound,
+    manufacturerNotFound,
+    productNotFound,
+    entityNotFound
 }

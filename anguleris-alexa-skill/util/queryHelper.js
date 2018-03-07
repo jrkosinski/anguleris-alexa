@@ -32,13 +32,12 @@ function getDetails(session, parameter) {
     return exception.try(() => {
         var details = null;
 
-        if (!session)
-            session = {};
-        
+        //add param to queryParams
         if (parameter) {
             session.queryParams = {name: parameter};
         }
 
+        //attempt to get entity
         var entity = query.runQuery(null, session.queryParams); 
 
         if (entity) {
@@ -69,12 +68,23 @@ function getDetails(session, parameter) {
 }
 
 // * * * 
-function getProductFeatures(session, featureName, productName) {
+// gets the feature values supported by given product and feature
+//
+// args
+//  session: session attributes from request
+//  featureName: name of requested feature
+//  productName: name of product 
+// 
+// returns: json object (Alexa response format) 
+function getProductFeatureValues(session, featureName, productName) {
     return exception.try(() => {
+
+        //get product 
         var product = getProductFromSession(session, productName); 
         var content = null;
 
         if (product) {
+            //list through features
             if (product.features) {
                 var feature = product.features[featureName]; 
 
@@ -109,18 +119,28 @@ function getProductFeatures(session, featureName, productName) {
             }
         }
         else {
-            return responseBuilder.responseWithCardShortcut('productNotFound', {name: productName}, session); 
+            return responseBuilder.productNotFound(productName, session);
         }
     });
 }
 
 // * * * 
+// gets a list of all features and their values, for a given product 
+// 
+// args
+//  session: session attributes from request
+//  productName: name of product 
+// 
+// returns: json object (Alexa response format) 
 function getAllProductFeatures(session, productName) {
     return exception.try(() => {
+
+        //get product 
         var product = getProductFromSession(session, productName); 
         var content = null;
 
         if (product) {
+            //list through features
             if (product.features) {
                 var contentArray = []; 
 
@@ -145,7 +165,7 @@ function getAllProductFeatures(session, productName) {
             }
         }
         else {
-            return responseBuilder.responseWithCardShortcut('productNotFound', {name: productName}, session); 
+            return responseBuilder.productNotFound(productName, session);
         }
     });
 }
@@ -160,7 +180,7 @@ function getAllProductFeatures(session, productName) {
 // returns: json object (Alexa response format) 
 function getManufacturerPhone(session, manufacturerName) {
     return exception.try(() => {
-        return getManufacturerProperty(session, manufacturerName, 'phone', config.ui.manufacturerPhoneFound, config.ui.manufacturerPhoneNotFound);
+        return getManufacturerProperty(session, manufacturerName, 'phone', 'manufacturerPhoneFound', 'manufacturerPhoneNotFound');
     });
 }
 
@@ -174,7 +194,7 @@ function getManufacturerPhone(session, manufacturerName) {
 // returns: json object (Alexa response format) 
 function getManufacturerAddress(session, manufacturerName) {
     return exception.try(() => {
-        return getManufacturerProperty(session, manufacturerName, 'address', config.ui.manufacturerAddressFound, config.ui.manufacturerAddressNotFound);
+        return getManufacturerProperty(session, manufacturerName, 'address', 'manufacturerAddressFound', 'manufacturerAddressNotFound');
     });
 }
 
@@ -195,156 +215,127 @@ function getManufacturerProperty(session, manufacturerName, propertyName, foundT
         var card = null;
 
         session.queryParams = {name:manufacturerName}; 
+
+        //attempt to get manufacturer
         var mfg = query.runQuery(enums.querySubject.manufacturers, session.queryParams);
         if (mfg) {
-            if (mfg[propertyName] && mfg[propertyName].trim().length) {
-                card = foundText.card.replaceAll('{name}', manufacturerName).replaceAll('{value}', mfg[propertyName].trim());
-                text = foundText.text.replaceAll('{name}', manufacturerName).replaceAll('{value}', mfg[propertyName].trim());
-                //text = manufacturerName + "'s phone number is " + mfg[propertyName].trim() + '.'; 
+            if (mfg.features && mfg.features[propertyName] && mfg.features[propertyName].trim().length) {
+                return responseBuilder.responseWithCardShortcut(foundText, {
+                        name: manufacturerName,
+                        value: mfg.features[propertyName].trim()
+                    }, 
+                    session
+                );
             }
             else {
                 //no phone number available 
-                card = notFoundText.card.replaceAll('{name}', manufacturerName);
-                text = notFoundText.text.replaceAll('{name}', manufacturerName);
-                //text = 'Sorry, no phone number is available for ' + manufacturerName; 
+                return responseBuilder.responseWithCardShortcut(notFoundText, {name: manufacturerName}, session);
             }
         }
-        else {
-            //manufacturer not found 
-            card = config.ui.manufacturerNotFound.card.replaceAll('{name', manufacturerName);
-            text = config.ui.manufacturerNotFound.text.replaceAll('{name', manufacturerName);
-            //text = 'Sorry, a manufacturer by the name of ' + manufacturerName + ' was not found.'; 
-        }
-
-        //TODO: add reprompt
-        return responseBuilder.responseWithCard(text, card, null, session);
+        
+        return responseBuilder.manufacturerNotFound(manufacturerName, session);
     });
 }
 
 // * * * 
+// gets products list for category or manufacturer
+//
+// args
+//  session: session attributes from request
+//  entityName: the category or manufacturer name 
 // 
-function getProductsForEntity(session, entityName) {
+// returns: json object (Alexa response format) 
+function getProductsForEntity(session, entityName, countOnly) {
     return exception.try(() => {
         var text = null;
         var products = [];
-        var notFoundText = null;
+        var notFoundText = null;        
+    
+        var entity = dataAccess.getEntityByName(entityName); 
 
-        //products for category
-        if (session.querySubject === enums.querySubject.categories) {
-            if (dataAccess.getCategories(entityName)){
-                notFoundText ='categoryNotFound';
-            }
-            else {
+        //choose category or manufacturer
+        if (entity){
+            if (entity.type === enums.entityType.category) {
                 session.queryParams = { category: entityName };
-                products = query.runQuery(enums.querySubject.products, session.queryParams);
-                notFoundText = 'noProductsForCategory';
             }
-        }
-
-        //products for manufacturer
-        else if (session.querySubject === enums.querySubject.manufacturers) {
-            if (dataAccess.getCategories(entityName)){
-                notFoundText = 'manufacturerNotFound';
+            else if (entity.type === enums.entityType.manufacturer) {
+                session.queryParams = { manufacturer: entityName };
+            }
+            
+            //query for products
+            products = query.runQuery(enums.querySubject.products, session.queryParams);
+            
+            if (!common.arrays.nullOrEmpty(products)) {
+                //count only
+                if (countOnly) {
+                    return responseBuilder.responseWithCardShortcut(
+                        entity.type === enums.entityType.category ? 'numProductsForCategory' : 'numProductsForManufacturer', 
+                        {
+                            name: entityName,
+                            count: products.length
+                        },
+                        session
+                    ); 
+                }
+                else {
+                    //return full list 
+                    session.startIndex = 0;
+                    return responseBuilder.responseListGroup(
+                        products,
+                        { subject: enums.querySubject.products, params:session.queryParams },
+                        navigation.getGroupSize(enums.querySubject.products),
+                        0,
+                        {
+                            textProperty: 'name',
+                            preText: 'Found {count} products. Result {start} of {count}. ',
+                            postText: 'Say next to move to next result. Or ask a different question. ',
+                            reprompt: 'Say next to move to next result. Or ask a different question. ',
+                            title: 'Result {start} of {count}'
+                        }
+                    );
+                }
             }
             else {
-                session.queryParams = { manufacturer: entityName }; 
-                products = query.runQuery(enums.querySubject.products, session.queryParams);
-                notFoundText = 'noProductsForManufacturer';
+                //no products found 
+                return responseBuilder.responseWithCardShortcut('noProductsForEntity', { name: entityName}, session);
             }
-        }        
+        }   
 
-        //if not found, try both
-        if (common.arrays.nullOrEmpty(products)) {
-            session.queryParams = { category: entityName }; 
-            products = query.runQuery(enums.querySubject.products, session.queryParams);
-            notFoundText = 'noProductsForEntity';
-
-            if (common.arrays.nullOrEmpty(products))  {
-                session.queryParams = { manufacturer: entityName }; 
-                products = query.runQuery(enums.querySubject.products, session.queryParams);
-                notFoundText = 'noProductsForEntity';
-            }
-        }
-
-        if (!common.arrays.nullOrEmpty(products)) {
-            session.startIndex = 0;
-            return responseBuilder.responseListGroup(
-                products,
-                { subject: enums.querySubject.products, params:session.queryParams },
-                navigation.getGroupSize(enums.querySubject.products),
-                0,
-                {
-                    textProperty: 'name',
-                    preText: 'Found {count} products. Result {start} of {count}. ',
-                    postText: 'Say next to move to next result. Or ask a different question. ',
-                    reprompt: 'Say next to move to next result. Or ask a different question. ',
-                    title: 'Result {start} of {count}'
-                }
-            );
-        }
-        else {
-            return responseBuilder.responseWithCardShortcut(notFoundText, {name: entityName}, session); 
-        }
+        return responseBuilder.entityNotFound(entityName, session);         
     });
 }
 
 // * * * 
+// gets total number of products for category or manufacturer
+//
+// args
+//  session: session attributes from request
+//  entityName: the category or manufacturer name 
 // 
+// returns: json object (Alexa response format) 
 function getProductsCountForEntity(session, entityName) {
-    return exception.try(() => {
-        var products = null;
-        var foundText = null;
-        var notFoundText = null;
-
-        //products for category
-        if (session.querySubject === enums.querySubject.categories) {
-            session.queryParams = { category: entityName }; 
-            products = query.runQuery(enums.querySubject.products, session.queryParams);
-            foundText = 'numProductsForCategory';
-            notFoundText = 'noProductsForCategory';
-        }
-
-        //products for manufacturer
-        else if (session.querySubject === enums.querySubject.manufacturers) {
-            session.queryParams = { manufacturer: entityName }; 
-            products = query.runQuery(enums.querySubject.products, session.queryParams);
-            foundText = 'numProductsForManufacturer';
-            notFoundText = 'noProductsForManufacturer';
-        }
-
-        //if not found, try both
-        if (common.arrays.nullOrEmpty(products)) {
-            session.queryParams = { category: entityName }; 
-            products = query.runQuery(enums.querySubject.products, session.queryParams);
-            foundText = 'numProductsForCategory';
-            notFoundText = 'noProductsForEntity';
-
-            if (common.arrays.nullOrEmpty(products))  {
-                session.queryParams = { manufacturer: entityName };
-                products = query.runQuery(enums.querySubject.products, session.queryParams);
-                foundText = 'numProductsForManufacturer';
-                notFoundText = 'noProductsForEntity';
-            }
-        }
-
-        var text = (common.arrays.nullOrEmpty(products)) ? notFoundText : foundText;
-
-        return responseBuilder.responseWithCardShortcut(text, {
-                name: entityName,
-                count: products.length
-            },
-            session
-        ); 
-    });
+    return getProductsForEntity(session, entityName, true);
 }
 
+// * * * 
+// gets all feature values available for the given feature, in the given category
+//
+// args
+//  session: session attributes from request
+//  categoryName: the category name 
+//  featureName: the name of the feature 
+// 
+// returns: json object (Alexa response format) 
 function getFeatureValuesForCategory(session, categoryName, featureName) {
     return exception.try(() => {
+
         //check first that category exists 
         if (!dataAccess.categoryExists(categoryName)) {
             return responseBuilder.categoryNotFound(categoryName, session); 
         }
 
+        //get feature values 
+        //TODO: implement this call 
         var featureValues = query.runQuery(enums.querySubject.features, { feature:featureName, category:categoryName }); 
 
         if (!common.arrays.nullOrEmpty(features)) {
@@ -361,10 +352,39 @@ function getFeatureValuesForCategory(session, categoryName, featureName) {
     });
 }
     
-function queryProducts(session, category, feature, featureValue, manufacturer) {
+// * * * 
+// gets all products that match the given criteria
+//
+// args
+//  session: session attributes from request
+//  categoryName: the category name 
+//  featureName: the name of the feature 
+//  featureValue: the feature value 
+//  manufacturerName: the name of the manufacturer
+// 
+// returns: json object (Alexa response format) 
+function queryProducts(session, categoryName, featureName, featureValue, manufacturerName) {
     return exception.try(() => {
+
+        //check first that category exists 
+        if (!dataAccess.categoryExists(categoryName)) {
+            return responseBuilder.categoryNotFound(categoryName, session); 
+        }
+
+        //check that manufacturer exists 
+        if (manufacturer) {
+            if (!dataAccess.manufacturerExists(manufacturerName))
+                return responseBuilder.manufacturerNotFound(manufacturerName, session); 
+        }
+
+        //try to get products that match 
         session.querySubject = enums.querySubject.products; 
-        session.queryParams = { category: category, feature: feature, featureValue: featureValue, manufacturer: manufacturer}; 
+        session.queryParams = { 
+            category: categoryName, 
+            feature: featureName, 
+            featureValue: featureValue, 
+            manufacturer: manufacturerName
+        }; 
 
         var products = query.runQuery(session.querySubject, session.queryParams); 
 
@@ -394,7 +414,9 @@ function queryProducts(session, category, feature, featureValue, manufacturer) {
 }
 
 // * * * 
-// 
+// attempts to get the product name from either the given parameter, or from session. 
+//
+// returns: string 
 function getProductFromSession(session, productName){
     return exception.try(() => {
         var output = null; 
@@ -465,6 +487,13 @@ function formatManufacturerDetails(manufacturer) {
     });
 }
 
+// * * * 
+// creates a speech string for product details
+// 
+// args
+//  category: product object
+//
+// returns: string 
 function formatProductDetails(product) {
     return exception.try(() => {
         var output = '';
@@ -487,7 +516,7 @@ module.exports = {
     getManufacturerAddress: getManufacturerAddress,
     getProductsForEntity: getProductsForEntity,
     getProductsCountForEntity: getProductsCountForEntity,
-    getProductFeatures: getProductFeatures,
+    getProductFeatureValues: getProductFeatureValues,
     getAllProductFeatures: getAllProductFeatures,
     queryProducts: queryProducts
 };

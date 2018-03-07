@@ -307,6 +307,11 @@ module.exports = {
             reprompt: null,
             card: '{count} products found for {name}'
         }),
+        noProductsForEntity: getUISetting('NO_PRODUCTS_FOR_ENTITY',  {
+            text: 'Sorry, no products were found for {name}.',
+            reprompt: null,
+            card: 'No Products Found'
+        }),
         productsForCategory: getUISetting('PRODUCTS_FOR_CAT',  {
             text: 'Found {count} products for {name}.',
             reprompt: null,
