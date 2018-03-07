@@ -465,6 +465,10 @@ function getFeatureValuesForCategory(session, categoryName, featureName) {
         }
     });
 }
+
+function getProductsByMfgAndCategory(session, categoryName, manufacturerName) {
+    return queryProducts(session, categoryName, null, null, manufacturerName);
+}
     
 // * * * 
 // gets all products that match the given criteria
@@ -477,6 +481,7 @@ function getFeatureValuesForCategory(session, categoryName, featureName) {
 //  manufacturerName: the name of the manufacturer
 // 
 // returns: json object (Alexa response format) 
+//TODO: make this the one master query for all products (e.g. products by category) 
 function queryProducts(session, categoryName, featureName, featureValue, manufacturerName) {
     return exception.try(() => {
 
@@ -495,11 +500,16 @@ function queryProducts(session, categoryName, featureName, featureValue, manufac
         session.querySubject = enums.querySubject.products; 
         session.queryParams = { 
             category: categoryName, 
-            feature: featureName, 
-            featureValue: featureValue, 
             manufacturer: manufacturerName
         }; 
 
+        //add feature params if passed 
+        if (featureName)
+            session.queryParams.feature = featureName;
+        if (featureValue)
+            session.queryParams.featureValue = featureValue;
+
+        //run query 
         var products = query.runQuery(session.querySubject, session.queryParams); 
 
         if (!common.arrays.nullOrEmpty(products)) {

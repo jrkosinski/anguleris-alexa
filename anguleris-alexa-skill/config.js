@@ -117,6 +117,12 @@ module.exports = {
                 "get products for {entity:Entity}"
             ]
         },
+        queryProducts: {
+            name: 'QueryProductsIntent',
+            utterances: [
+                "get {category:Category} for {manufacturer:Manufacturer}"
+            ]
+        },
         getProductsCount: {
             name: 'GetProductsCountIntent',
             utterances: [
@@ -147,10 +153,46 @@ module.exports = {
                 "what {category:Category} have a {feature:Feature} of {featureValue:FeatureValue}",
             ]
         },
+        queryProductByFinish: { 
+            name: 'QueryProductByFinishIntent',
+            utterances: [
+                "what {category:Category} have a finish of {featureValue:FeatureValue}",
+            ]
+        },
+        queryProductByHeight: { 
+            name: 'QueryProductByHeightIntent',
+            utterances: [
+                "what {category:Category} have a height of {featureValue:FeatureValue}",
+            ]
+        },
+        queryProductByWidth: { 
+            name: 'QueryProductByWidthIntent',
+            utterances: [
+                "what {category:Category} have a width of {featureValue:FeatureValue}",
+            ]
+        },
         queryProductByMfgFeature: {  
             name: 'QueryProductByMfgFeatureIntent',
             utterances: [
                 "what {category:Category} by {manufacturer:Manufacturer} have a {feature:Feature} of {featureValue:FeatureValue}"
+            ]
+        },
+        queryProductByMfgFinish: {  
+            name: 'QueryProductByMfgFinishIntent',
+            utterances: [
+                "what {category:Category} by {manufacturer:Manufacturer} have a finish of {featureValue:FeatureValue}"
+            ]
+        },
+        queryProductByMfgHeight: {  
+            name: 'QueryProductByMfgHeightIntent',
+            utterances: [
+                "what {category:Category} by {manufacturer:Manufacturer} have a height of {featureValue:FeatureValue}"
+            ]
+        },
+        queryProductByMfgWidth: {  
+            name: 'QueryProductByMfgWidthIntent',
+            utterances: [
+                "what {category:Category} by {manufacturer:Manufacturer} have a width of {featureValue:FeatureValue}"
             ]
         },
         repeat: {
@@ -228,7 +270,7 @@ module.exports = {
             card: 'Help'
         }),
         getVersion: getUISetting('GET_VERSION', {
-            text: 'Anguleris Alexa Skill version {version}, copyright Anguleris Technologies 2018',
+            text: 'Bimsmith Alexa Skill version {version}, copyright Anguleris Technologies 2018',
             reprompt: null,
             card: 'Get Version'
         }),

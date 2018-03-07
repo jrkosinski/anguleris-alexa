@@ -231,6 +231,21 @@ addAppIntent(config.intents.getProducts, (slots, session, data) => {
     return queryHelper.getProductsForEntity(session, slots.entity); 
 });
 
+// QueryProducts
+// ------------------------------------
+// gets a navigable list of products supported by given category AND manufacturer.
+// 
+// slots:
+//      category:Category
+//      manufacturer:Manufacturer
+//
+// example text: 
+//      what {category} does {manufacturer} have?
+//
+addAppIntent(config.intents.queryProducts, (slots, session, data) => {
+    return queryHelper.getProductsForMfgAndCategory(session, slots.category, slots.manufacturer); 
+});
+
 // GetProductsCount
 // ------------------------------------
 // gets the number of products in a manufacturer or category
@@ -268,6 +283,18 @@ addAppIntent(config.intents.queryProductByFeature, (slots, session, data) => {
     return queryHelper.queryProducts(session, slots.category, slots.feature, slots.featureValue); 
 }); 
 
+addAppIntent(config.intents.queryProductByFinish, (slots, session, data) => {
+    return queryHelper.queryProducts(session, slots.category, 'finish', slots.featureValue); 
+}); 
+
+addAppIntent(config.intents.queryProductByHeight, (slots, session, data) => {
+    return queryHelper.queryProducts(session, slots.category, 'height', slots.featureValue); 
+}); 
+
+addAppIntent(config.intents.queryProductByWidth, (slots, session, data) => {
+    return queryHelper.queryProducts(session, slots.category, 'width', slots.featureValue); 
+}); 
+
 // QueryProductByMfgFeature
 // ------------------------------------
 //
@@ -276,6 +303,18 @@ addAppIntent(config.intents.queryProductByFeature, (slots, session, data) => {
 //
 addAppIntent(config.intents.queryProductByMfgFeature, (slots, session, data) => {
     return queryHelper.queryProducts(session, slots.category, slots.feature, slots.featureValue, slots.manufacturer); 
+}); 
+
+addAppIntent(config.intents.queryProductByMfgFinish, (slots, session, data) => {
+    return queryHelper.queryProducts(session, slots.category, 'finish', slots.featureValue, slots.manufacturer); 
+}); 
+
+addAppIntent(config.intents.queryProductByMfgHeight, (slots, session, data) => {
+    return queryHelper.queryProducts(session, slots.category, 'height', slots.featureValue, slots.manufacturer); 
+}); 
+
+addAppIntent(config.intents.queryProductByMfgWidth, (slots, session, data) => {
+    return queryHelper.queryProducts(session, slots.category, 'width', slots.featureValue, slots.manufacturer); 
 }); 
 
 // Repeat

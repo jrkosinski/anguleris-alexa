@@ -571,7 +571,7 @@ const runUnitTests = async((handler) => {
         async(() => {
             var request = createIntentRequest(config.intents.queryProductByFeature.name, 
             {startIndex:0, querySubject:enums.querySubject.products},
-            {category:'Optical Turnstiles', feature:'height', featureValue:'40 3/4 inches'});
+            {category:'Diswashers', feature:'finish', featureValue:'metallic'});
             await(runTest('product query by feature value', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes
