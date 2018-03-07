@@ -69,10 +69,28 @@ module.exports = {
                 "get details"
             ]
         },
-        getProductFeatures: {
-            name: 'GetProductFeaturesIntent',
+        getProductFeatureValues: {
+            name: 'GetProductFeatureValuesIntent',
             utterances: [
                 "what {feature:Feature} does {product:Product} come in"
+            ]
+        },
+        getProductFinishes: {
+            name: 'GetProductFinishesIntent',
+            utterances: [
+                "what finishes does {product:Product} come in"
+            ]
+        },
+        getProductHeights: {
+            name: 'GetProductHeightsIntent',
+            utterances: [
+                "what heights does {product:Product} come in"
+            ]
+        },
+        getProductWidths: {
+            name: 'GetProductWidthsIntent',
+            utterances: [
+                "what widths does {product:Product} come in"
             ]
         },
         getAllProductFeatures: { 
@@ -109,6 +127,18 @@ module.exports = {
             name: 'GetFinishesForCategoryIntent', 
             utterances: [
                 'what finishes are available for {category:Category}'
+            ]
+        },
+        getHeightsForCategory: {
+            name: 'GetHeightsForCategoryIntent', 
+            utterances: [
+                'what heights are available for {category:Category}'
+            ]
+        },
+        getWidthsForCategory: {
+            name: 'GetWidthsForCategoryIntent', 
+            utterances: [
+                'what widths are available for {category:Category}'
             ]
         },
         queryProductByFeature: { 
@@ -368,10 +398,15 @@ module.exports = {
             card: 'No Results for Product Query'
         }),
         categoriesByFeature: getUISetting('CATEGORIES_BY_FEATURE', {
-            text: 'No products were found for your query.',
+            text: 'The following values exist for {name}. ',
             reprompt: null,
-            card: 'No Results for Product Query'
-        })
+            card: 'Feature Values for {name}'
+        }),
+        featureNotSupportedByCategory: getUISetting('FEATURE_NOT_SUPPORTED_CAT', {
+            text: 'That feature is not supported by the given category. ',
+            reprompt: null,
+            card: 'Feature not Supported'
+        }),
     },
 };
 

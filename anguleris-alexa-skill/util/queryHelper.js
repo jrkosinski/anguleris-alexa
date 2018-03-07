@@ -22,6 +22,12 @@ const navigation = require('./navigation');
 const query = require('./query');
 
 // * * * 
+// gets a list of all categories 
+// 
+// args
+//  session: session attributes from request
+// 
+// returns: json object (Alexa response format) 
 function getCategories(session) {
     return exception.try(() => {
         session.querySubject = enums.querySubject.categories;
@@ -45,14 +51,20 @@ function getCategories(session) {
 }
 
 // * * * 
+// gets a list of all manufacturers 
+// 
+// args
+//  session: session attributes from request
+// 
+// returns: json object (Alexa response format) 
 function getManufacturers(session) {
     return exception.try(() => {
-        session.querySubject = enums.querySubject.manufacturer;
-        var categories = query.runQuery(session.querySubject)
+        session.querySubject = enums.querySubject.manufacturers;
+        var manufacturers = query.runQuery(session.querySubject)
     
         //TODO: hard-coded text 
         return responseBuilder.responseListGroup (
-            categories, 
+            manufacturers, 
             { subject: session.querySubject },
             navigation.getGroupSize(session.querySubject),
             0, 
@@ -68,6 +80,12 @@ function getManufacturers(session) {
 }
 
 // * * * 
+// gets a list of all manufacturers in the given category
+// 
+// args
+//  session: session attributes from request
+// 
+// returns: json object (Alexa response format) 
 function getManufacturersForCategory(session, categoryName) {
     return exception.try(() => {
         session.queryParams = { category: categoryName};
@@ -77,7 +95,7 @@ function getManufacturersForCategory(session, categoryName) {
         
         //TODO: add reprompt
         return responseBuilder.listToText(
-            manufacturers, 
+            common.arrays.select(manufacturers, 'name'), 
             config.ui.manufacturersForCategory.text.replaceTokens({name: categoryName}),
             null, 
             config.ui.manufacturersForCategory.card.replaceTokens({name: categoryName}), 
@@ -87,6 +105,12 @@ function getManufacturersForCategory(session, categoryName) {
 }
 
 // * * * 
+// gets a list of all categories for which the given manufacturer has products
+// 
+// args
+//  session: session attributes from request
+// 
+// returns: json object (Alexa response format) 
 function getCategoriesForManufacturer(session, manufacturerName) {
     return exception.try(() => {
         session.queryParams = { manufacturer: manufacturerName};
@@ -96,7 +120,7 @@ function getCategoriesForManufacturer(session, manufacturerName) {
         
         //TODO: add reprompt
         return responseBuilder.listToText(
-            categories, 
+            common.arrays.select(categories, 'name'), 
             config.ui.categoriesForManufacturer.text.replaceTokens({name: manufacturerName}),
             null, 
             config.ui.categoriesForManufacturer.card.replaceTokens({name: manufacturerName}), 
@@ -303,10 +327,10 @@ function getManufacturerProperty(session, manufacturerName, propertyName, foundT
         //attempt to get manufacturer
         var mfg = query.runQuery(enums.querySubject.manufacturers, session.queryParams);
         if (mfg) {
-            if (mfg.features && mfg.features[propertyName] && mfg.features[propertyName].trim().length) {
+            if (mfg[propertyName] && mfg[propertyName].trim().length) {
                 return responseBuilder.responseWithCardShortcut(foundText, {
                         name: manufacturerName,
-                        value: mfg.features[propertyName].trim()
+                        value: mfg[propertyName].trim()
                     }, 
                     session
                 );
@@ -422,8 +446,14 @@ function getFeatureValuesForCategory(session, categoryName, featureName) {
         //TODO: implement this call 
         var featureValues = query.runQuery(enums.querySubject.features, { feature:featureName, category:categoryName }); 
 
-        if (!common.arrays.nullOrEmpty(features)) {
-            return responseBuilder.listToText(featureValues, config.ui.categoriesByFeature.text)
+        if (!common.arrays.nullOrEmpty(featureValues)) {
+            return responseBuilder.listToText(
+                featureValues, 
+                config.ui.categoriesByFeature.text.replaceTokens({name: featureName}),
+                null, 
+                config.ui.categoriesByFeature.card.replaceTokens({name: featureName}), 
+                session
+            ); 
         }
         else{
             return responseBuilder.responseWithCardShortcut('featureNotSupportedByCategory', {
@@ -456,7 +486,7 @@ function queryProducts(session, categoryName, featureName, featureValue, manufac
         }
 
         //check that manufacturer exists 
-        if (manufacturer) {
+        if (manufacturerName) {
             if (!dataAccess.manufacturerExists(manufacturerName))
                 return responseBuilder.manufacturerNotFound(manufacturerName, session); 
         }
@@ -606,5 +636,6 @@ module.exports = {
     getCategories,
     getManufacturers,
     getManufacturersForCategory,
-    getCategoriesForManufacturer
+    getCategoriesForManufacturer,
+    getFeatureValuesForCategory 
 };

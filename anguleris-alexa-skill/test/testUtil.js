@@ -71,16 +71,18 @@ function createNavIntentRequest(intentName, querySubject, startIndex, entity, qu
 }
 
 function createManufacturersForCategoryRequest(parameter, startIndex) {
-    return createNavIntentRequest(
+    return createIntentRequest(
         config.intents.getManufacturersForCategory.name, 
-        enums.querySubject.manufacturers, startIndex, parameter
+        { querySubject: enums.querySubject.manufacturers, startIndex:startIndex, queryParams:{category:parameter} },
+        { category:parameter}
     );
 }
 
 function createCategoriesForManufacturerRequest(parameter, startIndex) {
-    return createNavIntentRequest(
+    return createIntentRequest(
         config.intents.getCategoriesForManufacturer.name, 
-        enums.querySubject.categories, startIndex, parameter
+        { querySubject: enums.querySubject.categories, startIndex:startIndex, queryParams:{category:parameter} },
+        { manufacturer:parameter}
     );
 }
 
@@ -421,7 +423,11 @@ const runUnitTests = async((handler) => {
 
         //manufacturer phone (Kenmore)
         async(() => {
-            var request = createNavIntentRequest(config.intents.getManufacturerPhone.name, enums.querySubject.categories, 5, 'Kenmore'); 
+            var request = createIntentRequest(config.intents.getManufacturerPhone.name, 
+                {querySubject:'manufacturers', startIndex:5}, 
+                {manufacturer:'Kenmore'}
+            );
+
             await(runTest('manufacturer phone (Kenmore)', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
@@ -432,7 +438,10 @@ const runUnitTests = async((handler) => {
 
         //manufacturer address (Kenmore)
         async(() => {
-            var request = createNavIntentRequest(config.intents.getManufacturerAddress.name, enums.querySubject.categories, 5, 'Kenmore'); 
+            var request = createIntentRequest(config.intents.getManufacturerAddress.name, 
+                {querySubject:'manufacturers', startIndex:5}, 
+                {manufacturer:'Kenmore'}
+            );
             await(runTest('manufacturer address (Kenmore)', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes,
@@ -538,7 +547,7 @@ const runUnitTests = async((handler) => {
 
         //mfg product features (color) by mfg
         async(() => {
-            var request = createIntentRequest(config.intents.getProductFeatures.name, 
+            var request = createIntentRequest(config.intents.getProductFeatureValues.name, 
             {startIndex:0, querySubject:enums.querySubject.products, queryParams: {manufacturer:'Boon Edam USA'}},
             {entity:'Boon Edam USA', feature:'color'});
             await(runTest('mfg product features (color) by mfg', request, [
@@ -549,7 +558,7 @@ const runUnitTests = async((handler) => {
 
         //mfg product features (color) by name
         async(() => {
-            var request = createIntentRequest(config.intents.getProductFeatures.name, 
+            var request = createIntentRequest(config.intents.getProductFeatureValues.name, 
             {startIndex:0, querySubject:enums.querySubject.products},
             {product:'Speed lane Slide', feature:'color'});
             await(runTest('mfg product features (color) by name', request, [
@@ -567,7 +576,29 @@ const runUnitTests = async((handler) => {
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes
             ])); 
-        }) 
+        }),
+
+        //feature values by category (dishwashers)
+        async(() => {
+            var request = createIntentRequest(config.intents.getFinishesForCategory.name, 
+            {startIndex:0, querySubject:enums.querySubject.products},
+            {category:'Dishwashers' });
+            await(runTest('feature values by category (dishwashers)', request, [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes
+            ])); 
+        }),
+
+        //feature values by category (optical turnstiles)
+        async(() => {
+            var request = createIntentRequest(config.intents.getHeightsForCategory.name, 
+            {startIndex:0, querySubject:enums.querySubject.products},
+            {category:'Optical Turnstiles' });
+            await(runTest('feature values by category (optical turnstiles)', request, [
+                assertions.responseIsNotNull,
+                assertions.hasSessionAttributes
+            ])); 
+        })
     ];
 
     //RUN TESTS 

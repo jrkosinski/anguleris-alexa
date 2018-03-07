@@ -158,9 +158,20 @@ addAppIntent(config.intents.getDetails, (slots, session, data) => {
 // example text: 
 //      what {feature} does {product} come in? 
 //
-//TODO: change name of this intent
-addAppIntent(config.intents.getProductFeatures, (slots, session, data) => {
+addAppIntent(config.intents.getProductFeatureValues, (slots, session, data) => {
     return queryHelper.getProductFeatureValues(session, slots.feature, slots.product); 
+});
+
+addAppIntent(config.intents.getProductFinishes, (slots, session, data) => {
+    return queryHelper.getProductFeatureValues(session, 'finish', slots.product); 
+});
+
+addAppIntent(config.intents.getProductHeights, (slots, session, data) => {
+    return queryHelper.getProductFeatureValues(session, 'height', slots.product); 
+});
+
+addAppIntent(config.intents.getProductWidths, (slots, session, data) => {
+    return queryHelper.getProductFeatureValues(session, 'width', slots.product); 
 });
 
 // GetAllProductFeatures
@@ -237,7 +248,7 @@ addAppIntent(config.intents.getProductsCount, (slots, session, data) => {
 addAppIntent(config.intents.getFinishesForCategory, (slots, session, data) => {
     return queryHelper.getFeatureValuesForCategory(session, slots.category, 'finish'); 
 });
-/*
+
 addAppIntent(config.intents.getHeightsForCategory, (slots, session, data) => {
     return queryHelper.getFeatureValuesForCategory(session, slots.category, 'height'); 
 });
@@ -245,7 +256,7 @@ addAppIntent(config.intents.getHeightsForCategory, (slots, session, data) => {
 addAppIntent(config.intents.getWidthsForCategory, (slots, session, data) => {
     return queryHelper.getFeatureValuesForCategory(session, slots.category, 'width'); 
 });
-*/
+
 
 // QueryProductByFeature
 // ------------------------------------
