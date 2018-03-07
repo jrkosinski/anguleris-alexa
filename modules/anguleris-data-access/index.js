@@ -113,6 +113,13 @@ function Categories() {
             description: 'Browse through Bimsmith’s library of Revit Access Security families for free download. Compare the products you like best, then download the Revit files you need or save them in the cloud for free by clicking Add to MyBIMsmith.'
         },
         {
+            name: 'Optical Turnstiles',
+            type: enums.entityType.category,
+            subcategories: [],
+            manufacturers: ['Boon Edam USA', 'Delta Turnstiles'],
+            description: 'Browse through Bimsmith’s library of Revit Access Security families for free download. Compare the products you like best, then download the Revit files you need or save them in the cloud for free by clicking Add to MyBIMsmith.'
+        },
+        {
             name: 'Appliances',
             type: enums.entityType.category,
             subcategories: [],
@@ -320,6 +327,12 @@ function Manufacturers() {
             phone: '', 
             description:''
         },
+        { name: 'Homasote',
+            type: enums.entityType.manufacturer,
+            address:'', 
+            phone: '', 
+            description:''
+        },
         { name: 'Grabber',
             type: enums.entityType.manufacturer,
             address:'', 
@@ -432,6 +445,9 @@ function Products() {
             type: enums.entityType.product,
             simpleName: '24 inch Built-In Dishwasher',
             name: '24 inch Built-In Dishwasher by Kenmore', 
+            altNames: [
+                '24" built-in dishwasher'
+            ],
             manufacturer: 'Kenmore',
             category: 'Dishwashers',
             subcategory: null,
@@ -448,6 +464,9 @@ function Products() {
             type: enums.entityType.product,
             simpleName: '30 inch Electric Self-Clean Single Wall Oven',
             name: '30 inch Electric Self-Clean Single Wall Oven by Kenmore',
+            altNames: [
+                '30" Electric Self-Clean Single Wall Oven'
+            ],
             manufacturer: 'Kenmore',
             category: 'Ranges',
             subcategory: null,
@@ -482,6 +501,9 @@ function Products() {
             type: enums.entityType.product,
             simpleName: 'Delta 7000-B', 
             name: 'Delta 7000-B by Delta Turnstiles',
+            altNames: [
+                'Delta 7000 B'
+            ],
             manufacturer: 'Delta Turnstiles',
             category: 'Optical Turnstiles',
             subcategory: null, 
@@ -497,11 +519,14 @@ function Products() {
             type: enums.entityType.product,
             simpleName: 'Delta 5000-SG',
             name: 'Delta 5000-SG by Delta Turnstiles',
+            altNames: [
+                'Delta 5000 SG'
+            ],
             category: 'Optical Turnstiles',
             manufacturer: 'Delta Turnstiles',
             subcategory: null, 
             features: {
-                height: '38',
+                height: '38 inches',
                 width: '6 1/4 inches',
                 length: [48, 56]
             }, 
@@ -527,6 +552,11 @@ function Products() {
             type: enums.entityType.product,
             simpleName: 'Tournex',
             name: 'Tournex by Boon Edam USA',
+            altNames: [
+                'Tornex',
+                'Tour necks',
+                'Tour next'
+            ],
             category: 'Revolving Doors',
             manufacturer: 'Boon Edam USA',
             subcategory: null, 
@@ -545,10 +575,86 @@ function Products() {
             features: {
             }, 
             description: "We are proud to announce the introduction of our slimmest, single wing access gate in our range. The Winglock Swing had been designed to coordinate with our Speed lane Lifeline series, but can also stand alone as a single installation."
-        }    
+        },
+        {
+            id: 11,
+            type: enums.entityType.product,
+            simpleName: '28 inch Dishwasher',
+            name: '28 inch Dishwasher by Kenmore', 
+            altNames: [
+                '28" dishwasher'
+            ],
+            manufacturer: 'Kenmore',
+            category: 'Dishwashers',
+            subcategory: null,
+            features: {
+                finish: 'Metallic',
+                height: '33 1/2 inches to 34 1/2 inches',
+                depth: '28 7 / 8 inches',
+                width: '28 inches'
+            },
+            description: "The 24 inch Kenmore built-in dishwasher features 360 degree PowerWash Technology, which provides a spray arm that delivers a far-reaching spiral pattern throughout the dishwasher giving it the ability to clean even hard to reach areas. This unit also includes the UltraWash® wash system, which uses a filter that only requires monthly cleaning, to deliver energy-efficient results and works to eliminate even the tiniest food particles. And don’t sweat the small stuff with the Top Rack Only option that allows you to wash items only within the top portion of your dishwasher. Lastly, for days when you do not have a lot of time, this dishwasher provides a press Wash cycle that quickly washes a completely full load of dirty dishes without sacrificing cleaning."
+        },
     ];
 
-    return new DataTable(_all);
+    var dataTable = new DataTable(_all);
+    
+    dataTable.findByName = (name) => {
+        return exception.try(() => {
+            var output = null; 
+            name = name.trim().toLowerCase(); 
+            
+            for(var n=0; n<_all.length; n++) {
+                var item = _all[n]; 
+                if (item && item.name) {
+                    var tmp = item.name.trim().toLowerCase(); 
+                    if (name === tmp){
+                        output = item;
+                        break;
+                    }
+                }
+            }
+
+            //if not yet found, try to query by simpleName
+            if (!output){
+                for(var n=0; n<_all.length; n++) {
+                    var item = _all[n]; 
+                    if (item && item.simpleName) {
+                        var tmp = item.simpleName.trim().toLowerCase(); 
+                        if (name === tmp){
+                            output = item;
+                            break;
+                        }
+                    }
+
+                    //check altnames 
+                    if (item && item.altNames) {
+                        for (var i=0; i<item.altNames.length; i++){
+                            var tmp = item.altNames[i].trim().toLowerCase(); 
+                            if (temp === name) {
+                                output = item; 
+                                break; 
+                            }
+
+                            //add mfg name to end
+                            tmp += ' by ' + item.manufacturer.trim().toLowerCase(); 
+                            if (temp === name) {
+                                output = item; 
+                                break; 
+                            }
+                        }
+
+                        if (output)
+                            break;
+                    }
+                }
+            }
+
+            return output; 
+        });
+    };
+
+    return dataTable; 
 }
 
 

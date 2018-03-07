@@ -96,7 +96,9 @@ function select(array, propName) {
     var output = [];
     if (array) {
         for (var n=0; n<array.length; n++){
-            output.push(array[n][propName]); 
+            var value = array[n][propName]; 
+            if (!types.isUndefinedOrNull(value))
+                output.push(value); 
         }
     }
 

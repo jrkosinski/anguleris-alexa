@@ -77,8 +77,16 @@ function queryManufacturers(queryParams) {
     return exception.try(() => {
         if (queryParams && queryParams.category) {
             var category = dataAccess.getCategories(queryParams.category);
-            if (category)
-                return category.manufacturers;
+            if (category && category.manufacturers){
+                var output = []; 
+                for (var n=0; n<category.manufacturers.length; n++){
+                    var mfg = dataAccess.getManufacturers(category.manufacturers[n]); 
+                    if (mfg){
+                        output.push(mfg);
+                    }
+                }
+                return output; 
+            }
         }
         else {
             return dataAccess.getManufacturers(queryParams ? queryParams.name : null);
@@ -161,10 +169,22 @@ function filterProductsByFeature(products, feature, featureValue) {
 
         return common.arrays.where(products, (p) => {
             if (p.features && p.features[feature]) {
-                if (!featureValue)
+                if (common.types.isUndefinedOrNull(featureValue))
                     return true;
 
-                return (p.features[feature].trim().toLowerCase() === featureValue);
+                if (p.features[feature]){
+                    var f = p.features[feature]; 
+                    if (!Array.isArray(f))
+                        f = [f];
+
+                    if (common.arrays.exists(f, (fi) => {
+                        return (fi && fi.trim().toLowerCase() === featureValue);
+                    })) {
+                        return true;
+                    }                    
+                }
+
+                return false;
             }
         });
     });

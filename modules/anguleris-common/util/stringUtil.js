@@ -10,7 +10,7 @@
 // 
 // returns: string 
 String.prototype.replaceAll = function (search, replacement) {
-	var target = this;
+	var target = String(this);
 	return target.split(search).join(replacement);
 };
 
@@ -19,11 +19,11 @@ String.prototype.replaceAll = function (search, replacement) {
 // 
 // returns: string 
 String.prototype.replaceTokens = function (tokens) {
-	var target = this;
+	var target = String(this);
 
 	if (tokens) {
 		for (var t in tokens) {
-			target = target.replaceAll(t, tokens[t]);
+			target = target.replaceAll('{' + t +'}', tokens[t]);
 		}
 	}
 	
@@ -35,7 +35,7 @@ String.prototype.replaceTokens = function (tokens) {
 // 
 // returns: boolean 
 String.prototype.contains = function (search) {
-	var target = this;
+	var target = String(this);
 	return target.indexOf(search) >= 0;
 };
 
@@ -44,7 +44,7 @@ String.prototype.contains = function (search) {
 // 
 // returns: string of length totalLen 
 String.prototype.padRight = function(totalLen, paddingChar) {
-	var target = this;
+	var target = String(this);
     if (!paddingChar)
         paddingChar = ' ';
     while(target.length < totalLen)
@@ -57,7 +57,7 @@ String.prototype.padRight = function(totalLen, paddingChar) {
 // 
 // returns: string of length totalLen 
 String.prototype.padLeft = function(totalLen, paddingChar) {
-	var target = this;
+	var target = String(this);
     if (!paddingChar)
         paddingChar = ' ';
     while(target.length < totalLen)
@@ -70,7 +70,7 @@ String.prototype.padLeft = function(totalLen, paddingChar) {
 // 
 // returns: boolean
 String.prototype.endsWithPunctuation = function () {
-	var target = this;
+	var target = String(this);
 	target = target.trim();
 	if (target.length) {
 		var c = target[target.length - 1];

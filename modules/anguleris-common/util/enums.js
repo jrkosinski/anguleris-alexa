@@ -53,7 +53,8 @@ module.exports = {
     querySubject: configUtil.makeEnum([
         'categories',
         'manufacturers',
-        'products'
+        'products',
+        'features'
     ]), 
 
     //data entity type 
