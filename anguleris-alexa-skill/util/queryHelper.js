@@ -22,6 +22,90 @@ const navigation = require('./navigation');
 const query = require('./query');
 
 // * * * 
+function getCategories(session) {
+    return exception.try(() => {
+        session.querySubject = enums.querySubject.categories;
+        var categories = query.runQuery(session.querySubject)
+    
+        //TODO: hard-coded text 
+        return responseBuilder.responseListGroup (
+            categories, 
+            { subject: session.querySubject },
+            navigation.getGroupSize(session.querySubject),
+            0, 
+            {
+                textProperty: 'name', 
+                preText: 'Found {count} categories. Results {start} to {end} of {count}. ', 
+                postText: 'Say next, get details for category, or get manufacturers for category. ', 
+                reprompt: 'Say next, get details for category, or get manufacturers for category. ',
+                title: 'Results {start} to {end} of {count}'
+            }
+        ); 
+    });
+}
+
+// * * * 
+function getManufacturers(session) {
+    return exception.try(() => {
+        session.querySubject = enums.querySubject.manufacturer;
+        var categories = query.runQuery(session.querySubject)
+    
+        //TODO: hard-coded text 
+        return responseBuilder.responseListGroup (
+            categories, 
+            { subject: session.querySubject },
+            navigation.getGroupSize(session.querySubject),
+            0, 
+            {
+                textProperty: 'name', 
+                preText: 'Found {count} manufacturers. Results {start} to {end} of {count}. ', 
+                postText: 'Say next, get details for category, or get manufacturers for category. ', 
+                reprompt: 'Say next, get details for category, or get manufacturers for category. ',
+                title: 'Results {start} to {end} of {count}'
+            }
+        ); 
+    });
+}
+
+// * * * 
+function getManufacturersForCategory(session, categoryName) {
+    return exception.try(() => {
+        session.queryParams = { category: categoryName};
+        session.querySubject = enums.querySubject.manufacturers;
+
+        var manufacturers = query.runQuery(session.querySubject, session.queryParams); 
+        
+        //TODO: add reprompt
+        return responseBuilder.listToText(
+            manufacturers, 
+            config.ui.manufacturersForCategory.text.replaceTokens({name: categoryName}),
+            null, 
+            config.ui.manufacturersForCategory.card.replaceTokens({name: categoryName}), 
+            session
+        ); 
+    });
+}
+
+// * * * 
+function getCategoriesForManufacturer(session, manufacturerName) {
+    return exception.try(() => {
+        session.queryParams = { manufacturer: manufacturerName};
+        session.querySubject = enums.querySubject.categories;
+
+        var categories = query.runQuery(session.querySubject, session.queryParams); 
+        
+        //TODO: add reprompt
+        return responseBuilder.listToText(
+            categories, 
+            config.ui.categoriesForManufacturer.text.replaceTokens({name: manufacturerName}),
+            null, 
+            config.ui.categoriesForManufacturer.card.replaceTokens({name: manufacturerName}), 
+            session
+        ); 
+    });
+}
+
+// * * * 
 // gets a response containing the details for a specific category or manufacturer
 // 
 // args
@@ -54,7 +138,7 @@ function getDetails(session, parameter) {
             }
         }
         else{
-            details = config.ui.entityNotFound.text.replaceAll('{name}', parameter);
+            details = config.ui.entityNotFound.text.replaceTokens({name: parameter});
         }
 
         if (!details || !details.length) {
@@ -511,12 +595,16 @@ function formatProductDetails(product) {
 
 
 module.exports = {
-    getDetails: getDetails,
-    getManufacturerPhone: getManufacturerPhone,
-    getManufacturerAddress: getManufacturerAddress,
-    getProductsForEntity: getProductsForEntity,
-    getProductsCountForEntity: getProductsCountForEntity,
-    getProductFeatureValues: getProductFeatureValues,
-    getAllProductFeatures: getAllProductFeatures,
-    queryProducts: queryProducts
+    getDetails,
+    getManufacturerPhone,
+    getManufacturerAddress,
+    getProductsForEntity,
+    getProductsCountForEntity,
+    getProductFeatureValues,
+    getAllProductFeatures,
+    queryProducts,
+    getCategories,
+    getManufacturers,
+    getManufacturersForCategory,
+    getCategoriesForManufacturer
 };

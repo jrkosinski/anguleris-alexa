@@ -79,7 +79,6 @@ app.onStart(() => {
 //      what's the current version number 
 //
 addAppIntent(config.intents.getVersion, (slots, session, data) => {
-    var versionText = config.ui.getVersion.text.replaceAll('{version}', pkg.version);
     return responseBuilder.responseWithCardShortcut('getVersion', {version: pkg.version}, null, true); 
 });
 
@@ -91,22 +90,7 @@ addAppIntent(config.intents.getVersion, (slots, session, data) => {
 //      get a list of categories
 //
 addAppIntent(config.intents.getCategories, (slots, session, data) => {
-    var categories = query.runQuery(enums.querySubject.categories)
-    
-    //TODO: hard-coded text 
-    return responseBuilder.responseListGroup (
-        categories, 
-        { subject: enums.querySubject.categories },
-        navigation.getGroupSize(enums.querySubject.categories),
-        0, 
-        {
-            textProperty: 'name', 
-            preText: 'Found {count} categories. Results {start} to {end} of {count}. ', 
-            postText: 'Say next, get details for category, or get manufacturers for category. ', 
-            reprompt: 'Say next, get details for category, or get manufacturers for category. ',
-            title: 'Results {start} to {end} of {count}'
-        }
-    ); 
+    return queryHelper.getCategories(session); 
 });
 
 // GetManufacturers
@@ -117,22 +101,7 @@ addAppIntent(config.intents.getCategories, (slots, session, data) => {
 //      get a list of manufacturers
 //
 addAppIntent(config.intents.getManufacturers, (slots, session, data) => {
-    var manufacturers = query.runQuery(enums.querySubject.manufacturers)
-    
-    //TODO: hard-coded text 
-    return responseBuilder.responseListGroup (
-        manufacturers, 
-        { subject: enums.querySubject.manufacturers},
-        navigation.getGroupSize(enums.querySubject.manufacturers),
-        0, 
-        {
-            textProperty: 'name', 
-            preText: 'Found {count} manufacturers. Results {start} to {end} of {count}. ', 
-            postText: 'Say next to move to next results group. Or ask a different question. ', 
-            reprompt: 'Say next to move to next results group. Or ask a different question. ',
-            title: 'Results {start} to {end} of {count}'
-        }
-    ); 
+    return queryHelper.getManufacturers(session); 
 });
 
 // GetManufacturersForCategory
@@ -146,17 +115,7 @@ addAppIntent(config.intents.getManufacturers, (slots, session, data) => {
 //      what manufacturers are in {category}? 
 // 
 addAppIntent(config.intents.getManufacturersForCategory, (slots, session, data) => {
-    session.queryParams = { category: slots.category};
-    var manufacturers = query.runQuery(enums.querySubject.manufacturers, session.queryParams); 
-    
-    //TODO: add reprompt
-    return responseBuilder.listToText(
-        manufacturers, 
-        config.ui.manufacturersForCategory.text.replaceAll('{name}', session.queryParams.category), 
-        null, 
-        config.ui.manufacturersForCategory.card, 
-        session
-    ); 
+    return queryHelper.getManufacturersForCategory(session, slots.category); 
 });
 
 // GetCategoriesForManufacturer
@@ -170,21 +129,7 @@ addAppIntent(config.intents.getManufacturersForCategory, (slots, session, data) 
 //      what categories does {manufacturer} have products for?
 //
 addAppIntent(config.intents.getCategoriesForManufacturer, (slots, session, data) => {
-    session.queryParams = { manufacturer: slots.manufacturer};
-    var categories = query.runQuery(enums.querySubject.categories, session.queryParams); 
-    
-    //TODO: add reprompt
-    if (categories) {
-        categories = common.arrays.select(categories, 'name'); 
-    }
-
-    return responseBuilder.listToText(
-        categories, 
-        config.ui.categoriesForManufacturer.text.replaceAll('{name}', session.queryParams.manufacturer), 
-        null, 
-        config.ui.categoriesForManufacturer.card, 
-        session
-    ); 
+    return queryHelper.getCategoriesForManufacturer(session, slots.manufacturer); 
 });
 
 // GetDetails

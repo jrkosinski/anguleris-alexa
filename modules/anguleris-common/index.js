@@ -93,6 +93,8 @@ module.exports = {
     dates: require('./util/dateUtil'),
     config: require('./util/configUtil'),
     types: require('./util/types'), 
+    enums: require('./util/enums'), 
+    arrays: require('./util/arrayUtil'), 
     logger: (prefix) => { return require('./util/logger')(prefix); },
     exceptions: (prefix) => { return require('./util/exceptionUtil')(prefix); },
 

@@ -15,6 +15,22 @@ String.prototype.replaceAll = function (search, replacement) {
 };
 
 // * * * 
+// replaces all occurrences of a value in the current string, with the given set of token replacements 
+// 
+// returns: string 
+String.prototype.replaceTokens = function (tokens) {
+	var target = this;
+
+	if (tokens) {
+		for (var t in tokens) {
+			target = target.replaceAll(t, tokens[t]);
+		}
+	}
+	
+	return target;
+};
+
+// * * * 
 // returns true if the string contains at least one instance of the given substring
 // 
 // returns: boolean 

@@ -122,11 +122,15 @@ function responseListGroup(list, query, groupSize, startIndex, navArgs) {
                 
             var replaceText = (s) => {
                 if (s)
-                    return s.replaceAll('{start}', startIndex+1).replaceAll('{end}', endIndex+1).replaceAll('{count}', list.length);
+                    return s.replaceTokens({
+                        start: (startIndex+1), 
+                        end: (endIndex+1),
+                        count: list.length
+                    }); 
             };
 
             //build the text
-            text += replaceText(navArgs.preText); //.replaceAll('{start}', startIndex+1).replaceAll('{end}', endIndex+1).replaceAll('{count}', list.length);
+            text += replaceText(navArgs.preText); 
             var bodyItems = [];
             for (var n = startIndex; n <= endIndex; n++) {
                 if (list[n][navArgs.textProperty]) {
@@ -150,8 +154,8 @@ function responseListGroup(list, query, groupSize, startIndex, navArgs) {
             text += navArgs.postText + ' ';
 
             //build the response body
-            var title = replaceText(navArgs.title); //.replaceAll('{start}', startIndex+1).replaceAll('{end}', endIndex+1).replaceAll('{count}', list.length);
-            var reprompt = replaceText(navArgs.title); //.replaceAll('{start}', startIndex+1).replaceAll('{end}', endIndex+1).replaceAll('{count}', list.length);
+            var title = replaceText(navArgs.title);  
+            var reprompt = replaceText(navArgs.title);  
 
             var output = responseWithCard(text, title, reprompt, sessionAttr);
 

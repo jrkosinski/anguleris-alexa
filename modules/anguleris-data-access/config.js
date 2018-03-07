@@ -1,5 +1,5 @@
 
-const configUtil = require('./util/configUtil'); 
+const configUtil = require('anguleris-common').config; 
 
 module.exports = {  
 
