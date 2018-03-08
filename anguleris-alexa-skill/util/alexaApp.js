@@ -180,13 +180,14 @@ addAppIntent(config.intents.getProductWidths, (slots, session, data) => {
 // 
 // slots: 
 //      product:Product
+//      category:Category (optional)
 //
 // example text: 
 //      what features does {product} support? 
 //      get features
 //
 addAppIntent(config.intents.getAllProductFeatures, (slots, session, data) => {
-    return queryHelper.getAllProductFeatures(session, slots.product); 
+    return queryHelper.getAllProductFeatures(session, slots.product, slots.category); 
 });
 
 // GetManufacturerPhone
@@ -243,7 +244,7 @@ addAppIntent(config.intents.getProducts, (slots, session, data) => {
 //      what {category} does {manufacturer} have?
 //
 addAppIntent(config.intents.queryProducts, (slots, session, data) => {
-    return queryHelper.getProductsForMfgAndCategory(session, slots.category, slots.manufacturer); 
+    return queryHelper.getProductsByMfgAndCategory(session, slots.category, slots.manufacturer); 
 });
 
 // GetProductsCount

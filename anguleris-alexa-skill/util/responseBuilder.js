@@ -29,7 +29,7 @@ function responseWithCard(text, title, reprompt, session, shouldEndSession) {
         if (!text)
             text = ''; 
         if (!reprompt)
-            reprompt = text; 
+            reprompt = getRandomReprompt(); 
         else {
             //if (!shouldEndSession)
             //    text += reprompt;
@@ -94,7 +94,6 @@ function responseWithCardShortcut(propertyName, replacements, session, shouldEnd
 // returns: json object (Alexa response format) 
 function responseListGroup(list, query, groupSize, startIndex, navArgs) {
     return exception.try(() => {
-
         var text = '';
 
         //build session attributes
@@ -154,8 +153,8 @@ function responseListGroup(list, query, groupSize, startIndex, navArgs) {
             text += navArgs.postText + ' ';
 
             //build the response body
-            var title = replaceText(navArgs.title);  
-            var reprompt = replaceText(navArgs.title);  
+            var title = replaceText(navArgs.title);         
+            var reprompt = replaceText(navArgs.reprompt);
 
             var output = responseWithCard(text, title, reprompt, sessionAttr);
 
@@ -249,6 +248,17 @@ function productNotFound(name, session) {
 // * * * 
 function entityNotFound(name, session) {
     return responseWithCardShortcut('entityNotFound', {name:name}, session); 
+}
+
+// * * * 
+function getRandomReprompt() {
+    return exception.try(() => {
+
+        var list = config.ui.reprompts; 
+        var index = Math.floor((Math.random() * list.length));
+
+        return config.ui.reprompts[index]; 
+    });
 }
 
 

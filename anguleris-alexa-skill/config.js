@@ -245,7 +245,7 @@ module.exports = {
         launchPrompt: getUISetting('LAUNCH_PROMPT', {
             text: 'Welcome to the Bimsmith Skill version {version}.',
             card: 'Try asking for a list of categories or manufacturers',
-            reprompt: 'Launch'
+            reprompt: null
         }),
         unknownIntent: getUISetting('UNKNOWN_INTENT', {
             text: 'Sorry, your request was not recognized.',
@@ -266,7 +266,7 @@ module.exports = {
                 "What dishwashers by Kenmore come in Stainless Steel finish? " + 
                 "What manufacturers have products for Optical Turnstiles? " + 
                 "What categories does Kenmore have products for? ",
-            reprompt: "Try this command: list all categories. ",
+            reprompt: null,
             card: 'Help'
         }),
         getVersion: getUISetting('GET_VERSION', {
@@ -276,12 +276,12 @@ module.exports = {
         }),
         noResultsFound: getUISetting('NO_RESULTS', {
             text: 'Sorry, no results found for your query. Do you want to try that again?', 
-            reprompt: 'Sorry, no results found for your query. Do you want to try that again?',
+            reprompt: null,
             card: 'No Results Found'
         }),
         generalError: getUISetting('GENERAL_ERROR', {
             text: 'Sorry, an error has occurred.',
-            reprompt: 'Sorry, an error has occurred. Want to try again?',
+            reprompt: null,
             card: 'General Error'
         }),
         manufacturersForCategory: getUISetting('MFG_FOR_CATEGORY', {
@@ -316,7 +316,7 @@ module.exports = {
         }),
         noDetailsForManufacturer: getUISetting('NO_DETAILS_FOR_MFG',  {
             text: 'Sorry, no details are available for this manufacturer.',
-            reprompt: '',
+            reprompt: null,
             card: 'No Details for Manufacturer'
         }),
         noDetailsForProduct: getUISetting('NO_DETAILS_FOR_PROD',  {
@@ -404,11 +404,6 @@ module.exports = {
             reprompt: null,
             card: 'Products for {name}'
         }),
-        noProductsForEntity: getUISetting('NO_PRODUCTS_FOR_ENTITY',  {
-            text: 'Sorry, no products were found for {name}.',
-            reprompt: null,
-            card: 'No Products Found'
-        }),
         numProductsForEntity: getUISetting('NUM_PRODUCTS_FOR_ENTITY',  {
             text:'{count} products found for {name}.',
             reprompt: null,
@@ -449,6 +444,24 @@ module.exports = {
             reprompt: null,
             card: 'Feature not Supported'
         }),
+
+        reprompts: [
+            'Ask me a question like, what categories are available?',
+            'Ask me a question like, what manufacturers are available?',
+            'You can ask for a list of products for a given category, like, what products are available in Optical Turnstiles?',
+            'You can query products for a manufacturer, like, what products are available by Kenmore?',
+            'You can ask, for which categories does Boon Edam USA have products? ',
+            'Ask about product counts, for example: how many products are available by Boon Edam USA?',
+            'You can query for products, like: what products does Boon Edam USA have in Optical Turnstiles? ',
+            'You can query for features, such as: what features are available for Speed Lane Slide by Boon Edam USA?',
+            'You can query for product features, such as: what finishes are available in dishwashers?',
+            'You can query about product finishes, such as: what dishwashers have a finish of stainless steel? 	',
+            'You can query about product features, like: what dishwashers from Kenmore have a finish of metallic? 		',
+            'Ask about product features, such as: what widths does SpeedLane Slide by Boon Edam USA come in? ',
+            'Ask about manufacturer info, for example: tell me about Kenmore',
+            "Ask for manufacturer info, such as: what is Kenmore's address?",
+            "Ask for manufacturer details, such as: what is Kenmore's phone number?"
+        ]
     },
 };
 

@@ -41,9 +41,9 @@ function getCategories(session) {
             0, 
             {
                 textProperty: 'name', 
-                preText: 'Found {count} categories. Results {start} to {end} of {count}. ', 
-                postText: 'Say next, get details for category, or get manufacturers for category. ', 
-                reprompt: 'Say next, get details for category, or get manufacturers for category. ',
+                preText: categories.length >1 ? 'Found {count} categories. Results {start} to {end} of {count}. ' : 'Found 1 category. ', 
+                postText: categories.length >1 ? 'Say next, or ask a different question. ' : '', 
+                reprompt: categories.length >1 ? 'Say next, or ask a different question. ' : 'hopi',
                 title: 'Results {start} to {end} of {count}'
             }
         ); 
@@ -60,7 +60,7 @@ function getCategories(session) {
 function getManufacturers(session) {
     return exception.try(() => {
         session.querySubject = enums.querySubject.manufacturers;
-        var manufacturers = query.runQuery(session.querySubject)
+        var manufacturers = query.runQuery(session.querySubject);
     
         //TODO: hard-coded text 
         return responseBuilder.responseListGroup (
@@ -70,9 +70,9 @@ function getManufacturers(session) {
             0, 
             {
                 textProperty: 'name', 
-                preText: 'Found {count} manufacturers. Results {start} to {end} of {count}. ', 
-                postText: 'Say next, get details for category, or get manufacturers for category. ', 
-                reprompt: 'Say next, get details for category, or get manufacturers for category. ',
+                preText: manufacturers.length >1 ? 'Found {count} manufacturers. Results {start} to {end} of {count}. ': 'Found 1 manufacturer. ', 
+                postText: manufacturers.length >1 ? 'Say next to move to next result. Or ask a different question. ': '', 
+                reprompt: manufacturers.length >1 ? 'Say next to move to next result. Or ask a different question. ': null,
                 title: 'Results {start} to {end} of {count}'
             }
         ); 
@@ -395,9 +395,9 @@ function getProductsForEntity(session, entityName, countOnly) {
                         0,
                         {
                             textProperty: 'name',
-                            preText: 'Found {count} products. Result {start} of {count}. ',
-                            postText: 'Say next to move to next result. Or ask a different question. ',
-                            reprompt: 'Say next to move to next result. Or ask a different question. ',
+                            preText: products.length >1 ? 'Found {count} products. Result {start} of {count}. ' : 'Found 1 product. ',
+                            postText: products.length >1 ? 'Say next to move to next result. Or ask a different question. ' : '',
+                            reprompt: products.length >1 ? 'Say next to move to next result. Or ask a different question. ' : null,
                             title: 'Result {start} of {count}'
                         }
                     );
@@ -520,9 +520,9 @@ function queryProducts(session, categoryName, featureName, featureValue, manufac
                 0,
                 {
                     textProperty: 'name',
-                    preText: 'Found {count} products. Result {start} of {count}. ',
-                    postText: 'Say next to move to next result. Or ask a different question. ',
-                    reprompt: 'Say next to move to next result. Or ask a different question. ',
+                    preText: products.length >1 ? 'Found {count} products. Result {start} of {count}. ': 'Found 1 product. ',
+                    postText: products.length >1 ? 'Say next to move to next result. Or ask a different question. ': '',
+                    reprompt: products.length >1 ? 'Say next to move to next result. Or ask a different question. ': null,
                     title: 'Result {start} of {count}'
                 }
             );
@@ -647,5 +647,6 @@ module.exports = {
     getManufacturers,
     getManufacturersForCategory,
     getCategoriesForManufacturer,
-    getFeatureValuesForCategory 
+    getFeatureValuesForCategory ,
+    getProductsByMfgAndCategory
 };
