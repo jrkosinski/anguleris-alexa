@@ -466,6 +466,7 @@ function getFeatureValuesForCategory(session, categoryName, featureName) {
     });
 }
 
+// * * * 
 function getProductsByMfgAndCategory(session, categoryName, manufacturerName) {
     return queryProducts(session, categoryName, null, null, manufacturerName);
 }
@@ -544,6 +545,13 @@ function queryProducts(session, categoryName, featureName, featureValue, manufac
 function getProductFromSession(session, productName){
     return exception.try(() => {
         var output = null; 
+
+        if (productName === 'it')
+            productName = null; 
+        else if (productName === 'that one')
+            productName = null; 
+        else if (productName === 'that')
+            productName = null; 
 
         if (productName) {
             //attempt to get by product name 

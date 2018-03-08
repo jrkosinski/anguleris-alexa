@@ -549,7 +549,7 @@ const runUnitTests = async((handler) => {
         async(() => {
             var request = createIntentRequest(config.intents.getProductFeatureValues.name, 
             {startIndex:0, querySubject:enums.querySubject.products, queryParams: {manufacturer:'Boon Edam USA'}},
-            {entity:'Boon Edam USA', feature:'color'});
+            {entity:'Boon Edam USA', feature:'colors'});
             await(runTest('mfg product features (color) by mfg', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes
@@ -571,7 +571,7 @@ const runUnitTests = async((handler) => {
         async(() => {
             var request = createIntentRequest(config.intents.queryProductByFeature.name, 
             {startIndex:0, querySubject:enums.querySubject.products},
-            {category:'Diswashers', feature:'finish', featureValue:'metallic'});
+            {category:'Dishwashers', feature:'finish', featureValue:'metallic'});
             await(runTest('product query by feature value', request, [
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes
@@ -580,7 +580,7 @@ const runUnitTests = async((handler) => {
 
         //feature values by category (dishwashers)
         async(() => {
-            var request = createIntentRequest(config.intents.getFinishesForCategory.name, 
+            var request = createIntentRequest(config.intents.getColorsForCategory.name, 
             {startIndex:0, querySubject:enums.querySubject.products},
             {category:'Dishwashers' });
             await(runTest('feature values by category (dishwashers)', request, [

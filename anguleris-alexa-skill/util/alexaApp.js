@@ -35,7 +35,7 @@ app.customSlot('Manufacturer', manufacturerNames);
 app.customSlot('Product', productNames); 
 app.customSlot('Entity', common.arrays.merge(common.arrays.merge(categoryNames, manufacturerNames), productNames)); 
 app.customSlot('Feature', enums.allProductFeatureNames()); 
-app.customSlot('FeatureValue', ['Stainless Steel', 'A', 'B', 'C']);
+app.customSlot('FeatureValue', ['stainless steel', 'metallic', 'black', 'white', 'gray']);
 
 // * * * 
 // utility for specifying an intent handler 
@@ -154,16 +154,20 @@ addAppIntent(config.intents.getDetails, (slots, session, data) => {
 // slots: 
 //      feature:Feature
 //      product:Product
-//
+// 
 // example text: 
 //      what {feature} does {product} come in? 
-//
+// 
 addAppIntent(config.intents.getProductFeatureValues, (slots, session, data) => {
-    return queryHelper.getProductFeatureValues(session, slots.feature, slots.product); 
+    return queryHelper.getProductFeatureValues(session, enums.productFeature.normalizeFeatureName(slots.feature), slots.product); 
 });
 
 addAppIntent(config.intents.getProductFinishes, (slots, session, data) => {
     return queryHelper.getProductFeatureValues(session, 'finish', slots.product); 
+});
+
+addAppIntent(config.intents.getProductColors, (slots, session, data) => {
+    return queryHelper.getProductFeatureValues(session, 'color', slots.product); 
 });
 
 addAppIntent(config.intents.getProductHeights, (slots, session, data) => {
@@ -265,6 +269,10 @@ addAppIntent(config.intents.getFinishesForCategory, (slots, session, data) => {
     return queryHelper.getFeatureValuesForCategory(session, slots.category, 'finish'); 
 });
 
+addAppIntent(config.intents.getColorsForCategory, (slots, session, data) => {
+    return queryHelper.getFeatureValuesForCategory(session, slots.category, 'color'); 
+});
+
 addAppIntent(config.intents.getHeightsForCategory, (slots, session, data) => {
     return queryHelper.getFeatureValuesForCategory(session, slots.category, 'height'); 
 });
@@ -281,11 +289,15 @@ addAppIntent(config.intents.getWidthsForCategory, (slots, session, data) => {
 //      get 
 //
 addAppIntent(config.intents.queryProductByFeature, (slots, session, data) => {
-    return queryHelper.queryProducts(session, slots.category, slots.feature, slots.featureValue); 
+    return queryHelper.queryProducts(session, slots.category, enums.productFeature.normalizeFeatureName(slots.feature), slots.featureValue); 
 }); 
 
 addAppIntent(config.intents.queryProductByFinish, (slots, session, data) => {
     return queryHelper.queryProducts(session, slots.category, 'finish', slots.featureValue); 
+}); 
+
+addAppIntent(config.intents.queryProductByColor, (slots, session, data) => {
+    return queryHelper.queryProducts(session, slots.category, 'color', slots.featureValue); 
 }); 
 
 addAppIntent(config.intents.queryProductByHeight, (slots, session, data) => {
@@ -303,11 +315,15 @@ addAppIntent(config.intents.queryProductByWidth, (slots, session, data) => {
 //      get 
 //
 addAppIntent(config.intents.queryProductByMfgFeature, (slots, session, data) => {
-    return queryHelper.queryProducts(session, slots.category, slots.feature, slots.featureValue, slots.manufacturer); 
+    return queryHelper.queryProducts(session, slots.category, enums.productFeature.normalizeFeatureName(slots.feature), slots.featureValue, slots.manufacturer); 
 }); 
 
 addAppIntent(config.intents.queryProductByMfgFinish, (slots, session, data) => {
     return queryHelper.queryProducts(session, slots.category, 'finish', slots.featureValue, slots.manufacturer); 
+}); 
+
+addAppIntent(config.intents.queryProductByMfgColor, (slots, session, data) => {
+    return queryHelper.queryProducts(session, slots.category, 'color', slots.featureValue, slots.manufacturer); 
 }); 
 
 addAppIntent(config.intents.queryProductByMfgHeight, (slots, session, data) => {
@@ -328,10 +344,10 @@ addAppIntent(config.intents.queryProductByMfgWidth, (slots, session, data) => {
 addAppIntent(config.intents.repeat, (slots, session, data) => {
     if (session.text) {
         //TODO: add reprompt?
-        return responseBuilder.responseWithCard(session.text, 'Repeat', session.text, session); 
+        return responseBuilder.responseWithCard(session.text, 'Repeat', null, session); 
     }
     else {
-        return responseBuilder.responseWithCardShortcut('launchPrompt'); 
+        return responseBuilder.responseWithCardShortcut('unknownIntent'); 
     }
 });
 
@@ -405,6 +421,9 @@ addAppIntent(config.intents.help, (slots, session, data) => {
     return responseBuilder.buildHelpResponse(session); 
 });
 
+addAppIntent(config.intents.goodbye, (slots, session, data) => {
+    return responseBuilder.responseWithCard(config.ui.goodbye.text, config.ui.goodbye.card, null, session, true); 
+});
 
 module.exports = {
     app: app

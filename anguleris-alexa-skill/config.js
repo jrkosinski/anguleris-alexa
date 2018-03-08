@@ -93,6 +93,12 @@ module.exports = {
                 "what widths does {product:Product} come in"
             ]
         },
+        getProductColors: {
+            name: 'GetProductColorsIntent',
+            utterances: [
+                "what colors does {product:Product} come in"
+            ]
+        },
         getAllProductFeatures: { 
             name: 'GetAllProductFeaturesIntent',
             utterances: [
@@ -147,6 +153,12 @@ module.exports = {
                 'what widths are available for {category:Category}'
             ]
         },
+        getColorsForCategory: {
+            name: 'GetColorsForCategoryIntent', 
+            utterances: [
+                'what colors are available for {category:Category}'
+            ]
+        },
         queryProductByFeature: { 
             name: 'QueryProductByFeatureIntent',
             utterances: [
@@ -171,6 +183,12 @@ module.exports = {
                 "what {category:Category} have a width of {featureValue:FeatureValue}",
             ]
         },
+        queryProductByColor: { 
+            name: 'QueryProductByColorIntent',
+            utterances: [
+                "what {category:Category} have a color of {featureValue:FeatureValue}",
+            ]
+        },
         queryProductByMfgFeature: {  
             name: 'QueryProductByMfgFeatureIntent',
             utterances: [
@@ -181,6 +199,12 @@ module.exports = {
             name: 'QueryProductByMfgFinishIntent',
             utterances: [
                 "what {category:Category} by {manufacturer:Manufacturer} have a finish of {featureValue:FeatureValue}"
+            ]
+        },
+        queryProductByMfgColor: {  
+            name: 'QueryProductByMfgColorIntent',
+            utterances: [
+                "what {category:Category} by {manufacturer:Manufacturer} have a color of {featureValue:FeatureValue}"
             ]
         },
         queryProductByMfgHeight: {  
@@ -232,10 +256,10 @@ module.exports = {
                 "help"
             ]
         },
-        freeText: {
-            name: "FreeText",
+        goodbye: {
+            name: "Goodbye",
             utterances: [
-                "what do you think we should do next"
+                "Goodbye"
             ]
         }
     },
@@ -243,29 +267,35 @@ module.exports = {
     // UI elements
     ui: {
         launchPrompt: getUISetting('LAUNCH_PROMPT', {
-            text: 'Welcome to the Bimsmith Skill version {version}.',
+            text: 'Welcome to the Bimsmith Skill version {version}. Say help to get a list of commands. ',
             card: 'Try asking for a list of categories or manufacturers',
             reprompt: null
         }),
         unknownIntent: getUISetting('UNKNOWN_INTENT', {
-            text: 'Sorry, your request was not recognized.',
-            reprompt: 'Sorry, your request was not recognized. Want to try again?',
+            text: 'Some things I just cant help with at this stage of development. For a list of commands, say help. Want to try again?',
+            reprompt: null, 
             card: 'Unknown Intent'
         }),
         help: getUISetting('HELP', {
             //TODO: add more examples
-            text: "You can ask for a list of categories, or a list of manufacturers. Navigation commands will help you to navigate through lists of results. Following is a list of example commands: " + 
-                "List all categories. " + 
-                "List all manufacturers. " + 
-                "What products are in Optical Turnstiles? " + 
-                "What products does Kenmore have? " + 
-                "How many products does Kenmore have? " + 
-                "How many products are there in Optical Turnstiles? " + 
-                "What finishes does 24 inch Built-In Dishwasher by Kenmore come in? " + 
-                "What features does Speed lane Slide by Boon Edam USA support? " + 
-                "What dishwashers by Kenmore come in Stainless Steel finish? " + 
-                "What manufacturers have products for Optical Turnstiles? " + 
-                "What categories does Kenmore have products for? ",
+            text: "You can ask many different types of questions. Some questions result in navigable lists of results. Navigation commands will help you to navigate through lists of results. Following is a general list of example commands: " +                     
+                'what categories are available? ' + 
+                'what manufacturers are available? ' + 
+                'what products are available in Optical Turnstiles? ' + 
+                'what products are available by Kenmore? ' + 
+                'for which categories does Boon Edam USA have products? ' + 
+                'how many products are available by Boon Edam USA? ' + 
+                'what products does Boon Edam USA have in Optical Turnstiles? ' + 
+                'what features are available for Speed Lane Slide by Boon Edam USA? ' + 
+                'what finishes are available in dishwashers? ' + 
+                'what dishwashers have a finish of stainless steel? ' + 
+                'what dishwashers from Kenmore have a finish of metallic? ' + 
+                'what widths does SpeedLane Slide by Boon Edam USA come in? ' + 
+                'tell me about Kenmore. ' + 
+                "what is Kenmore's address? " + 
+                "what is Kenmore's phone number? " + 
+                "For more help during the development phase, just contact john kosinski by email or slack!",                
+
             reprompt: null,
             card: 'Help'
         }),
@@ -280,7 +310,7 @@ module.exports = {
             card: 'No Results Found'
         }),
         generalError: getUISetting('GENERAL_ERROR', {
-            text: 'Sorry, an error has occurred.',
+            text: 'Sorry, an error has occurred. Please try again. ',
             reprompt: null,
             card: 'General Error'
         }),
@@ -310,47 +340,47 @@ module.exports = {
             card: 'Invalid Request'
         }),
         noDetailsForCategory: getUISetting('NO_DETAILS_FOR_CATEGORY',  {
-            text: 'Sorry, no details are available for this category.',
+            text: 'Sorry, no details are available for this category. Want to try a different category? ',
             reprompt: null,
             card: 'No Details for Catgeory'
         }),
         noDetailsForManufacturer: getUISetting('NO_DETAILS_FOR_MFG',  {
-            text: 'Sorry, no details are available for this manufacturer.',
+            text: 'Sorry, no details are available for this manufacturer. Want to try a different manufacturer? ',
             reprompt: null,
             card: 'No Details for Manufacturer'
         }),
         noDetailsForProduct: getUISetting('NO_DETAILS_FOR_PROD',  {
-            text: 'Sorry, no details are available for this product.',
+            text: 'Sorry, no details are available for this product. Want to try another one? ',
             reprompt: null,
             card: 'No Details for Product'
         }),
         manufacturerNotFound: getUISetting('MFG_NOT_FOUND',  {
-            text: 'Sorry, no manufacturer by the name {name} was found.',
+            text: 'Sorry, no manufacturer by the name {name} was found. Try again? ',
             reprompt: null,
             card: 'Manufacturer Not Found' 
         }),
         categoryNotFound: getUISetting('CATEGORY_NOT_FOUND',  {
-            text: 'Sorry, no category by the name {name} was found.',
+            text: 'Sorry, no category by the name {name} was found. Try again? ',
             reprompt: null,
             card: 'Category Not Found'
         }),
         productNotFound: getUISetting('PRODUCT_NOT_FOUND',  {
-            text: 'Sorry, no product by the name {name} was found.',
+            text: 'Sorry, no product by the name {name} was found. Would you like to try again? ',
             reprompt: null,
             card: 'Product Not Found'
         }),
         entityNotFound: getUISetting('MFG_PHONE_FOUND',  {
-            text: 'Sorry, {name} could not be found.',
+            text: 'Sorry, {name} could not be found. Try again?',
             reprompt: null,
             card: '{name} Not Found'
         }),
         manufacturerPhoneFound: getUISetting('MFG_PHONE_FOUND',  {
-            text: 'The phone number for {name} is {value}.',
+            text: 'The phone number for {name} is {value}. ',
             reprompt: null,
             card: 'Phone Number for {name}'
         }),
         manufacturerPhoneNotFound: getUISetting('MFG_PHONE_NOT_FOUND',  {
-            text: 'Sorry, no phone number is available for {name}.',
+            text: 'Sorry, no phone number is available for {name}. Would you like to try that again? ',
             reprompt: null,
             card: 'Phone Number Not Found'
         }),
@@ -360,7 +390,7 @@ module.exports = {
             card: 'Address for {name}'
         }),
         manufacturerAddressNotFound: getUISetting('MFG_ADDR_NOT_FOUND',  {
-            text: 'Sorry, no street address is available for {name}.',
+            text: 'Sorry, no street address is available for {name}. Would you like to try that again? ',
             reprompt: null,
             card: 'Address Not Found'
         }),
@@ -370,7 +400,7 @@ module.exports = {
             card: 'Products for {name}'
         }),
         noProductsForManufacturer: getUISetting('NO_PRODUCTS_FOR_MFG',  {
-            text: 'Sorry, no products were found for {name}.',
+            text: 'Sorry, no products were found for {name}. Would you like to try that again? ',
             reprompt: null,
             card: 'No Products Found'
         }),
@@ -380,7 +410,7 @@ module.exports = {
             card: '{count} products found for {name}'
         }),
         noProductsForEntity: getUISetting('NO_PRODUCTS_FOR_ENTITY',  {
-            text: 'Sorry, no products were found for {name}.',
+            text: 'Sorry, no products were found for {name}. Would you like to try that again? ',
             reprompt: null,
             card: 'No Products Found'
         }),
@@ -390,7 +420,7 @@ module.exports = {
             card: 'Products for {name}'
         }),
         noProductsForCategory: getUISetting('NO_PRODUCTS_FOR_CAT',  {
-            text: 'Sorry, no products were found for {name}.',
+            text: 'Sorry, no products were found for {name}. Would you like to try that again? ',
             reprompt: null,
             card: 'No Products Found'
         }),
@@ -410,17 +440,17 @@ module.exports = {
             card: '{count} products found for {name}'
         }),
         featureNotSupported: getUISetting('FEATURE_NOT_SUPPORTED',  {
-            text: 'Sorry, the feature {feature} is not supported for product {name}.',
+            text: 'Sorry, the feature {feature} is not supported for product {name}. Would you like to try a different feature? ',
             reprompt: null,            
             card: 'Feature Not Supported'
         }),
         featureSupported: getUISetting('FEATURE_SUPPORTED',  {
-            text: 'Product {name} supports the following {feature}: {value}',
+            text: 'Product {name} supports the following {feature}s: {value}',
             reprompt: null,
             card: 'Feature Supported'
         }),
         noFeatures: getUISetting('NO_FEATURES',  {
-            text: 'No features are listed for {name}',
+            text: 'No features are listed for {name}. Would you like to try that again? ',
             reprompt: null,
             card: 'No Features Listed'
         }),
@@ -430,19 +460,24 @@ module.exports = {
             card: 'Features for {name}'
         }),
         productQueryNoResults: getUISetting('QUERY_PROD_NO_RESULTS',  {
-            text: 'No products were found for your query.',
+            text: 'No products were found for your query. Would you like to try that again? ',
             reprompt: null,
             card: 'No Results for Product Query'
         }),
         categoriesByFeature: getUISetting('CATEGORIES_BY_FEATURE', {
-            text: 'The following values exist for {name}. ',
+            text: 'The following  {name} options are available. ',
             reprompt: null,
             card: 'Feature Values for {name}'
         }),
         featureNotSupportedByCategory: getUISetting('FEATURE_NOT_SUPPORTED_CAT', {
-            text: 'That feature is not supported by the given category. ',
+            text: 'That feature is not supported by the given category. Would you like to try a different feature or product? ',
             reprompt: null,
             card: 'Feature not Supported'
+        }),
+        goodbye: getUISetting('GOODBYE', {
+            text: 'Thank you very much. Goodbye! ',
+            reprompt: null,
+            card: 'Goodbye'
         }),
 
         reprompts: [
