@@ -11,6 +11,7 @@
   "dependencies": {
     "alexia": "^2.4.0",
     "asyncawait": "^1.0.6",
+    "aws-sdk": "^2.207.0",
     "uuid": "^3.2.1"
   }
 }
