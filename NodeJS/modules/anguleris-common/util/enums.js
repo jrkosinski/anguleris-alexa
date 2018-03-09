@@ -1,12 +1,13 @@
 'use strict'; 
 
-// * * * * * 
+// ======================================================================================================
 // enums - enums
 // 
 // Anguleris Technologies
 // John R. Kosinski
 //
 // 22 Feb 2018
+// ------------------------------------------------------------------------------------------------------
 const configUtil = require('./configUtil'); 
 const arrayUtil = require('./arrayUtil'); 
 
@@ -19,8 +20,26 @@ const _productFeautures = {
         depth:          ['depth','depths'],
         size:           ['size','sizes'],
         capacity:       ['capacity','capacities'],
-        paintType:      ['paint type','paint types']
+        paintType:      ['paint type','paint types']        
     };
+
+_productFeautures.normalizeFeatureName = (name) => {
+    if (name) {
+        name = name.trim().toLowerCase(); 
+        for (var p in _productFeautures) {
+            if (name === p.trim().toLowerCase())
+                return p; 
+
+            if (Array.isArray(_productFeautures[p])){
+                for (var n=0; n<_productFeautures[p].length; n++) {
+                    if (_productFeautures[p][n] === name)
+                        return p; 
+                }
+            }
+        }
+    }
+    return name; 
+};
 
 function allProductFeatureNames() {
     var output = []; 

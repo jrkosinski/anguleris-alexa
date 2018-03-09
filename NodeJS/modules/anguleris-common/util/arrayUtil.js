@@ -2,16 +2,17 @@
 
 const types = require('./types'); 
 
-// * * * * * 
+// ======================================================================================================
 // arrayUtil
 // 
 // Anguleris Technologies
 // John R. Kosinski
 //
 // 22 Feb 2018
+// ------------------------------------------------------------------------------------------------------
 const configUtil = require('./configUtil'); 
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // removes item at the specified index 
 // NOTE: removes the original array 
 // 
@@ -27,7 +28,7 @@ function removeAt(array, n) {
     return array;
 }; 
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // clears all items from array 
 // NOTE: modifies original array 
 //
@@ -39,7 +40,7 @@ function clear (array) {
     return array;
 };
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets the first item in the array, or null. 
 //
 // returns: array item
@@ -47,7 +48,7 @@ function firstOrDefault(array) {
     return array && array[0] ? array[0] : null;
 };
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets all elements of the array that match the given query. 
 // 
 // args
@@ -66,7 +67,7 @@ function where(array, query) {
     return output; 
 };
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // determines whether the at least one element matching the query exists in the 
 // array. 
 //
@@ -84,7 +85,7 @@ function exists (array, query) {
     return false;
 };
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // selects a given property from each element of the array, and returns those properties in 
 // a new array. 
 // 
@@ -105,7 +106,7 @@ function select(array, propName) {
     return output; 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // removes each element that satisfies the given query. Returns the resulting array.
 // NOTE: modifies the array passed in.
 //
@@ -125,7 +126,7 @@ function removeWhere(array, condition) {
     return array; 
 };
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // removes all elements that are null or undefined. 
 // NOTE: modifies original array
 //
@@ -139,7 +140,7 @@ function removeWhereNullOrUndefined(array) {
     return null;
 };
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // merges both given arrays into one new array with no duplicates, and returns that new array. 
 //
 // args
@@ -169,7 +170,7 @@ function merge(array1, array2, equalityComparison) {
     return output; 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // performs the given operation on each element of the given array
 // NOTE: modifies original array
 // 
@@ -187,7 +188,7 @@ function operate(array, func) {
     return array;
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // returns a clone of the given array 
 // 
 // args
@@ -223,7 +224,7 @@ function clone(array, startIndex, length) {
     return clone;
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // returns true if the given object is null, not an array, or is an empty array. 
 // 
 // args
@@ -234,7 +235,7 @@ function nullOrEmpty(array) {
     return !(array && array.length && Array.isArray(array));
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // converts an array to a comma-delimited english-sentence string 
 // e.g. 'eggs, bacon, coffee, and orange juice'
 //
@@ -249,7 +250,7 @@ function toText(array) {
             output = array[0].toString() + ' and ' + array[1].toString();
         else{
             for (var n=0; n<array.length; n++) {
-                if (n > 1)
+                if (n > 0)
                     output += ', ';
                 if (n === array.length-1)
                     output += 'and '; 

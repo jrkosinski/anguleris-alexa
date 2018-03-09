@@ -1,12 +1,13 @@
 'use strict';
 
-// * * * * * 
+// ======================================================================================================
 // dataAccess - access to application data sources
 // 
 // Anguleris Technologies
 // John R. Kosinski
 //
 // 22 Feb 2018
+// ------------------------------------------------------------------------------------------------------
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 
@@ -22,13 +23,14 @@ const _manufacturers = new Manufacturers();
 const _products = new Products();
 
 
-// * * * * * 
+// ======================================================================================================
 // DataTable - superclass for data container entities
 // 
 // Anguleris Technologies
 // John R. Kosinski
 //
 // 22 Feb 2018
+// ------------------------------------------------------------------------------------------------------
 function DataTable(data) {
     const _this = this;
     const _all = data;
@@ -37,7 +39,7 @@ function DataTable(data) {
         console.log("'" + data[n].name + "',");
     }*/
 
-    // * * *
+    // ------------------------------------------------------------------------------------------------------
     // finds a specific entity, given its name 
     //
     // args
@@ -47,6 +49,9 @@ function DataTable(data) {
     this.findByName = (name) => {
         return exception.try(() => {
             var output = null; 
+            if (!name) 
+                name = ''; 
+                
             name = name.trim().toLowerCase(); 
 
             for(var n=0; n<_all.length; n++) {
@@ -64,7 +69,7 @@ function DataTable(data) {
         });
     };
 
-    // * * *
+    // ------------------------------------------------------------------------------------------------------
     // finds a specific entity, given its id 
     //
     // args
@@ -89,20 +94,21 @@ function DataTable(data) {
         });
     };
 
-    // * * *
+    // ------------------------------------------------------------------------------------------------------
     // returns all contained objects
     this.all = () => {
         return _all; 
     }
 }
 
-// * * * * * 
+// ======================================================================================================
 // Categories - data container for categories
 // 
 // Anguleris Technologies
 // John R. Kosinski
 //
 // 22 Feb 2018
+// ------------------------------------------------------------------------------------------------------
 function Categories() {
     const _all = [
         {
@@ -270,13 +276,14 @@ function Categories() {
     return new DataTable(_all);
 }
 
-// * * * * * 
+// ======================================================================================================
 // Manufacturers - data container for manufacturers
 // 
 // Anguleris Technologies
 // John R. Kosinski
 //
 // 22 Feb 2018
+// ------------------------------------------------------------------------------------------------------
 function Manufacturers() {
     const _all = [
         { name: 'Armstrong Flooring',
@@ -404,13 +411,14 @@ function Manufacturers() {
     return new DataTable(_all);
 }
 
-// * * * * * 
-// Manufacturers - data container for manufacturers
+// ======================================================================================================
+// Products - data container for manufacturers
 // 
 // Anguleris Technologies
 // John R. Kosinski
 //
 // 22 Feb 2018
+// ------------------------------------------------------------------------------------------------------
 function Products() {
     const _all = [
         { 
@@ -423,7 +431,8 @@ function Products() {
             features: {
                 height: '40 3/4 inches',
                 width: ['12 1/4 inches', '20 1/8 inches'],
-                length: '4 feet by 8 11/16 inches'
+                length: '4 feet by 8 11/16 inches',
+                color: ['black', 'white', 'gray']
             },
             description:'The Intuitive Speed Gate. As pedestrian mobility increases so does the need for a sophisticated, intuitive, refined and yet secure entry management experience for those entering and moving around buildings. The Speed lane Slide interacts with those who approach it, managing and guiding authorized users through to the secured areas of buildings.',
         },
@@ -436,7 +445,8 @@ function Products() {
             category: 'Optical Turnstiles',
             features: {
                 width: '6 1/4 inches',
-                length: '30 inches'
+                length: '30 inches',
+                color: ['black', 'white', 'gray']
             },
             description:'The Barrier Free Optical Turnstile. The Speed lane Open assists with channelling the flow of people entering and moving around buildings. Commonly operating in multiples, it acts as a boundary between public and private worlds, guiding users to their destination under the watchful eyes of a security guard. It interacts with both worlds to ensure the right people are channelled to the right place, alerting security guards if there is a breach of access.'
         },
@@ -543,7 +553,8 @@ function Products() {
             features: {
                 height: '40 3/4 inches',
                 width: '4 1/8 inches',
-                length: '69 7/8 inches'
+                length: '69 7/8 inches',
+                color: ['black', 'white', 'gray']
             }, 
             description: "The Sophisticated Optical Turnstile. The Speed lane Swing manages and channels the flow of people entering and moving around buildings. Commonly operating in multiples, thus fluently guiding the flow of high visitor levels; the Speed lane acts as a boundary between public and private worlds. Interacting with both worlds it ensures that the right people are channeled to the right place, placing the control of the entry in its hands. Part of the Lifeline series, the Speed lane Swing has been designed to the highest standards, ahead of industry trends"
         },
@@ -561,6 +572,7 @@ function Products() {
             manufacturer: 'Boon Edam USA',
             subcategory: null, 
             features: {
+                color: ['black']
             }, 
             description: ""
         },
@@ -573,6 +585,7 @@ function Products() {
             manufacturer: 'Boon Edam USA',
             subcategory: null, 
             features: {
+                color: ['black', 'white']
             }, 
             description: "We are proud to announce the introduction of our slimmest, single wing access gate in our range. The Winglock Swing had been designed to coordinate with our Speed lane Lifeline series, but can also stand alone as a single installation."
         },
@@ -631,14 +644,14 @@ function Products() {
                     if (item && item.altNames) {
                         for (var i=0; i<item.altNames.length; i++){
                             var tmp = item.altNames[i].trim().toLowerCase(); 
-                            if (temp === name) {
+                            if (tmp === name) {
                                 output = item; 
                                 break; 
                             }
 
                             //add mfg name to end
                             tmp += ' by ' + item.manufacturer.trim().toLowerCase(); 
-                            if (temp === name) {
+                            if (tmp === name) {
                                 output = item; 
                                 break; 
                             }
@@ -658,7 +671,7 @@ function Products() {
 }
 
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets all categories, or a specific one by name
 //
 // args
@@ -674,7 +687,7 @@ function getCategories(name) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets all manufacturers, or a specific one by name
 //
 // args
@@ -690,7 +703,7 @@ function getManufacturers(name) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets all products, or a specific one by id
 //
 // args
@@ -706,7 +719,7 @@ function getProducts(id) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets a list of categories that have the given manufacturer as a manufacturer
 //
 // args
@@ -737,7 +750,7 @@ function getCategoriesForManufacturer(manufacturerName) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets a list of products in the given category 
 //
 // args
@@ -761,7 +774,7 @@ function getProductsForCategory(categoryName) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets a list of products offered by the given manufacturer
 //
 // args
@@ -785,7 +798,7 @@ function getProductsForManufacturer(manufacturerName) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets a product by its name 
 //
 // args
@@ -798,7 +811,7 @@ function getProductByName(productName) {
     }); 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // attempts to get some entity that has a matching name 
 //
 // args
@@ -819,7 +832,7 @@ function getEntityByName(name) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets all of the name properties from every object in the given table. Removes any resulting 
 // elements that are undefined or null. 
 // 
@@ -833,24 +846,28 @@ function getAllNames(table) {
     });
 }
 
+// ------------------------------------------------------------------------------------------------------
 function categoryExists(name) {
     return exception.try(() => {
         return (!common.types.isUndefinedOrNull(_categories.findByName(name))); 
     });
 }
 
+// ------------------------------------------------------------------------------------------------------
 function manufacturerExists(name) {
     return exception.try(() => {
         return (!common.types.isUndefinedOrNull(_manufacturers.findByName(name))); 
     });
 }
 
+// ------------------------------------------------------------------------------------------------------
 function productExists(name) {
     return exception.try(() => {
         return (!common.types.isUndefinedOrNull(_products.findByName(name))); 
     });
 }
 
+// ------------------------------------------------------------------------------------------------------
 function entityExists(name) {
     return exception.try(() => {
         if (categoryExists(name))

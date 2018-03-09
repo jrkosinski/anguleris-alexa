@@ -1,11 +1,13 @@
+'use strict'; 
 
-// * * * * * 
+// ======================================================================================================
 // dateUtil - utilities for handling dates and unix timestamps.
 // 
 // John R. Kosinski
 // 13 Jan 2018
+// ------------------------------------------------------------------------------------------------------
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // converts the date to a unix timestamp (number of seconds since that magical date)
 // 
 // returns: number (timestamp)
@@ -13,7 +15,7 @@ Date.prototype.toUnixTimestamp = () => {
     return Math.floor(this.getTime()/1000);
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // converts the given timestamp to a date string (converts to Date, then returns its toString())
 // 
 // returns: string
@@ -21,7 +23,7 @@ function toDateString(timestamp) {
     return fromUnixTimestamp(timestamp).toString();
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // converts the given timestamp to a Date object
 // 
 // returns: Date
@@ -29,7 +31,7 @@ function fromUnixTimestamp(timestamp){
     return new Date(timestamp*1000); 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // converts the given Date to a unix timestamp
 // 
 // returns: number (timestamp)
@@ -39,7 +41,7 @@ function toUnixTimestamp(d) {
     return Math.floor(d.getTime()/1000);
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // returns the unix timestamp representing now
 // 
 // returns: number (timestamp)
@@ -47,7 +49,7 @@ function getUnixTimestamp(){
     return toUnixTimestamp(new Date()); 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // adds the given number of years to the given timestamp (or now if omitted)
 //
 // args
@@ -59,7 +61,7 @@ function addYearsTimestamp(years, timestamp) {
     return addHoursTimestamp(365 * years, timestamp);
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // adds the given number of days to the given timestamp (or now if omitted)
 //
 // args
@@ -71,7 +73,7 @@ function addDaysTimestamp(days, timestamp) {
     return addHoursTimestamp(60 * days, timestamp);
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // adds the given number of hours to the given timestamp (or now if omitted)
 //
 // args
@@ -83,7 +85,7 @@ function addHoursTimestamp(hours, timestamp) {
     return addMinutesTimestamp(60 * hours, timestamp);
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // adds the given number of minutes to the given timestamp (or now if omitted)
 //
 // args
@@ -99,7 +101,7 @@ function addMinutesTimestamp(minutes, timestamp) {
     return timestamp;
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // adds the given number of years to the given Date (or now if omitted)
 //
 // args
@@ -114,7 +116,7 @@ function addYearsDate(years, date) {
     return fromUnixTimestamp(addYearsTimestamp(years, toUnixTimestamp(date))); 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // adds the given number of days to the given Date (or now if omitted)
 //
 // args
@@ -129,7 +131,7 @@ function addDaysDate(days, date) {
     return fromUnixTimestamp(addDaysTimestamp(days, toUnixTimestamp(date))); 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // adds the given number of hours to the given Date (or now if omitted)
 //
 // args
@@ -144,7 +146,7 @@ function addHoursDate(hours, date) {
     return fromUnixTimestamp(addHoursTimestamp(hours, toUnixTimestamp(date))); 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // adds the given number of minutes to the given Date (or now if omitted)
 //
 // args
@@ -159,7 +161,7 @@ function addMinutesDate(minutes, date) {
     return fromUnixTimestamp(addMinutesTimestamp(minutes, toUnixTimestamp(date))); 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // returns the number of seconds between the two dates (date2 - date1)
 // 
 // args
@@ -171,7 +173,7 @@ function dateDiffSeconds(date1, date2){
     return timestampDiffSeconds(toUnixTimestamp(date1), date2 ? toUnixTimestamp(date2) : null); 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // returns the number of seconds between the two timestamps (timestamp1 - timestamp2)
 // 
 // args

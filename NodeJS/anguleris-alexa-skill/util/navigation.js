@@ -1,12 +1,13 @@
 'use strict';
 
-// * * * * * 
+// ====================================================================================================== 
 // navigation - utilities related to navigation through responses lists 
 // 
 // Anguleris Technologies
 // John R. Kosinski
 //
 // 22 Feb 2018
+// ------------------------------------------------------------------------------------------------------
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 
@@ -19,7 +20,7 @@ const config = require('../config');
 const query = require('./query');
 const responseBuilder = require('./responseBuilder');
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // given a query, returns params that help to form the Alexa response 
 // 
 // args
@@ -62,7 +63,7 @@ function getNavArgsForQuery(query) {
     return output; 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // returns a response that attempts to obey the given command on a list response
 // 
 // args
@@ -123,7 +124,7 @@ function navigate(session, navigationCommand) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // move to the next result in the list response 
 // 
 // args
@@ -134,7 +135,7 @@ function moveNext(session) {
     return navigate(session, enums.navigationCommand.next); 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // move to the previous result in the list response 
 // 
 // args
@@ -145,7 +146,7 @@ function movePrev(session) {
     return navigate(session, enums.navigationCommand.prev); 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // move to the first result in the list response 
 // 
 // args
@@ -156,7 +157,7 @@ function moveFirst(session) {
     return navigate(session, enums.navigationCommand.moveFirst); 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // move to the next result in the list response 
 // 
 // args
@@ -167,7 +168,7 @@ function stop(session) {
     return responseBuilder.responseWithCard('stopping', 'Stop', null, null, true);
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets the navigation list group size appropriate to the given query subject. 
 //
 // args

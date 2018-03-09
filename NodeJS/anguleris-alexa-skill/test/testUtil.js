@@ -1,12 +1,13 @@
 'use strict'
 
-// * * * * * 
+// ====================================================================================================== 
 // testUtil - unit tests (run from test.js as entry point)
 // 
 // Anguleris Technologies
 // John R. Kosinski
 //
 // 22 Feb 2018
+// ------------------------------------------------------------------------------------------------------
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 const alexa = require("alexia");

@@ -1,6 +1,6 @@
 'use strict';
 
-// * * * * * 
+// ======================================================================================================
 // anguleris-common
 // 
 // common & generic utilities for the suite of node-based Anguleris software. 

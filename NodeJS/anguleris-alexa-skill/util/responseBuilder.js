@@ -1,12 +1,13 @@
 'use strict';
 
-// * * * * * 
+// ====================================================================================================== 
 // responseBuilder - builds formatted Alexa response bodies for different purposes
 // 
 // Anguleris Technologies
 // John R. Kosinski
 //
 // 22 Feb 2018
+// ------------------------------------------------------------------------------------------------------
 const common = require('anguleris-common');
 const exception = common.exceptions('RSP');
 const logger = common.logger('RSP');
@@ -14,7 +15,7 @@ const stringUtil = common.strings;
 
 const config = require('../config');
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // forms a standard speech response, with card 
 // 
 // args
@@ -63,7 +64,7 @@ function responseWithCard(text, title, reprompt, session, shouldEndSession) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // forms a standard speech response, with card 
 //
 // args
@@ -82,7 +83,7 @@ function responseWithCardShortcut(propertyName, replacements, session, shouldEnd
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // forms a standard speech response, with card, specific for a navigable list of results 
 // 
 // args
@@ -163,7 +164,7 @@ function responseListGroup(list, query, groupSize, startIndex, navArgs) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // forms a speech response for the case of general error 
 // 
 // args
@@ -174,7 +175,7 @@ function generalError(session) {
     return responseWithCardShortcut('generalError', {}, session); 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // forms a standard response for when no results were found for a query
 // 
 // args
@@ -186,7 +187,7 @@ function noResultsResponse(session, shouldEndSession) {
     return responseWithCardShortcut('noResultsFound', {}, session); 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // converts an array of strings to speech, and returns in a basic speech response
 // 
 // args
@@ -219,7 +220,7 @@ function listToText(list, preText, postText, title, session, shouldEndSession) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // builds the response for built-in Help request 
 // 
 // args
@@ -230,27 +231,54 @@ function buildHelpResponse(session) {
     return responseWithCardShortcut('help', {}, session); 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
+// returns an error response appropriate to a requested category not being found
+// 
+// args
+//  name: the name of requested category 
+// 
+// returns: json object (Alexa response format) 
 function categoryNotFound(name, session) {
     return responseWithCardShortcut('categoryNotFound', {name:name}, session); 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
+// returns an error response appropriate to a requested manufacturer not being found
+// 
+// args
+//  name: the name of requested manufacturer 
+// 
+// returns: json object (Alexa response format) 
 function manufacturerNotFound(name, session) {
     return responseWithCardShortcut('manufacturerNotFound', {name:name}, session); 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
+// returns an error response appropriate to a requested product not being found
+// 
+// args
+//  name: the name of requested product 
+// 
+// returns: json object (Alexa response format) 
 function productNotFound(name, session) {
     return responseWithCardShortcut('productNotFound', {name:name}, session); 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
+// returns an error response appropriate to a requested entity not being found
+// 
+// args
+//  name: the name of requested entity 
+// 
+// returns: json object (Alexa response format) 
 function entityNotFound(name, session) {
     return responseWithCardShortcut('entityNotFound', {name:name}, session); 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
+// gets a random reprompt text from the list of random reprompts 
+// 
+// returns: string 
 function getRandomReprompt() {
     return exception.try(() => {
 

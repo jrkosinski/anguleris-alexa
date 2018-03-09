@@ -1,12 +1,14 @@
+'use strict'; 
 
-// * * * * * 
+// ======================================================================================================
 // configUtil - utilities for reading and writing application config settings.
 // 
 // John R. Kosinski
 // 13 Jan 2018
+// ------------------------------------------------------------------------------------------------------
 var profile = (process.env.PROFILE || ''); 
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // creates an enum with the given elements 
 // 
 // args
@@ -21,7 +23,7 @@ function makeEnum(elementNames){
     return output; 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets a given setting from process.env, or the given default 
 // 
 // returns: value
@@ -37,7 +39,7 @@ function getSetting(key, defaultValue){
     return value; 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets a given boolean setting from process.env, or the given default 
 // 
 // returns: boolean
@@ -46,7 +48,7 @@ function getBooleanSetting(key, defaultValue){
     return (value == 'true'); 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets a given setting from process.env, or the given default, where the value is an array
 // 
 // returns: array
@@ -63,7 +65,7 @@ function getArraySetting(key, defaultValue, delimiter){
     return array;
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets the value of the loggingLevel setting 
 // 
 // returns: array

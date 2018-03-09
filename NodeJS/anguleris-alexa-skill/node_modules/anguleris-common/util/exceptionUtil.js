@@ -1,10 +1,11 @@
 'use strict';
 
-// * * * * * 
+// ======================================================================================================
 // exceptionUtil - standard handling for exceptions. 
 // 
 // John R. Kosinski
 // 3 Oct 2017
+// ------------------------------------------------------------------------------------------------------
 var async = require("asyncawait/async");
 var await = require("asyncawait/await");
 var config = require('../config');
@@ -16,7 +17,7 @@ module.exports = function excepUtil(logPrefix) {
     function ExcepUtil() {
         var _this = this; 
 
-        // * * *
+        // ------------------------------------------------------------------------------------------------------
         // wraps the given expression in a try/catch, and provides standard handling for any errors.
         //
         // args: 
@@ -39,7 +40,7 @@ module.exports = function excepUtil(logPrefix) {
             }
         };
 
-        // * * *
+        // ------------------------------------------------------------------------------------------------------
         // wraps the given expression in a try/catch, and provides standard handling for any errors.
         //
         // args: 
@@ -62,7 +63,7 @@ module.exports = function excepUtil(logPrefix) {
             }
         });
 
-        // * * *
+        // ------------------------------------------------------------------------------------------------------
         // provides standard handling for any errors.
         //
         // returns: nothing

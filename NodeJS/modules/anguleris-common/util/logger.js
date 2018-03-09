@@ -1,10 +1,11 @@
 'use strict';
 
-// * * * * * 
+// ======================================================================================================
 // logger - for logging.
 // 
 // John R. Kosinski
 // 4 Oct 2017
+// ------------------------------------------------------------------------------------------------------
 var config = require('../config');
 
 
@@ -27,7 +28,7 @@ module.exports = function logger(prefix) {
             prefix = '';
         this.prefix = prefix;
 
-        // * * * 
+        // ------------------------------------------------------------------------------------------------------
         // internally does all the work of logging.
         const log = function(s, type=_this.logType.info) {
             var log = true;
@@ -49,7 +50,7 @@ module.exports = function logger(prefix) {
                 console.log('[' + type + '] ' + _this.prefix + ': ' + s);
         };
 
-        // * * * 
+        // ------------------------------------------------------------------------------------------------------
         // logs an informational message 
         // 
         // args
@@ -58,7 +59,7 @@ module.exports = function logger(prefix) {
         // returns: nothing
         this.info = function(s) { log(s, this.logType.info);}
 
-        // * * * 
+        // ------------------------------------------------------------------------------------------------------
         // logs a debug message 
         // 
         // args
@@ -67,7 +68,7 @@ module.exports = function logger(prefix) {
         // returns: nothing
         this.debug = function(s) { log(s, this.logType.debug);}
 
-        // * * * 
+        // ------------------------------------------------------------------------------------------------------
         // logs a warning message 
         // 
         // args
@@ -76,7 +77,7 @@ module.exports = function logger(prefix) {
         // returns: nothing
         this.warn = function(s) { log(s, this.logType.warn);}
 
-        // * * * 
+        // ------------------------------------------------------------------------------------------------------
         // logs an error message 
         // 
         // args

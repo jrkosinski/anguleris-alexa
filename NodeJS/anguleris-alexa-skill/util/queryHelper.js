@@ -1,12 +1,13 @@
 'use strict';
 
-// * * * * * 
+// ====================================================================================================== 
 // query - middle query layer to the data access layer
 // 
 // Anguleris Technologies
 // John R. Kosinski
 //
 // 22 Feb 2018
+// ------------------------------------------------------------------------------------------------------
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 
@@ -21,7 +22,7 @@ const responseBuilder = require('./responseBuilder');
 const navigation = require('./navigation');
 const query = require('./query');
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets a list of all categories 
 // 
 // args
@@ -50,7 +51,7 @@ function getCategories(session) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets a list of all manufacturers 
 // 
 // args
@@ -79,7 +80,7 @@ function getManufacturers(session) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets a list of all manufacturers in the given category
 // 
 // args
@@ -104,7 +105,7 @@ function getManufacturersForCategory(session, categoryName) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets a list of all categories for which the given manufacturer has products
 // 
 // args
@@ -129,7 +130,7 @@ function getCategoriesForManufacturer(session, manufacturerName) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets a response containing the details for a specific category or manufacturer
 // 
 // args
@@ -175,7 +176,7 @@ function getDetails(session, parameter) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets the feature values supported by given product and feature
 //
 // args
@@ -232,7 +233,7 @@ function getProductFeatureValues(session, featureName, productName) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets a list of all features and their values, for a given product 
 // 
 // args
@@ -278,7 +279,7 @@ function getAllProductFeatures(session, productName) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets a response containing the requested manufacturer's phone number
 // 
 // args
@@ -292,7 +293,7 @@ function getManufacturerPhone(session, manufacturerName) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets a response containing the requested manufacturer's address
 // 
 // args
@@ -306,7 +307,7 @@ function getManufacturerAddress(session, manufacturerName) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets a response containing the requested manufacturer's [property] value
 // 
 // args
@@ -345,7 +346,7 @@ function getManufacturerProperty(session, manufacturerName, propertyName, foundT
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets products list for category or manufacturer
 //
 // args
@@ -413,7 +414,7 @@ function getProductsForEntity(session, entityName, countOnly) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets total number of products for category or manufacturer
 //
 // args
@@ -425,7 +426,7 @@ function getProductsCountForEntity(session, entityName) {
     return getProductsForEntity(session, entityName, true);
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets all feature values available for the given feature, in the given category
 //
 // args
@@ -466,12 +467,20 @@ function getFeatureValuesForCategory(session, categoryName, featureName) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
+// queries for products by both a certain manufacturer and in a certain category 
+// 
+// args
+//  session: session attributes from request
+//  categoryName: the category name 
+//  manufacturerName: the name of the manufacturer 
+// 
+// returns: json object (Alexa response format) 
 function getProductsByMfgAndCategory(session, categoryName, manufacturerName) {
     return queryProducts(session, categoryName, null, null, manufacturerName);
 }
     
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // gets all products that match the given criteria
 //
 // args
@@ -538,7 +547,7 @@ function queryProducts(session, categoryName, featureName, featureValue, manufac
     }); 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // attempts to get the product name from either the given parameter, or from session. 
 //
 // returns: string 
@@ -571,7 +580,7 @@ function getProductFromSession(session, productName){
     }); 
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // creates a speech string for category details
 // 
 // args
@@ -593,7 +602,7 @@ function formatCategoryDetails(category) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // creates a speech string for manufacturer details
 // 
 // args
@@ -619,7 +628,7 @@ function formatManufacturerDetails(manufacturer) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // creates a speech string for product details
 // 
 // args

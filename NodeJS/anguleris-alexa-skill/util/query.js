@@ -1,12 +1,13 @@
 'use strict';
 
-// * * * * * 
+// ====================================================================================================== 
 // query - middle query layer to the data access layer
 // 
 // Anguleris Technologies
 // John R. Kosinski
 //
 // 22 Feb 2018
+// ------------------------------------------------------------------------------------------------------
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 
@@ -19,7 +20,7 @@ const enums = common.enums;
 const config = require('../config');
 const responseBuilder = require('./responseBuilder');
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // runs the given query and returns the resulting object or objects
 // 
 // args
@@ -62,7 +63,7 @@ function runQuery(querySubject, queryParams) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // queries for categories by the given params
 //
 // supported params: 
@@ -81,7 +82,7 @@ function queryCategories(queryParams) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // queries for manufacturers by the given params
 //
 // supported params: 
@@ -112,7 +113,7 @@ function queryManufacturers(queryParams) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // queries for products by the given params
 //
 // supported params: 
@@ -147,7 +148,7 @@ function queryProducts(queryParams) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // queries for all feature values for a feature, which are supported by products.
 // For example: all values for feature "Finish" that are currently supported by products 
 // in "Dishwashers". 
@@ -188,7 +189,7 @@ function queryFeatureValues(queryParams) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // filter a list of products, by manufacturer. 
 // 
 // args
@@ -206,7 +207,7 @@ function filterProductsByManufacturer(products, manufacturer) {
     });
 }
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // filter a list of products, by feature & feature value. 
 // 
 // args
