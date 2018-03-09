@@ -62,6 +62,14 @@ function runQuery(querySubject, queryParams) {
     });
 }
 
+// * * * 
+// queries for categories by the given params
+//
+// supported params: 
+//  queryParams.manufacturer - category manufacturer
+//  queryParams.name - category name
+//
+// returns: array of categories 
 function queryCategories(queryParams) {
     return exception.try(() => {
         if (queryParams && queryParams.manufacturer) {
@@ -73,6 +81,14 @@ function queryCategories(queryParams) {
     });
 }
 
+// * * * 
+// queries for manufacturers by the given params
+//
+// supported params: 
+//  queryParams.category - manufacturer category
+//  queryParams.name - manufacturer name
+//
+// returns: array of categories 
 function queryManufacturers(queryParams) {
     return exception.try(() => {
         if (queryParams && queryParams.category) {
@@ -96,6 +112,16 @@ function queryManufacturers(queryParams) {
     });
 }
 
+// * * * 
+// queries for products by the given params
+//
+// supported params: 
+//  queryParams.category - product category
+//  queryParams.manufacturer - product manufacturer
+//  queryParams.feature - a feature name 
+//  queryParams.featureValue - a feature value 
+//
+// returns: array of categories 
 function queryProducts(queryParams) {
     return exception.try(() => {
         if (queryParams) {
@@ -121,6 +147,16 @@ function queryProducts(queryParams) {
     });
 }
 
+// * * * 
+// queries for all feature values for a feature, which are supported by products.
+// For example: all values for feature "Finish" that are currently supported by products 
+// in "Dishwashers". 
+//
+// supported params: 
+//  queryParams.category - product category
+//  queryParams.feature - a feature name 
+//
+// returns: array of categories 
 function queryFeatureValues(queryParams) {
     return exception.try(() => {
         var features = null;
@@ -152,6 +188,14 @@ function queryFeatureValues(queryParams) {
     });
 }
 
+// * * * 
+// filter a list of products, by manufacturer. 
+// 
+// args
+//  products: original list of products
+//  manufacturer: the mfg name to filter by 
+// 
+// returns: subset of the original list of products
 function filterProductsByManufacturer(products, manufacturer) {
     return exception.try(() => {
         manufacturer = manufacturer.trim().toLowerCase();
@@ -162,6 +206,15 @@ function filterProductsByManufacturer(products, manufacturer) {
     });
 }
 
+// * * * 
+// filter a list of products, by feature & feature value. 
+// 
+// args
+//  products: original list of products
+//  feature: the feature name to filter by 
+//  featureValue: the feature value to filter by 
+// 
+// returns: subset of the original list of products
 function filterProductsByFeature(products, feature, featureValue) {
     return exception.try(() => {
         if (featureValue)
