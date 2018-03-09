@@ -1,12 +1,13 @@
 'use strict';
 
-// * * * * * 
+// ====================================================================================================== 
 // alexaApp - alexia specification for the app's intents & handlers
 // 
 // Anguleris Technologies
 // John R. Kosinski
 //
 // 22 Feb 2018
+// ------------------------------------------------------------------------------------------------------
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 const alexa = require("alexia");
@@ -37,7 +38,7 @@ app.customSlot('Entity', common.arrays.merge(common.arrays.merge(categoryNames, 
 app.customSlot('Feature', enums.allProductFeatureNames()); 
 app.customSlot('FeatureValue', ['stainless steel', 'metallic', 'black', 'white', 'gray']);
 
-// * * * 
+// ------------------------------------------------------------------------------------------------------
 // utility for specifying an intent handler 
 // 
 // returns: nothing 
@@ -421,6 +422,24 @@ addAppIntent(config.intents.help, (slots, session, data) => {
     return responseBuilder.buildHelpResponse(session); 
 });
 
+// CallBimsmithSupport 
+// ------------------------------------
+// goodbye intent 
+//
+// example text: 
+//      goodbye
+//
+addAppIntent(config.intents.callBimsmithSupport, (slots, session, data) => {
+    return phone.callBimsmith(); 
+});
+
+// Goodbye 
+// ------------------------------------
+// goodbye intent 
+//
+// example text: 
+//      goodbye
+//
 addAppIntent(config.intents.goodbye, (slots, session, data) => {
     return responseBuilder.responseWithCard(config.ui.goodbye.text, config.ui.goodbye.card, null, session, true); 
 });

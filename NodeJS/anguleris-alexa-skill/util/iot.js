@@ -1,12 +1,13 @@
 'use strict';
 
-// * * * * * 
-// navigation - utilities related to navigation through responses lists 
+// ====================================================================================================== 
+// iot - interface to AWS iot shadow
 // 
 // Anguleris Technologies
 // John R. Kosinski
 //
-// 22 Feb 2018
+// 09 Mar 2018
+// ------------------------------------------------------------------------------------------------------
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 const AWS = require('aws-sdk');
@@ -19,6 +20,7 @@ const enums = common.enums;
 
 const config = require('../config');
 
+// ------------------------------------------------------------------------------------------------------
 const updateThingShadow = async((payload) => {
     return new Promise((resolve, reject) => {
         var params = {

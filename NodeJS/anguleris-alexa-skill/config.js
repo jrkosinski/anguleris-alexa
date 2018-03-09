@@ -219,6 +219,20 @@ module.exports = {
                 "what {category:Category} by {manufacturer:Manufacturer} have a width of {featureValue:FeatureValue}"
             ]
         },
+        callManufacturer: {  
+            name: 'CallManufacturerIntent',
+            utterances: [
+                "call {manufacturer:Manufacturer}"
+            ]
+        },
+        callBimsmithSupport: {  
+            name: 'CallBimsmithSupportIntent',
+            utterances: [
+                "call support",
+                "call Bimsmith",
+                "call Bimsmith support"
+            ]
+        },
         repeat: {
             name: 'RepeatIntent',
             utterances: [
@@ -474,6 +488,11 @@ module.exports = {
             reprompt: null,
             card: 'Feature not Supported'
         }),
+        callingPhone: getUISetting('CALLING_PHONE', {
+            text: 'Calling {name} ',
+            reprompt: null,
+            card: 'Calling {name}'
+        }),
         goodbye: getUISetting('GOODBYE', {
             text: 'Thank you very much. Goodbye! ',
             reprompt: null,
@@ -501,6 +520,11 @@ module.exports = {
 
     iot: {
         endpoint: configUtil.getSetting('IOT_ENDPOINT', 'a21jd7gud1swyd.iot.us-east-1.amazonaws.com')
+    }, 
+
+    support: {
+        email: configUtil.getSetting('SUPPORT_EMAIL', 'john.kosinski@toptal.com'),
+        phone: configUtil.getSetting('SUPPORT_PHONE', '0619844525')
     }
 };
 
