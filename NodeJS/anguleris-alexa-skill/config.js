@@ -498,5 +498,9 @@ module.exports = {
             "Ask for manufacturer details, such as: what is Kenmore's phone number?"
         ]
     },
+
+    iot: {
+        endpoint: configUtil.getSetting('IOT_ENDPOINT', 'a21jd7gud1swyd.iot.us-east-1.amazonaws.com')
+    }
 };
 
