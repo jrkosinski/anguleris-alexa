@@ -28,11 +28,7 @@ const responseBuilder = require('./responseBuilder');
 // returns: 
 const callBimsmithSupport = async((session) => {
     return exception.try(() => {
-        const number = config.support.phone; 
-
-        return await(iot.updateThingShadow({
-            phone: number
-        }));
+        return await(callPhone(session, config.support.phone)); 
     });
 });
 
@@ -63,7 +59,7 @@ const callManufacturer = async((session, manufacturerName) => {
         }
 
         //else, call phone 
-        return await(callPhone(mfg.phone)); 
+        return await(callPhone(session, mfg.phone)); 
     });
 });
 
@@ -75,7 +71,7 @@ const callManufacturer = async((session, manufacturerName) => {
 //  name: name of the party being called
 // 
 // returns: json object (Alexa response format) 
-const callNumber = async((phoneNumber, name) => {
+const callNumber = async((session, phoneNumber, name) => {
     return exception.try(() => {
 
         //make the call

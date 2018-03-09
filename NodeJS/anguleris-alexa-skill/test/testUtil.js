@@ -599,6 +599,26 @@ const runUnitTests = async((handler) => {
                 assertions.responseIsNotNull,
                 assertions.hasSessionAttributes
             ])); 
+        }),
+
+        //call support
+        async(() => {
+            var request = createIntentRequest(config.intents.callBimsmithSupport.name, 
+            {},
+            {});
+            await(runTest('call support', request, [
+                assertions.responseIsNotNull
+            ])); 
+        }),
+
+        //call manufacturer
+        async(() => {
+            var request = createIntentRequest(config.intents.callManufacturer.name, 
+            {},
+            { manufacturer: 'kenmore' });
+            await(runTest('call manufacturer', request, [
+                assertions.responseIsNotNull
+            ])); 
         })
     ];
 

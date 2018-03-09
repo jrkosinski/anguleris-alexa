@@ -422,16 +422,27 @@ addAppIntent(config.intents.help, (slots, session, data) => {
     return responseBuilder.buildHelpResponse(session); 
 });
 
-// CallBimsmithSupport 
+// CallManufacturer
 // ------------------------------------
-// goodbye intent 
+// calls manufacturer via user's connected mobile
 //
 // example text: 
-//      goodbye
+//      call Kenmore
 //
-addAppIntent(config.intents.callBimsmithSupport, (slots, session, data) => {
-    return phone.callBimsmith(); 
-});
+addAppIntent(config.intents.callManufacturer, async((slots, session, data) => {
+    return await(phone.callManufacturer(session, slots.manufacturer)); 
+}));
+
+// CallBimsmithSupport 
+// ------------------------------------
+// calls support via user's connected mobile
+//
+// example text: 
+//      call support
+//
+addAppIntent(config.intents.callBimsmithSupport, async((slots, session, data) => {
+    return await(phone.callBimsmith(session)); 
+}));
 
 // Goodbye 
 // ------------------------------------
