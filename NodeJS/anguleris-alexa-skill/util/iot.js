@@ -11,7 +11,6 @@
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 const AWS = require('aws-sdk');
-const iotdata = new AWS.IotData({endpoint: config.iot.endpoint });  
 
 const common = require('anguleris-common');
 const exception = common.exceptions('IOT');
@@ -19,6 +18,7 @@ const logger = common.logger('IOT');
 const enums = common.enums;
 
 const config = require('../config');
+const iotdata = new AWS.IotData({endpoint: config.iot.endpoint });  
 
 // ------------------------------------------------------------------------------------------------------
 const updateThingShadow = async((payload) => {

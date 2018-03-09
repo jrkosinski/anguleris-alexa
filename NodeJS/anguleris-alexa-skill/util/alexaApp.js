@@ -24,6 +24,7 @@ const config = require('../config');
 const navigation = require('./navigation');
 const query = require('./query');
 const queryHelper = require('./queryHelper');
+const phone = require('./phone');
 const responseBuilder = require('./responseBuilder');
 const sessionContext = require('./sessionContext');
 const pkg = require('../package.json');
@@ -54,6 +55,8 @@ function addAppIntent(intent, func) {
                 logger.info('Slots: ' + JSON.stringify(slots)); 
                 logger.info('Session: ' + JSON.stringify(attr)); 
                 return func(slots, attr, data); 
+            }, { 
+                defaultValue:responseBuilder.generalError(sessionContext.create(attr))
             });
         }
     );
@@ -444,7 +447,7 @@ addAppIntent(config.intents.callManufacturer, async((slots, session, data) => {
 //      call support
 //
 addAppIntent(config.intents.callBimsmithSupport, async((slots, session, data) => {
-    return await(phone.callBimsmith(sessionContext.create(session))); 
+    return await(phone.callBimsmithSupport(sessionContext.create(session))); 
 }));
 
 // Goodbye 

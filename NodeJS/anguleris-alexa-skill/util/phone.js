@@ -28,7 +28,7 @@ const responseBuilder = require('./responseBuilder');
 // returns: 
 const callBimsmithSupport = async((sessionContext) => {
     return exception.try(() => {
-        return await(callPhone(sessionContext, config.support.phone)); 
+        return await(callNumber(sessionContext, config.support.phone)); 
     });
 });
 
@@ -59,7 +59,7 @@ const callManufacturer = async((sessionContext, manufacturerName) => {
         }
 
         //else, call phone 
-        return await(callPhone(session, mfg.phone)); 
+        return await(callNumber(session, mfg.phone)); 
     });
 });
 
@@ -76,7 +76,7 @@ const callNumber = async((sessionContext, phoneNumber, name) => {
 
         //make the call
         iot.updateThingShadow({
-            phone: number
+            phone: phoneNumber
         });
 
         //return a response 
