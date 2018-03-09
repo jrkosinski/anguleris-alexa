@@ -30,6 +30,8 @@ const config = require('../config');
 function User(context) {
     const _this = this;
 
+    this.id = null;
+
     // ------------------------------------------------------------------------------------------------------
     // true if current user is anonymous
     //
@@ -59,7 +61,7 @@ function User(context) {
     //
     // returns: nothing
     this.init = async(() => {
-        
+
     });
 }
 

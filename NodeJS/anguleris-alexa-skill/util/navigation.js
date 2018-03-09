@@ -67,15 +67,17 @@ function getNavArgsForQuery(query) {
 // returns a response that attempts to obey the given command on a list response
 // 
 // args
-//  session: the list response and its state is defined here 
+//  sessionContext: the list response and its state is defined here 
 //  navigationCommand: the command to act upon the list 
 // 
 // returns: json object (Alexa response format) 
-function navigate(session, navigationCommand) {
+function navigate(sessionContext, navigationCommand) {
     return exception.try(() => {
         logger.info('navigating ' + navigationCommand); 
         
-        if (session) {
+        if (sessionContext) {
+            var session = sessionContext.attributes;
+
             if (session.querySubject && !common.types.isUndefinedOrNull(session.startIndex)) {
                 var results = query.runQuery(session.querySubject, session.queryParams); 
                 var index = common.types.tryParseInt(session.startIndex); 
@@ -128,44 +130,44 @@ function navigate(session, navigationCommand) {
 // move to the next result in the list response 
 // 
 // args
-//  session: the list response and its state is defined here 
+//  sessionContext: the list response and its state is defined here 
 // 
 // returns: json object (Alexa response format) 
-function moveNext(session) {
-    return navigate(session, enums.navigationCommand.next); 
+function moveNext(sessionContext) {
+    return navigate(sessionContext, enums.navigationCommand.next); 
 }
 
 // ------------------------------------------------------------------------------------------------------
 // move to the previous result in the list response 
 // 
 // args
-//  session: the list response and its state is defined here 
+//  sessionContext: the list response and its state is defined here 
 // 
 // returns: json object (Alexa response format) 
-function movePrev(session) {
-    return navigate(session, enums.navigationCommand.prev); 
+function movePrev(sessionContext) {
+    return navigate(sessionContext, enums.navigationCommand.prev); 
 }
 
 // ------------------------------------------------------------------------------------------------------
 // move to the first result in the list response 
 // 
 // args
-//  session: the list response and its state is defined here 
+//  sessionContext: the list response and its state is defined here 
 // 
 // returns: json object (Alexa response format) 
-function moveFirst(session) {
-    return navigate(session, enums.navigationCommand.moveFirst); 
+function moveFirst(sessionContext) {
+    return navigate(sessionContext, enums.navigationCommand.moveFirst); 
 }
 
 // ------------------------------------------------------------------------------------------------------
 // move to the next result in the list response 
 // 
 // args
-//  session: the list response and its state is defined here 
+//  sessionContext: the list response and its state is defined here 
 // 
 // returns: json object (Alexa response format) 
-function stop(session) {
-    return responseBuilder.responseWithCard('stopping', 'Stop', null, null, true);
+function stop(sessionContext) {
+    return responseBuilder.responseWithCard('stopping', 'Stop', null, sessionContext, true);
 }
 
 // ------------------------------------------------------------------------------------------------------

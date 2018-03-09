@@ -26,9 +26,9 @@ const responseBuilder = require('./responseBuilder');
 // sends a signal to the user's phone to call bimsmith support number
 // 
 // returns: 
-const callBimsmithSupport = async((session) => {
+const callBimsmithSupport = async((sessionContext) => {
     return exception.try(() => {
-        return await(callPhone(session, config.support.phone)); 
+        return await(callPhone(sessionContext, config.support.phone)); 
     });
 });
 
@@ -40,7 +40,7 @@ const callBimsmithSupport = async((session) => {
 //  manufacturerName: the name of the manufacturer to call 
 // 
 // returns: json object (Alexa response format) 
-const callManufacturer = async((session, manufacturerName) => {
+const callManufacturer = async((sessionContext, manufacturerName) => {
     return exception.try(() => {
         var mfg = query.runQuery(enums.querySubject.manufacturer, {name: manufacturerName});
 
@@ -71,7 +71,7 @@ const callManufacturer = async((session, manufacturerName) => {
 //  name: name of the party being called
 // 
 // returns: json object (Alexa response format) 
-const callNumber = async((session, phoneNumber, name) => {
+const callNumber = async((sessionContext, phoneNumber, name) => {
     return exception.try(() => {
 
         //make the call
@@ -80,7 +80,7 @@ const callNumber = async((session, phoneNumber, name) => {
         });
 
         //return a response 
-        return responseBuilder.responseWithCardShortcut('callingPhone', {name:name}, session, true);
+        return responseBuilder.responseWithCardShortcut('callingPhone', {name:name}, sessionContext, true);
     });
 });
 

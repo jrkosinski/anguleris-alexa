@@ -21,11 +21,11 @@ const config = require('../config');
 // args
 //  text: the text to speak (and the content of the card) 
 //  title: the card title 
-//  session: session attributes from request
+//  sessionContext: session context
 //  shouldEndSession: true to end session after response; false is the default 
 //
 // returns: json object (Alexa response format) 
-function responseWithCard(text, title, reprompt, session, shouldEndSession) {
+function responseWithCard(text, title, reprompt, sessionContext, shouldEndSession) {
     return exception.try(() => {
         if (!text)
             text = ''; 
@@ -52,9 +52,9 @@ function responseWithCard(text, title, reprompt, session, shouldEndSession) {
             text: text,
         };
 
-        if (session) {
-            for (var p in session) {
-                output.attrs[p] = session[p];
+        if (sessionContext && sessionContext.attributes) {
+            for (var p in sessionContext.attributes) {
+                output.attrs[p] = sessionContext.attributes[p];
             }
             output.attrs.text = text;
         }
@@ -69,17 +69,17 @@ function responseWithCard(text, title, reprompt, session, shouldEndSession) {
 //
 // args
 //  propertyName: example: 'help' - automatically gets the appropriate text, title, & reprompt from config
-//  session: session attributes from request
+//  sessionContext: session context 
 //  shouldEndSession: true to end session after response; false is the default 
 //
 // returns: json object (Alexa response format) 
-function responseWithCardShortcut(propertyName, replacements, session, shouldEndSession) {
+function responseWithCardShortcut(propertyName, replacements, sessionContext, shouldEndSession) {
     return exception.try(() => {
         var text = config.ui[propertyName] && config.ui[propertyName].text ? config.ui[propertyName].text.replaceTokens(replacements) : null; 
         var card = config.ui[propertyName] && config.ui[propertyName].card ? config.ui[propertyName].card.replaceTokens(replacements) : null; 
         var reprompt = config.ui[propertyName] && config.ui[propertyName].reprompt ? config.ui[propertyName].reprompt.replaceTokens(replacements) : null; 
         
-        return responseWithCard(text, card, reprompt, session, shouldEndSession);
+        return responseWithCard(text, card, reprompt, sessionContext, shouldEndSession);
     });
 }
 
@@ -171,20 +171,20 @@ function responseListGroup(list, query, groupSize, startIndex, navArgs) {
 //  session: session attributes to pass along despite the error 
 //
 // returns: json object (Alexa response format) 
-function generalError(session) {
-    return responseWithCardShortcut('generalError', {}, session); 
+function generalError(sessionContext) {
+    return responseWithCardShortcut('generalError', {}, sessionContext); 
 }
 
 // ------------------------------------------------------------------------------------------------------
 // forms a standard response for when no results were found for a query
 // 
 // args
-//  session: session attributes to return
+//  sessionContext: session attributes to return
 //  shouldEndSession: true to end session after response; false is the default 
 //
 // returns: json object (Alexa response format) 
-function noResultsResponse(session, shouldEndSession) {
-    return responseWithCardShortcut('noResultsFound', {}, session); 
+function noResultsResponse(sessionContext, shouldEndSession) {
+    return responseWithCardShortcut('noResultsFound', {}, sessionContext); 
 }
 
 // ------------------------------------------------------------------------------------------------------
@@ -193,14 +193,14 @@ function noResultsResponse(session, shouldEndSession) {
 // args
 //  list: the list to format as text (array of strings) 
 //  text: the config ui text node (config.ui...)
-//  session: session attributes to return
+//  sessionContext: session attributes to return
 //  shouldEndSession: true to end session after response; false is the default 
 // 
 // returns: json object (Alexa response format) 
-function listToText(list, preText, postText, title, session, shouldEndSession) {
+function listToText(list, preText, postText, title, sessionContext, shouldEndSession) {
     return exception.try(() => {
         if (!list || !list.length){
-            return noResultsResponse(session);
+            return noResultsResponse(sessionContext);
         }
         
         var speech = list[0]; 
@@ -216,7 +216,7 @@ function listToText(list, preText, postText, title, session, shouldEndSession) {
         if (postText && postText.length)
             speech = speech + '. ' + postText;
 
-        return responseWithCard(speech, title, null, session); 
+        return responseWithCard(speech, title, null, sessionContext); 
     });
 }
 
@@ -224,11 +224,11 @@ function listToText(list, preText, postText, title, session, shouldEndSession) {
 // builds the response for built-in Help request 
 // 
 // args
-//  session: session attributes to return
+//  sessionContext: session attributes to return
 //
 // returns: json object (Alexa response format) 
-function buildHelpResponse(session) {
-    return responseWithCardShortcut('help', {}, session); 
+function buildHelpResponse(sessionContext) {
+    return responseWithCardShortcut('help', {}, sessionContext); 
 }
 
 // ------------------------------------------------------------------------------------------------------
@@ -238,8 +238,8 @@ function buildHelpResponse(session) {
 //  name: the name of requested category 
 // 
 // returns: json object (Alexa response format) 
-function categoryNotFound(name, session) {
-    return responseWithCardShortcut('categoryNotFound', {name:name}, session); 
+function categoryNotFound(name, sessionContext) {
+    return responseWithCardShortcut('categoryNotFound', {name:name}, sessionContext); 
 }
 
 // ------------------------------------------------------------------------------------------------------
@@ -249,8 +249,8 @@ function categoryNotFound(name, session) {
 //  name: the name of requested manufacturer 
 // 
 // returns: json object (Alexa response format) 
-function manufacturerNotFound(name, session) {
-    return responseWithCardShortcut('manufacturerNotFound', {name:name}, session); 
+function manufacturerNotFound(name, sessionContext) {
+    return responseWithCardShortcut('manufacturerNotFound', {name:name}, sessionContext); 
 }
 
 // ------------------------------------------------------------------------------------------------------
@@ -260,8 +260,8 @@ function manufacturerNotFound(name, session) {
 //  name: the name of requested product 
 // 
 // returns: json object (Alexa response format) 
-function productNotFound(name, session) {
-    return responseWithCardShortcut('productNotFound', {name:name}, session); 
+function productNotFound(name, sessionContext) {
+    return responseWithCardShortcut('productNotFound', {name:name}, sessionContext); 
 }
 
 // ------------------------------------------------------------------------------------------------------
@@ -271,8 +271,8 @@ function productNotFound(name, session) {
 //  name: the name of requested entity 
 // 
 // returns: json object (Alexa response format) 
-function entityNotFound(name, session) {
-    return responseWithCardShortcut('entityNotFound', {name:name}, session); 
+function entityNotFound(name, sessionContext) {
+    return responseWithCardShortcut('entityNotFound', {name:name}, sessionContext); 
 }
 
 // ------------------------------------------------------------------------------------------------------
