@@ -79,9 +79,9 @@ const callNumber = async((sessionContext, phoneNumber, name) => {
             desired: {
                 number: phoneNumber
             },
-            reported: {
-                number: phoneNumber
-            }
+            //reported: {
+            //    number: phoneNumber
+            //}
         });
 
         //return a response 

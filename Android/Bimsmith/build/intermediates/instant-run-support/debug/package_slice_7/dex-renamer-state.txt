@@ -1,0 +1,4 @@
+#Thu Mar 15 00:47:43 ICT 2018
+base.0=/home/john/aws-sdk-android-samples-master/Bimsmith/build/intermediates/transforms/dexMerger/debug/7
+path.0=classes.dex
+renamed.0=classes.dex
