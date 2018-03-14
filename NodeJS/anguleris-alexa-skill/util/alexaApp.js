@@ -62,6 +62,22 @@ function addAppIntent(intent, func) {
     );
 }
 
+const addAppIntentAsync = async((intent, func) => {
+    app.intent(intent.name,
+        intent.utterances, (slots, attr, data) => {
+            return exception.try(() => {
+                logger.info('Intent invoked: ' + intent.name); 
+                logger.info('Data: ' + JSON.stringify(data)); 
+                logger.info('Slots: ' + JSON.stringify(slots)); 
+                logger.info('Session: ' + JSON.stringify(attr)); 
+                return await(func(slots, attr, data)); 
+            }, { 
+                defaultValue:responseBuilder.generalError(sessionContext.create(attr))
+            });
+        }
+    );
+}); 
+
 // Startup
 // ------------------------------------
 // runs on session startup 
@@ -446,7 +462,7 @@ addAppIntent(config.intents.callManufacturer, async((slots, session, data) => {
 // example text: 
 //      call support
 //
-addAppIntent(config.intents.callBimsmithSupport, async((slots, session, data) => {
+addAppIntentAsync(config.intents.callBimsmithSupport, async((slots, session, data) => {
     return await(phone.callBimsmithSupport(sessionContext.create(session))); 
 }));
 

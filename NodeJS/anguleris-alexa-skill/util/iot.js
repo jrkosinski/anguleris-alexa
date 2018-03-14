@@ -18,13 +18,13 @@ const logger = common.logger('IOT');
 const enums = common.enums;
 
 const config = require('../config');
-const iotdata = new AWS.IotData({endpoint: config.iot.endpoint });  
+const iotdata = new AWS.IotData({endpoint: config.iot.endpoint, region:"us-east-1" });  
 
 // ------------------------------------------------------------------------------------------------------
 const updateThingShadow = async((payload) => {
     return new Promise((resolve, reject) => {
         var params = {
-            payload:  JSON.stringify(payload),
+            payload:  JSON.stringify({state: payload}),
             thingName: 'bimsmith-thing'
         }; 
 
