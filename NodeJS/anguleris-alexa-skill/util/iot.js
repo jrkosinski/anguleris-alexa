@@ -20,19 +20,26 @@ const enums = common.enums;
 const config = require('../config');
 
 //iot data 
-const iotdata = new AWS.IotData({
-    endpoint: config.aws.iot.endpoint, 
-    region:"us-east-1" 
-});  
+const iotdata = connectIoT(); 
 
-//credentials from config
-if (config.aws.accessKey && config.aws.accessKey.length) 
-    iotdata.accessKeyId = config.aws.accessKey; 
-if (config.aws.secretKey && config.aws.secretKey.length) 
-    iotdata.secretAccessKey = config.aws.secretKey; 
 
+function connectIoT(){
+    var options = {
+        endpoint: config.aws.iot.endpoint, 
+        region:"us-east-1" 
+    }
+
+    //credentials from config
+    if (config.aws.accessKey && config.aws.accessKey.length) 
+        options.accessKeyId = config.aws.accessKey; 
+    if (config.aws.secretKey && config.aws.secretKey.length) 
+        options.secretAccessKey = config.aws.secretKey; 
+
+    return new AWS.IotData(options);  
+}
 
 // ------------------------------------------------------------------------------------------------------
+// returns: IoT response (Promise)
 const updateThingShadow = async((payload) => {
     return new Promise((resolve, reject) => {
         var params = {

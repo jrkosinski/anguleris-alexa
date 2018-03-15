@@ -207,6 +207,7 @@ const runUnitTests = async((handler) => {
 
     //UNIT TESTS 
     const unitTests = [
+        /*
         //get version
         async(() => {
             await(runTest('get version', createIntentRequest(config.intents.getVersion.name), [
@@ -600,6 +601,7 @@ const runUnitTests = async((handler) => {
                 assertions.hasSessionAttributes
             ])); 
         }),
+        */
 
         //call support
         async(() => {
@@ -612,6 +614,7 @@ const runUnitTests = async((handler) => {
         }),
 
         //call manufacturer
+        /*
         async(() => {
             var request = createIntentRequest(config.intents.callManufacturer.name, 
             {},
@@ -619,7 +622,7 @@ const runUnitTests = async((handler) => {
             await(runTest('call manufacturer', request, [
                 assertions.responseIsNotNull
             ])); 
-        })
+        })*/
     ];
 
     //RUN TESTS 

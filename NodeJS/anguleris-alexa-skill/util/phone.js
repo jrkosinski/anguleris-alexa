@@ -40,7 +40,7 @@ const callBimsmithSupport = async((sessionContext) => {
 //  manufacturerName: the name of the manufacturer to call 
 // 
 // returns: json object (Alexa response format) 
-const callManufacturer = async((sessionContext, manufacturerName) => {
+const callManufacturer = (sessionContext, manufacturerName) => {
     return exception.try(() => {
         var mfg = query.runQuery(enums.querySubject.manufacturer, {name: manufacturerName});
 
@@ -59,9 +59,9 @@ const callManufacturer = async((sessionContext, manufacturerName) => {
         }
 
         //else, call phone 
-        return await(callNumber(sessionContext, mfg.phone, mfg.name)); 
+        return callNumber(sessionContext, mfg.phone, mfg.name); 
     });
-});
+};
 
 // ------------------------------------------------------------------------------------------------------
 // sends the command to call a given number 
@@ -75,14 +75,14 @@ const callNumber = async((sessionContext, phoneNumber, name) => {
     return exception.try(() => {
 
         //make the call
-        iot.updateThingShadow({
+        if (await(iot.updateThingShadow({
             desired: {
                 number: phoneNumber
             },
-            //reported: {
-            //    number: phoneNumber
-            //}
-        });
+            reported: {
+                number: phoneNumber
+            }
+        }))); 
 
         //return a response 
         return responseBuilder.responseWithCardShortcut('callingPhone', {name:name}, sessionContext, false);

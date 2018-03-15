@@ -62,20 +62,31 @@ function addAppIntent(intent, func) {
     );
 }
 
-const addAppIntentAsync = async((intent, func) => {
-    app.intent(intent.name,
-        intent.utterances, (slots, attr, data) => {
+const addAppIntentAsync = (intent, func) => {
+    app.intent(
+        intent.name,
+        intent.utterances, 
+        async((slots, attr, data, done) => {
+            var defaultOutput = responseBuilder.generalError(sessionContext.create(attr)); 
+            var output = null; 
+
             try {
                 logger.info('Intent invoked: ' + intent.name); 
                 logger.info('Data: ' + JSON.stringify(data)); 
                 logger.info('Slots: ' + JSON.stringify(slots)); 
                 logger.info('Session: ' + JSON.stringify(attr)); 
-                return await(func(slots, attr, data)); 
+                var output = await(func(slots, attr, data)); 
             }
             catch(e) {
                 exception.handleError(e); 
-                return responseBuilder.generalError(sessionContext.create(attr)); 
+                output = defaultOutput;
             }
+
+            if (!output)
+                output = defaultOutput; 
+
+            done(output); 
+            
             /*
             return await(exception.tryAsync(async(() => {
                 logger.info('Intent invoked: ' + intent.name); 
@@ -87,9 +98,9 @@ const addAppIntentAsync = async((intent, func) => {
                 defaultValue:responseBuilder.generalError(sessionContext.create(attr))
             })));
             */
-        }
+        })
     );
-}); 
+}; 
 
 // Startup
 // ------------------------------------
@@ -464,9 +475,9 @@ addAppIntent(config.intents.help, (slots, session, data) => {
 // example text: 
 //      call Kenmore
 //
-addAppIntentAsync(config.intents.callManufacturer, async((slots, session, data) => {
-    return await(phone.callManufacturer(sessionContext.create(session), slots.manufacturer)); 
-}));
+addAppIntent(config.intents.callManufacturer, (slots, session, data) => {
+    return phone.callManufacturer(sessionContext.create(session), slots.manufacturer); 
+});
 
 // CallBimsmithSupport 
 // ------------------------------------
@@ -475,9 +486,9 @@ addAppIntentAsync(config.intents.callManufacturer, async((slots, session, data) 
 // example text: 
 //      call support
 //
-addAppIntentAsync(config.intents.callBimsmithSupport, async((slots, session, data) => {
+addAppIntentAsync(config.intents.callBimsmithSupport, (slots, session, data) => {
     return await(phone.callBimsmithSupport(sessionContext.create(session))); 
-}));
+});
 
 // Goodbye 
 // ------------------------------------

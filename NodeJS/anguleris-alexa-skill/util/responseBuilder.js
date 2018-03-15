@@ -59,6 +59,9 @@ function responseWithCard(text, title, reprompt, sessionContext, shouldEndSessio
             output.attrs.text = text;
         }
 
+        if(shouldEndSession)
+            output.attrs = null; 
+            
         logger.info('response: ' + JSON.stringify(output)); 
         return output;
     });
