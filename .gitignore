@@ -2,3 +2,5 @@ anguleris-alexa-skill/node_modules/
 anguleris-alexa-skill/builds/
 */node_modules/
 NodeJS/anguleris-alexa-skill/node_modules/
+*.env
+NodeJS/anguleris-alexa-skill/builds/

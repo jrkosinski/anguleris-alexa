@@ -611,7 +611,6 @@ const runUnitTests = async((handler) => {
             ])); 
         }),
 
-/*
         //call manufacturer
         async(() => {
             var request = createIntentRequest(config.intents.callManufacturer.name, 
@@ -621,7 +620,6 @@ const runUnitTests = async((handler) => {
                 assertions.responseIsNotNull
             ])); 
         })
-        */
     ];
 
     //RUN TESTS 

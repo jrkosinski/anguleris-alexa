@@ -65,7 +65,19 @@ function addAppIntent(intent, func) {
 const addAppIntentAsync = async((intent, func) => {
     app.intent(intent.name,
         intent.utterances, (slots, attr, data) => {
-            return exception.try(() => {
+            try {
+                logger.info('Intent invoked: ' + intent.name); 
+                logger.info('Data: ' + JSON.stringify(data)); 
+                logger.info('Slots: ' + JSON.stringify(slots)); 
+                logger.info('Session: ' + JSON.stringify(attr)); 
+                return await(func(slots, attr, data)); 
+            }
+            catch(e) {
+                exception.handleError(e); 
+                return responseBuilder.generalError(sessionContext.create(attr)); 
+            }
+            /*
+            return await(exception.tryAsync(async(() => {
                 logger.info('Intent invoked: ' + intent.name); 
                 logger.info('Data: ' + JSON.stringify(data)); 
                 logger.info('Slots: ' + JSON.stringify(slots)); 
@@ -73,7 +85,8 @@ const addAppIntentAsync = async((intent, func) => {
                 return await(func(slots, attr, data)); 
             }, { 
                 defaultValue:responseBuilder.generalError(sessionContext.create(attr))
-            });
+            })));
+            */
         }
     );
 }); 
@@ -451,7 +464,7 @@ addAppIntent(config.intents.help, (slots, session, data) => {
 // example text: 
 //      call Kenmore
 //
-addAppIntent(config.intents.callManufacturer, async((slots, session, data) => {
+addAppIntentAsync(config.intents.callManufacturer, async((slots, session, data) => {
     return await(phone.callManufacturer(sessionContext.create(session), slots.manufacturer)); 
 }));
 

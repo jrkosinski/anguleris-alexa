@@ -518,9 +518,14 @@ module.exports = {
         ]
     },
 
-    iot: {
-        endpoint: configUtil.getSetting('IOT_ENDPOINT', 'a21jd7gud1swyd.iot.us-east-1.amazonaws.com')
-    }, 
+    aws: {
+        accessKey: configUtil.getSetting("AWS_ACCESS_KEY", null),
+        secretKey: configUtil.getSetting("AWS_SECRET_KEY", null),
+
+        iot: {
+            endpoint: configUtil.getSetting('IOT_ENDPOINT', 'a21jd7gud1swyd.iot.us-east-1.amazonaws.com')
+        }
+    },
 
     support: {
         email: configUtil.getSetting('SUPPORT_EMAIL', 'john.kosinski@toptal.com'),

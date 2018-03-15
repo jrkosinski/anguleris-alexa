@@ -18,7 +18,19 @@ const logger = common.logger('IOT');
 const enums = common.enums;
 
 const config = require('../config');
-const iotdata = new AWS.IotData({endpoint: config.iot.endpoint, region:"us-east-1" });  
+
+//iot data 
+const iotdata = new AWS.IotData({
+    endpoint: config.aws.iot.endpoint, 
+    region:"us-east-1" 
+});  
+
+//credentials from config
+if (config.aws.accessKey && config.aws.accessKey.length) 
+    iotdata.accessKeyId = config.aws.accessKey; 
+if (config.aws.secretKey && config.aws.secretKey.length) 
+    iotdata.secretAccessKey = config.aws.secretKey; 
+
 
 // ------------------------------------------------------------------------------------------------------
 const updateThingShadow = async((payload) => {
