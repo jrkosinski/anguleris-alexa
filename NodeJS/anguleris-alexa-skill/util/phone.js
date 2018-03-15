@@ -74,18 +74,36 @@ const callManufacturer = async((sessionContext, manufacturerName) => {
 const callNumber = async((sessionContext, phoneNumber, name) => {
     return exception.try(() => {
 
-        //make the call
-        if (await(iot.updateThingShadow({
-            desired: {
-                number: phoneNumber
-            },
-            reported: {
-                number: phoneNumber
-            }
-        }))); 
+        //get user object 
+        var user = await(sessionContext.getUser()); 
+        var response = null; 
 
-        //return a response 
-        return responseBuilder.responseWithCardShortcut('callingPhone', {name:name}, sessionContext, true);
+        if (user) {
+            if (user.deviceId) {
+                //make the call
+                if (await(iot.updateThingShadow(user.deviceId, {
+                    desired: {
+                        number: phoneNumber
+                    },
+                    reported: {
+                        number: phoneNumber
+                    }
+                }))); 
+
+                //return a response 
+                response = responseBuilder.responseWithCardShortcut('callingPhone', {name:name}, sessionContext, true);
+            }
+            else {
+                //TODO: no registered device 
+                response = responseBuilder.responseWithCardShortcut('noRegisteredDevice', {}, sessionContext, false);
+            }
+        }
+        else {
+            //TODO: no user 
+            response = responseBuilder.responseWithCardShortcut('userNotFound', {}, sessionContext);
+        }
+
+        return response;
     });
 });
 

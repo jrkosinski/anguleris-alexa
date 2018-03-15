@@ -49,25 +49,32 @@ app.customSlot('FeatureValue', ['stainless steel', 'metallic', 'black', 'white',
 function addAppIntent(intent, func) {
     app.intent(intent.name,
         intent.utterances, (slots, attr, data) => {
+            var context = sessionContext.create(slots, attr, data); 
             return exception.try(() => {
+
                 logger.info('Intent invoked: ' + intent.name); 
                 logger.info('Data: ' + JSON.stringify(data)); 
                 logger.info('Slots: ' + JSON.stringify(slots)); 
                 logger.info('Session: ' + JSON.stringify(attr)); 
-                return func(slots, attr, data); 
+                return func(context, slots, attr, data); 
             }, { 
-                defaultValue:responseBuilder.generalError(sessionContext.create(attr), false, true)
+                defaultValue:responseBuilder.generalError(context, false, true)
             });
         }
     );
 }
 
+// ------------------------------------------------------------------------------------------------------
+// utility for specifying an intent handler for async intent handlers
+// 
+// returns: nothing 
 const addAppIntentAsync = (intent, func) => {
     app.intent(
         intent.name,
         intent.utterances, 
         async((slots, attr, data, done) => {
-            var defaultOutput = responseBuilder.generalError(sessionContext.create(attr), false, true); 
+            var context = sessionContext.create(slots, attr, data); 
+            var defaultOutput = responseBuilder.generalError(context, false, true); 
             var output = null; 
 
             try {
@@ -75,7 +82,8 @@ const addAppIntentAsync = (intent, func) => {
                 logger.info('Data: ' + JSON.stringify(data)); 
                 logger.info('Slots: ' + JSON.stringify(slots)); 
                 logger.info('Session: ' + JSON.stringify(attr)); 
-                var output = await(func(slots, attr, data)); 
+
+                var output = await(func(context, slots, attr, data)); 
             }
             catch(e) {
                 exception.handleError(e); 
@@ -86,18 +94,6 @@ const addAppIntentAsync = (intent, func) => {
                 output = defaultOutput; 
 
             done(output); 
-            
-            /*
-            return await(exception.tryAsync(async(() => {
-                logger.info('Intent invoked: ' + intent.name); 
-                logger.info('Data: ' + JSON.stringify(data)); 
-                logger.info('Slots: ' + JSON.stringify(slots)); 
-                logger.info('Session: ' + JSON.stringify(attr)); 
-                return await(func(slots, attr, data)); 
-            }, { 
-                defaultValue:responseBuilder.generalError(sessionContext.create(attr))
-            })));
-            */
         })
     );
 }; 
@@ -125,8 +121,8 @@ app.onStart(() => {
 // example text: 
 //      what's the current version number 
 //
-addAppIntent(config.intents.getVersion, (slots, session, data) => {
-    return responseBuilder.responseWithCardShortcut('getVersion', {version: pkg.version}, sessionContext.create(session), true); 
+addAppIntent(config.intents.getVersion, (context, slots, session, data) => {
+    return responseBuilder.responseWithCardShortcut('getVersion', {version: pkg.version}, context, true); 
 });
 
 // GetCategories
@@ -136,8 +132,8 @@ addAppIntent(config.intents.getVersion, (slots, session, data) => {
 // example text: 
 //      get a list of categories
 //
-addAppIntentAsync(config.intents.getCategories, (slots, session, data) => {
-    return await(queryHelper.getCategories(sessionContext.create(session))); 
+addAppIntentAsync(config.intents.getCategories, (context, slots, session, data) => {
+    return await(queryHelper.getCategories(context)); 
 });
 
 // GetManufacturers
@@ -147,8 +143,8 @@ addAppIntentAsync(config.intents.getCategories, (slots, session, data) => {
 // example text: 
 //      get a list of manufacturers
 //
-addAppIntentAsync(config.intents.getManufacturers, (slots, session, data) => {
-    return await(queryHelper.getManufacturers(sessionContext.create(session))); 
+addAppIntentAsync(config.intents.getManufacturers, (context, slots, session, data) => {
+    return await(queryHelper.getManufacturers(context)); 
 });
 
 // GetManufacturersForCategory
@@ -161,8 +157,8 @@ addAppIntentAsync(config.intents.getManufacturers, (slots, session, data) => {
 // example text: 
 //      what manufacturers are in {category}? 
 // 
-addAppIntentAsync(config.intents.getManufacturersForCategory, (slots, session, data) => {
-    return await(queryHelper.getManufacturersForCategory(sessionContext.create(session), slots.category)); 
+addAppIntentAsync(config.intents.getManufacturersForCategory, (context, slots, session, data) => {
+    return await(queryHelper.getManufacturersForCategory(context, slots.category)); 
 });
 
 // GetCategoriesForManufacturer
@@ -175,8 +171,8 @@ addAppIntentAsync(config.intents.getManufacturersForCategory, (slots, session, d
 // example text: 
 //      what categories does {manufacturer} have products for?
 //
-addAppIntentAsync(config.intents.getCategoriesForManufacturer, (slots, session, data) => {
-    return await(queryHelper.getCategoriesForManufacturer(sessionContext.create(session), slots.manufacturer)); 
+addAppIntentAsync(config.intents.getCategoriesForManufacturer, (context, slots, session, data) => {
+    return await(queryHelper.getCategoriesForManufacturer(context, slots.manufacturer)); 
 });
 
 // GetDetails
@@ -190,8 +186,8 @@ addAppIntentAsync(config.intents.getCategoriesForManufacturer, (slots, session, 
 //      get details for {entity}
 //      details
 //
-addAppIntentAsync(config.intents.getDetails, (slots, session, data) => {
-    return await(queryHelper.getDetails(sessionContext.create(session), slots.entity)); 
+addAppIntentAsync(config.intents.getDetails, (context, slots, session, data) => {
+    return await(queryHelper.getDetails(context, slots.entity)); 
 });
 
 // GetProductFeatures
@@ -205,24 +201,24 @@ addAppIntentAsync(config.intents.getDetails, (slots, session, data) => {
 // example text: 
 //      what {feature} does {product} come in? 
 // 
-addAppIntentAsync(config.intents.getProductFeatureValues, (slots, session, data) => {
-    return await(queryHelper.getProductFeatureValues(sessionContext.create(session), enums.productFeature.normalizeFeatureName(slots.feature), slots.product)); 
+addAppIntentAsync(config.intents.getProductFeatureValues, (context, slots, session, data) => {
+    return await(queryHelper.getProductFeatureValues(context, enums.productFeature.normalizeFeatureName(slots.feature), slots.product)); 
 });
 
-addAppIntentAsync(config.intents.getProductFinishes, (slots, session, data) => {
-    return await(queryHelper.getProductFeatureValues(sessionContext.create(session), 'finish', slots.product)); 
+addAppIntentAsync(config.intents.getProductFinishes, (context, slots, session, data) => {
+    return await(queryHelper.getProductFeatureValues(context, 'finish', slots.product)); 
 });
 
-addAppIntentAsync(config.intents.getProductColors, (slots, session, data) => {
-    return await(queryHelper.getProductFeatureValues(sessionContext.create(session), 'color', slots.product)); 
+addAppIntentAsync(config.intents.getProductColors, (context, slots, session, data) => {
+    return await(queryHelper.getProductFeatureValues(context, 'color', slots.product)); 
 });
 
-addAppIntentAsync(config.intents.getProductHeights, (slots, session, data) => {
-    return await(queryHelper.getProductFeatureValues(sessionContext.create(session), 'height', slots.product)); 
+addAppIntentAsync(config.intents.getProductHeights, (context, slots, session, data) => {
+    return await(queryHelper.getProductFeatureValues(context, 'height', slots.product)); 
 });
 
-addAppIntentAsync(config.intents.getProductWidths, (slots, session, data) => {
-    return await(queryHelper.getProductFeatureValues(sessionContext.create(session), 'width', slots.product)); 
+addAppIntentAsync(config.intents.getProductWidths, (context, slots, session, data) => {
+    return await(queryHelper.getProductFeatureValues(context, 'width', slots.product)); 
 });
 
 // GetAllProductFeatures
@@ -237,8 +233,8 @@ addAppIntentAsync(config.intents.getProductWidths, (slots, session, data) => {
 //      what features does {product} support? 
 //      get features
 //
-addAppIntentAsync(config.intents.getAllProductFeatures, (slots, session, data) => {
-    return await(queryHelper.getAllProductFeatures(sessionContext.create(session), slots.product, slots.category)); 
+addAppIntentAsync(config.intents.getAllProductFeatures, (context, slots, session, data) => {
+    return await(queryHelper.getAllProductFeatures(context, slots.product, slots.category)); 
 });
 
 // GetManufacturerPhone
@@ -251,8 +247,8 @@ addAppIntentAsync(config.intents.getAllProductFeatures, (slots, session, data) =
 // example text: 
 //      what is the phone number of {manufacturer}? 
 //
-addAppIntentAsync(config.intents.getManufacturerPhone, (slots, session, data) => {
-    return await(queryHelper.getManufacturerPhone(sessionContext.create(session), slots.manufacturer)); 
+addAppIntentAsync(config.intents.getManufacturerPhone, (context, slots, session, data) => {
+    return await(queryHelper.getManufacturerPhone(context, slots.manufacturer)); 
 });
 
 // GetManufacturerAddress
@@ -265,8 +261,8 @@ addAppIntentAsync(config.intents.getManufacturerPhone, (slots, session, data) =>
 // example text: 
 //      what is the address of {manufacturer}? 
 //
-addAppIntentAsync(config.intents.getManufacturerAddress, (slots, session, data) => {
-    return await(queryHelper.getManufacturerAddress(sessionContext.create(session), slots.manufacturer)); 
+addAppIntentAsync(config.intents.getManufacturerAddress, (context, slots, session, data) => {
+    return await(queryHelper.getManufacturerAddress(context, slots.manufacturer)); 
 });
 
 // GetProducts
@@ -279,8 +275,8 @@ addAppIntentAsync(config.intents.getManufacturerAddress, (slots, session, data) 
 // example text: 
 //      what products does {entity} have?
 //
-addAppIntentAsync(config.intents.getProducts, (slots, session, data) => {
-    return await(queryHelper.getProductsForEntity(sessionContext.create(session), slots.entity)); 
+addAppIntentAsync(config.intents.getProducts, (context, slots, session, data) => {
+    return await(queryHelper.getProductsForEntity(context, slots.entity)); 
 });
 
 // QueryProducts
@@ -294,8 +290,8 @@ addAppIntentAsync(config.intents.getProducts, (slots, session, data) => {
 // example text: 
 //      what {category} does {manufacturer} have?
 //
-addAppIntentAsync(config.intents.queryProducts, (slots, session, data) => {
-    return await(queryHelper.getProductsByMfgAndCategory(sessionContext.create(session), slots.category, slots.manufacturer)); 
+addAppIntentAsync(config.intents.queryProducts, (context, slots, session, data) => {
+    return await(queryHelper.getProductsByMfgAndCategory(context, slots.category, slots.manufacturer)); 
 });
 
 // GetProductsCount
@@ -308,24 +304,24 @@ addAppIntentAsync(config.intents.queryProducts, (slots, session, data) => {
 // example text: 
 //      how many products does {entity} have? 
 //
-addAppIntentAsync(config.intents.getProductsCount, (slots, session, data) => {
-    return await(queryHelper.getProductsCountForEntity(sessionContext.create(session), slots.entity)); 
+addAppIntentAsync(config.intents.getProductsCount, (context, slots, session, data) => {
+    return await(queryHelper.getProductsCountForEntity(context, slots.entity)); 
 });
 
-addAppIntentAsync(config.intents.getFinishesForCategory, (slots, session, data) => {
-    return await(queryHelper.getFeatureValuesForCategory(sessionContext.create(session), slots.category, 'finish')); 
+addAppIntentAsync(config.intents.getFinishesForCategory, (context, slots, session, data) => {
+    return await(queryHelper.getFeatureValuesForCategory(context, slots.category, 'finish')); 
 });
 
-addAppIntentAsync(config.intents.getColorsForCategory, (slots, session, data) => {
-    return await(queryHelper.getFeatureValuesForCategory(sessionContext.create(session), slots.category, 'color')); 
+addAppIntentAsync(config.intents.getColorsForCategory, (context, slots, session, data) => {
+    return await(queryHelper.getFeatureValuesForCategory(context, slots.category, 'color')); 
 });
 
-addAppIntentAsync(config.intents.getHeightsForCategory, (slots, session, data) => {
-    return await(queryHelper.getFeatureValuesForCategory(sessionContext.create(session), slots.category, 'height')); 
+addAppIntentAsync(config.intents.getHeightsForCategory, (context, slots, session, data) => {
+    return await(queryHelper.getFeatureValuesForCategory(context, slots.category, 'height')); 
 });
 
-addAppIntentAsync(config.intents.getWidthsForCategory, (slots, session, data) => {
-    return await(queryHelper.getFeatureValuesForCategory(sessionContext.create(session), slots.category, 'width')); 
+addAppIntentAsync(config.intents.getWidthsForCategory, (context, slots, session, data) => {
+    return await(queryHelper.getFeatureValuesForCategory(context, slots.category, 'width')); 
 });
 
 
@@ -335,24 +331,24 @@ addAppIntentAsync(config.intents.getWidthsForCategory, (slots, session, data) =>
 // example text: 
 //      get 
 //
-addAppIntentAsync(config.intents.queryProductByFeature, (slots, session, data) => {
-    return await(queryHelper.queryProducts(sessionContext.create(session), slots.category, enums.productFeature.normalizeFeatureName(slots.feature), slots.featureValue)); 
+addAppIntentAsync(config.intents.queryProductByFeature, (context, slots, session, data) => {
+    return await(queryHelper.queryProducts(context, slots.category, enums.productFeature.normalizeFeatureName(slots.feature), slots.featureValue)); 
 }); 
 
-addAppIntentAsync(config.intents.queryProductByFinish, (slots, session, data) => {
-    return await(queryHelper.queryProducts(sessionContext.create(session), slots.category, 'finish', slots.featureValue)); 
+addAppIntentAsync(config.intents.queryProductByFinish, (context, slots, session, data) => {
+    return await(queryHelper.queryProducts(context, slots.category, 'finish', slots.featureValue)); 
 }); 
 
-addAppIntentAsync(config.intents.queryProductByColor, (slots, session, data) => {
-    return await(queryHelper.queryProducts(sessionContext.create(session), slots.category, 'color', slots.featureValue)); 
+addAppIntentAsync(config.intents.queryProductByColor, (context, slots, session, data) => {
+    return await(queryHelper.queryProducts(context, slots.category, 'color', slots.featureValue)); 
 }); 
 
-addAppIntentAsync(config.intents.queryProductByHeight, (slots, session, data) => {
-    return await(queryHelper.queryProducts(sessionContext.create(session), slots.category, 'height', slots.featureValue)); 
+addAppIntentAsync(config.intents.queryProductByHeight, (context, slots, session, data) => {
+    return await(queryHelper.queryProducts(context, slots.category, 'height', slots.featureValue)); 
 }); 
 
-addAppIntentAsync(config.intents.queryProductByWidth, (slots, session, data) => {
-    return await(queryHelper.queryProducts(sessionContext.create(session), slots.category, 'width', slots.featureValue)); 
+addAppIntentAsync(config.intents.queryProductByWidth, (context, slots, session, data) => {
+    return await(queryHelper.queryProducts(context, slots.category, 'width', slots.featureValue)); 
 }); 
 
 // QueryProductByMfgFeature
@@ -361,24 +357,24 @@ addAppIntentAsync(config.intents.queryProductByWidth, (slots, session, data) => 
 // example text: 
 //      get 
 //
-addAppIntentAsync(config.intents.queryProductByMfgFeature, (slots, session, data) => {
-    return await(queryHelper.queryProducts(sessionContext.create(session), slots.category, enums.productFeature.normalizeFeatureName(slots.feature), slots.featureValue, slots.manufacturer)); 
+addAppIntentAsync(config.intents.queryProductByMfgFeature, (context, slots, session, data) => {
+    return await(queryHelper.queryProducts(context, slots.category, enums.productFeature.normalizeFeatureName(slots.feature), slots.featureValue, slots.manufacturer)); 
 }); 
 
-addAppIntentAsync(config.intents.queryProductByMfgFinish, (slots, session, data) => {
-    return await(queryHelper.queryProducts(sessionContext.create(session), slots.category, 'finish', slots.featureValue, slots.manufacturer)); 
+addAppIntentAsync(config.intents.queryProductByMfgFinish, (context, slots, session, data) => {
+    return await(queryHelper.queryProducts(context, slots.category, 'finish', slots.featureValue, slots.manufacturer)); 
 }); 
 
-addAppIntentAsync(config.intents.queryProductByMfgColor, (slots, session, data) => {
-    return await(queryHelper.queryProducts(sessionContext.create(session), slots.category, 'color', slots.featureValue, slots.manufacturer)); 
+addAppIntentAsync(config.intents.queryProductByMfgColor, (context, slots, session, data) => {
+    return await(queryHelper.queryProducts(context, slots.category, 'color', slots.featureValue, slots.manufacturer)); 
 }); 
 
-addAppIntentAsync(config.intents.queryProductByMfgHeight, (slots, session, data) => {
-    return await(queryHelper.queryProducts(sessionContext.create(session), slots.category, 'height', slots.featureValue, slots.manufacturer)); 
+addAppIntentAsync(config.intents.queryProductByMfgHeight, (context, slots, session, data) => {
+    return await(queryHelper.queryProducts(context, slots.category, 'height', slots.featureValue, slots.manufacturer)); 
 }); 
 
-addAppIntentAsync(config.intents.queryProductByMfgWidth, (slots, session, data) => {
-    return await(queryHelper.queryProducts(sessionContext.create(session), slots.category, 'width', slots.featureValue, slots.manufacturer)); 
+addAppIntentAsync(config.intents.queryProductByMfgWidth, (context, slots, session, data) => {
+    return await(queryHelper.queryProducts(context, slots.category, 'width', slots.featureValue, slots.manufacturer)); 
 }); 
 
 // Repeat
@@ -388,10 +384,10 @@ addAppIntentAsync(config.intents.queryProductByMfgWidth, (slots, session, data) 
 // example text: 
 //      repeat
 //
-addAppIntent(config.intents.repeat, (slots, session, data) => {
+addAppIntent(config.intents.repeat, (context, slots, session, data) => {
     if (session.text) {
         //TODO: add reprompt?
-        return responseBuilder.responseWithCard(session.text, 'Repeat', null, sessionContext.create(session)); 
+        return responseBuilder.responseWithCard(session.text, 'Repeat', null, context); 
     }
     else {
         return responseBuilder.responseWithCardShortcut('unknownIntent'); 
@@ -410,8 +406,8 @@ addAppIntent(config.intents.repeat, (slots, session, data) => {
 // example text: 
 //      next 
 //
-addAppIntentAsync(config.intents.moveNext, (slots, session, data) => {
-    return await(navigation.moveNext(sessionContext.create(session))); 
+addAppIntentAsync(config.intents.moveNext, (context, slots, session, data) => {
+    return await(navigation.moveNext(context)); 
 });
 
 // Prev
@@ -426,8 +422,8 @@ addAppIntentAsync(config.intents.moveNext, (slots, session, data) => {
 // example text: 
 //      move back 
 //
-addAppIntentAsync(config.intents.movePrev, (slots, session, data) => {
-    return await(navigation.movePrev(sessionContext.create(session))); 
+addAppIntentAsync(config.intents.movePrev, (context, slots, session, data) => {
+    return await(navigation.movePrev(context)); 
 });
 
 // Start Over
@@ -442,8 +438,8 @@ addAppIntentAsync(config.intents.movePrev, (slots, session, data) => {
 // example text: 
 //      start over
 //
-addAppIntentAsync(config.intents.moveFirst, (slots, session, data) => {
-    return await(navigation.moveFirst(sessionContext.create(session))); 
+addAppIntentAsync(config.intents.moveFirst, (context, slots, session, data) => {
+    return await(navigation.moveFirst(context)); 
 });
 
 // Stop
@@ -453,8 +449,8 @@ addAppIntentAsync(config.intents.moveFirst, (slots, session, data) => {
 // example text: 
 //      alexa, stop
 //
-addAppIntent(config.intents.stop, (slots, session, data) => {
-    return navigation.stop(sessionContext.create(session)); 
+addAppIntent(config.intents.stop, (context, slots, session, data) => {
+    return navigation.stop(context); 
 });
 
 // Help 
@@ -464,8 +460,8 @@ addAppIntent(config.intents.stop, (slots, session, data) => {
 // example text: 
 //      help
 //
-addAppIntent(config.intents.help, (slots, session, data) => {
-    return responseBuilder.buildHelpResponse(sessionContext.create(session)); 
+addAppIntent(config.intents.help, (context, slots, session, data) => {
+    return responseBuilder.buildHelpResponse(context); 
 });
 
 // CallManufacturer
@@ -475,8 +471,8 @@ addAppIntent(config.intents.help, (slots, session, data) => {
 // example text: 
 //      call Kenmore
 //
-addAppIntentAsync(config.intents.callManufacturer, (slots, session, data) => {
-    return await(phone.callManufacturer(sessionContext.create(session), slots.manufacturer)); 
+addAppIntentAsync(config.intents.callManufacturer, (context, slots, session, data) => {
+    return await(phone.callManufacturer(context, slots.manufacturer)); 
 });
 
 // CallBimsmithSupport 
@@ -486,8 +482,8 @@ addAppIntentAsync(config.intents.callManufacturer, (slots, session, data) => {
 // example text: 
 //      call support
 //
-addAppIntentAsync(config.intents.callBimsmithSupport, (slots, session, data) => {
-    return await(phone.callBimsmithSupport(sessionContext.create(session))); 
+addAppIntentAsync(config.intents.callBimsmithSupport, (context, slots, session, data) => {
+    return await(phone.callBimsmithSupport(context)); 
 });
 
 // Goodbye 
@@ -497,8 +493,8 @@ addAppIntentAsync(config.intents.callBimsmithSupport, (slots, session, data) => 
 // example text: 
 //      goodbye
 //
-addAppIntent(config.intents.goodbye, (slots, session, data) => {
-    return responseBuilder.responseWithCard(config.ui.goodbye.text, config.ui.goodbye.card, null, sessionContext.create(session), true); 
+addAppIntent(config.intents.goodbye, (context, slots, session, data) => {
+    return responseBuilder.responseWithCard(config.ui.goodbye.text, config.ui.goodbye.card, null, context, true); 
 });
 
 module.exports = {

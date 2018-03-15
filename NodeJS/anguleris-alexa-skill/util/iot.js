@@ -47,11 +47,11 @@ function connectIoT(){
 //      the property itself) 
 // 
 // returns: IoT response (Promise)
-const updateThingShadow = async((payload) => {
+const updateThingShadow = async((deviceId, payload) => {
     return new Promise((resolve, reject) => {
         var params = {
             payload:  JSON.stringify({state: payload}),
-            thingName: 'bimsmith-thing'
+            thingName: deviceId
         }; 
 
         iotdata.updateThingShadow(params, (err, data) => {

@@ -1,5 +1,8 @@
 'use strict';
 
+
+//TODO: remove this if not being used
+
 // ======================================================================================================
 // user - information about current session's known or anonymous user
 // 

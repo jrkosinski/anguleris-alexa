@@ -493,6 +493,16 @@ module.exports = {
             reprompt: null,
             card: 'Calling {name}'
         }),
+        noRegisteredDevice: getUISetting('NO_REGISTERED_DEVICE', {
+            text: 'No Registered Device found for user. ',
+            reprompt: null,
+            card: 'No Registered Device'
+        }),
+        userNotFound: getUISetting('USER_NOT_FOUND', {
+            text: 'user not found in database. ',
+            reprompt: null,
+            card: 'User not Found'
+        }),
         goodbye: getUISetting('GOODBYE', {
             text: 'Thank you very much. Goodbye! ',
             reprompt: null,
