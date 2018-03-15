@@ -202,7 +202,9 @@ public class TestActivity extends Activity {
 
                                             tvLastMessage.setText(message);
 
-                                            Utility.callPhone(context, "0619844525");
+                                            String phoneNumber = Utility.parsePhoneNumber(message);
+                                            if (phoneNumber != null && phoneNumber.length() > 0)
+                                                Utility.callPhone(context, phoneNumber);
 
                                         } catch (UnsupportedEncodingException e) {
                                             Log.e(LOG_TAG, "Message encoding error.", e);
