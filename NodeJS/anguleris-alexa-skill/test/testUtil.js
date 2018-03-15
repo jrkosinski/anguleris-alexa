@@ -207,12 +207,10 @@ const runUnitTests = async((handler) => {
 
     //UNIT TESTS 
     const unitTests = [
-        /*
         //get version
         async(() => {
             await(runTest('get version', createIntentRequest(config.intents.getVersion.name), [
-                assertions.responseIsNotNull,
-                assertions.hasSessionAttributes
+                assertions.responseIsNotNull
             ])); 
         }),
 
@@ -225,6 +223,7 @@ const runUnitTests = async((handler) => {
             ])); 
         }),
 
+        /*
         //categories move next 1
         async(() => {
             var request = createNavigationRequest(enums.querySubject.categories, enums.navigationCommand.next, 0); 

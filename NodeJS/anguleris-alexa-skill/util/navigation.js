@@ -71,7 +71,7 @@ function getNavArgsForQuery(query) {
 //  navigationCommand: the command to act upon the list 
 // 
 // returns: json object (Alexa response format) 
-function navigate(sessionContext, navigationCommand) {
+const navigate = async((sessionContext, navigationCommand) => {
     return exception.try(() => {
         logger.info('navigating ' + navigationCommand); 
         
@@ -79,7 +79,7 @@ function navigate(sessionContext, navigationCommand) {
             var session = sessionContext.attributes;
 
             if (session.querySubject && !common.types.isUndefinedOrNull(session.startIndex)) {
-                var results = query.runQuery(session.querySubject, session.queryParams); 
+                var results = await(query.runQuery(session.querySubject, session.queryParams)); 
                 var index = common.types.tryParseInt(session.startIndex); 
                 var navArgs = getNavArgsForQuery(session.querySubject);
 
@@ -124,7 +124,7 @@ function navigate(sessionContext, navigationCommand) {
             return responseBuilder.responseWithCardShortcut('notInList', {}, session);
         }
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // move to the next result in the list response 
@@ -133,9 +133,9 @@ function navigate(sessionContext, navigationCommand) {
 //  sessionContext: the list response and its state is defined here 
 // 
 // returns: json object (Alexa response format) 
-function moveNext(sessionContext) {
-    return navigate(sessionContext, enums.navigationCommand.next); 
-}
+const moveNext = async((sessionContext) => {
+    return await(navigate(sessionContext, enums.navigationCommand.next)); 
+});
 
 // ------------------------------------------------------------------------------------------------------
 // move to the previous result in the list response 
@@ -144,9 +144,9 @@ function moveNext(sessionContext) {
 //  sessionContext: the list response and its state is defined here 
 // 
 // returns: json object (Alexa response format) 
-function movePrev(sessionContext) {
-    return navigate(sessionContext, enums.navigationCommand.prev); 
-}
+const movePrev = async((sessionContext) => {
+    return await(navigate(sessionContext, enums.navigationCommand.prev)); 
+});
 
 // ------------------------------------------------------------------------------------------------------
 // move to the first result in the list response 
@@ -155,9 +155,9 @@ function movePrev(sessionContext) {
 //  sessionContext: the list response and its state is defined here 
 // 
 // returns: json object (Alexa response format) 
-function moveFirst(sessionContext) {
-    return navigate(sessionContext, enums.navigationCommand.moveFirst); 
-}
+const moveFirst = async((sessionContext) => {
+    return await(navigate(sessionContext, enums.navigationCommand.moveFirst)); 
+});
 
 // ------------------------------------------------------------------------------------------------------
 // move to the next result in the list response 

@@ -29,12 +29,12 @@ const query = require('./query');
 //  sessionContext: session context data
 // 
 // returns: json object (Alexa response format) 
-function getCategories(sessionContext) {
+const getCategories = async((sessionContext) => {
     return exception.try(() => {
         var session = sessionContext.attributes;
 
         session.querySubject = enums.querySubject.categories;
-        var categories = query.runQuery(session.querySubject)
+        var categories = await(query.runQuery(session.querySubject)); 
     
         //TODO: hard-coded text 
         return responseBuilder.responseListGroup (
@@ -51,7 +51,7 @@ function getCategories(sessionContext) {
             }
         ); 
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // gets a list of all manufacturers 
@@ -60,11 +60,11 @@ function getCategories(sessionContext) {
 //  sessionContext: session context data
 // 
 // returns: json object (Alexa response format) 
-function getManufacturers(sessionContext) {
+const getManufacturers = async((sessionContext) => {
     return exception.try(() => {
         var session = sessionContext.attributes;
         session.querySubject = enums.querySubject.manufacturers;
-        var manufacturers = query.runQuery(session.querySubject);
+        var manufacturers = await(query.runQuery(session.querySubject));
     
         //TODO: hard-coded text 
         return responseBuilder.responseListGroup (
@@ -81,7 +81,7 @@ function getManufacturers(sessionContext) {
             }
         ); 
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // gets a list of all manufacturers in the given category
@@ -90,13 +90,13 @@ function getManufacturers(sessionContext) {
 //  sessionContext: session context data
 // 
 // returns: json object (Alexa response format) 
-function getManufacturersForCategory(sessionContext, categoryName) {
+const getManufacturersForCategory = async((sessionContext, categoryName) => {
     return exception.try(() => {
         var session = sessionContext.attributes;
         session.queryParams = { category: categoryName};
         session.querySubject = enums.querySubject.manufacturers;
 
-        var manufacturers = query.runQuery(session.querySubject, session.queryParams); 
+        var manufacturers = await(query.runQuery(session.querySubject, session.queryParams)); 
         
         //TODO: add reprompt
         return responseBuilder.listToText(
@@ -107,7 +107,7 @@ function getManufacturersForCategory(sessionContext, categoryName) {
             sessionContext
         ); 
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // gets a list of all categories for which the given manufacturer has products
@@ -116,13 +116,13 @@ function getManufacturersForCategory(sessionContext, categoryName) {
 //  sessionContext: session context data
 // 
 // returns: json object (Alexa response format) 
-function getCategoriesForManufacturer(sessionContext, manufacturerName) {
+const getCategoriesForManufacturer = async((sessionContext, manufacturerName) => {
     return exception.try(() => {
         var session = sessionContext.attributes;
         session.queryParams = { manufacturer: manufacturerName};
         session.querySubject = enums.querySubject.categories;
 
-        var categories = query.runQuery(session.querySubject, session.queryParams); 
+        var categories = await(query.runQuery(session.querySubject, session.queryParams)); 
         
         //TODO: add reprompt
         return responseBuilder.listToText(
@@ -133,7 +133,7 @@ function getCategoriesForManufacturer(sessionContext, manufacturerName) {
             sessionContext
         ); 
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // gets a response containing the details for a specific category or manufacturer
@@ -142,7 +142,7 @@ function getCategoriesForManufacturer(sessionContext, manufacturerName) {
 //  sessionContext: session context data
 // 
 // returns: json object (Alexa response format) 
-function getDetails(sessionContext, parameter) {
+const getDetails = async((sessionContext, parameter) => {
     return exception.try(() => {
         var details = null;
 
@@ -152,7 +152,7 @@ function getDetails(sessionContext, parameter) {
         }
 
         //attempt to get entity
-        var entity = query.runQuery(null, sessionContext.attributes.queryParams); 
+        var entity = await(query.runQuery(null, sessionContext.attributes.queryParams)); 
 
         if (entity) {
             switch(entity.type) {
@@ -179,7 +179,7 @@ function getDetails(sessionContext, parameter) {
         //TODO: hard-coded text here 
         return responseBuilder.responseWithCard(details, 'Entity Details: ' + parameter, null, sessionContext);
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // gets the feature values supported by given product and feature
@@ -190,11 +190,11 @@ function getDetails(sessionContext, parameter) {
 //  productName: name of product 
 // 
 // returns: json object (Alexa response format) 
-function getProductFeatureValues(sessionContext, featureName, productName) {
+const getProductFeatureValues = async((sessionContext, featureName, productName) => {
     return exception.try(() => {
 
         //get product 
-        var product = getProductFromSession(sessionContext, productName); 
+        var product = await(getProductFromSession(sessionContext, productName)); 
         var content = null;
 
         if (product) {
@@ -236,7 +236,7 @@ function getProductFeatureValues(sessionContext, featureName, productName) {
             return responseBuilder.productNotFound(productName, sessionContext);
         }
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // gets a list of all features and their values, for a given product 
@@ -246,11 +246,11 @@ function getProductFeatureValues(sessionContext, featureName, productName) {
 //  productName: name of product 
 // 
 // returns: json object (Alexa response format) 
-function getAllProductFeatures(sessionContext, productName) {
+const getAllProductFeatures = async((sessionContext, productName) => {
     return exception.try(() => {
 
         //get product 
-        var product = getProductFromSession(sessionContext, productName); 
+        var product = await(getProductFromSession(sessionContext, productName)); 
         var content = null;
 
         if (product) {
@@ -282,7 +282,7 @@ function getAllProductFeatures(sessionContext, productName) {
             return responseBuilder.productNotFound(productName, sessionContext);
         }
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // gets a response containing the requested manufacturer's phone number
@@ -292,11 +292,11 @@ function getAllProductFeatures(sessionContext, productName) {
 //  manufacturerName: the manufacturer name 
 // 
 // returns: json object (Alexa response format) 
-function getManufacturerPhone(sessionContext, manufacturerName) {
+const getManufacturerPhone = async((sessionContext, manufacturerName) => {
     return exception.try(() => {
-        return getManufacturerProperty(sessionContext, manufacturerName, 'phone', 'manufacturerPhoneFound', 'manufacturerPhoneNotFound');
+        return await(getManufacturerProperty(sessionContext, manufacturerName, 'phone', 'manufacturerPhoneFound', 'manufacturerPhoneNotFound'));
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // gets a response containing the requested manufacturer's address
@@ -306,11 +306,11 @@ function getManufacturerPhone(sessionContext, manufacturerName) {
 //  manufacturerName: the manufacturer name 
 // 
 // returns: json object (Alexa response format) 
-function getManufacturerAddress(sessionContext, manufacturerName) {
+const getManufacturerAddress = async((sessionContext, manufacturerName) => {
     return exception.try(() => {
-        return getManufacturerProperty(sessionContext, manufacturerName, 'address', 'manufacturerAddressFound', 'manufacturerAddressNotFound');
+        return await(getManufacturerProperty(sessionContext, manufacturerName, 'address', 'manufacturerAddressFound', 'manufacturerAddressNotFound'));
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // gets a response containing the requested manufacturer's [property] value
@@ -323,7 +323,7 @@ function getManufacturerAddress(sessionContext, manufacturerName) {
 //  notFoundText: config.ui node to be used when requested data is not found
 // 
 // returns: json object (Alexa response format) 
-function getManufacturerProperty(sessionContext, manufacturerName, propertyName, foundText, notFoundText) {
+const getManufacturerProperty = async((sessionContext, manufacturerName, propertyName, foundText, notFoundText) => {
     return exception.try(() => {
         var text = null;
         var card = null;
@@ -331,7 +331,7 @@ function getManufacturerProperty(sessionContext, manufacturerName, propertyName,
         sessionContext.attributes.queryParams = {name:manufacturerName}; 
 
         //attempt to get manufacturer
-        var mfg = query.runQuery(enums.querySubject.manufacturers, sessionContext.attributes.queryParams);
+        var mfg = await(query.runQuery(enums.querySubject.manufacturers, sessionContext.attributes.queryParams));
         if (mfg) {
             if (mfg[propertyName] && mfg[propertyName].trim().length) {
                 return responseBuilder.responseWithCardShortcut(foundText, {
@@ -349,7 +349,7 @@ function getManufacturerProperty(sessionContext, manufacturerName, propertyName,
         
         return responseBuilder.manufacturerNotFound(manufacturerName, sessionContext);
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // gets products list for category or manufacturer
@@ -359,14 +359,14 @@ function getManufacturerProperty(sessionContext, manufacturerName, propertyName,
 //  entityName: the category or manufacturer name 
 // 
 // returns: json object (Alexa response format) 
-function getProductsForEntity(sessionContext, entityName, countOnly) {
+const getProductsForEntity = async((sessionContext, entityName, countOnly) => {
     return exception.try(() => {
         var text = null;
         var products = [];
         var notFoundText = null;        
     
         var session = sessionContext.attributes;
-        var entity = dataAccess.getEntityByName(entityName); 
+        var entity = await(dataAccess.getEntityByName(entityName)); 
 
         //choose category or manufacturer
         if (entity){
@@ -378,7 +378,7 @@ function getProductsForEntity(sessionContext, entityName, countOnly) {
             }
             
             //query for products
-            products = query.runQuery(enums.querySubject.products, session.queryParams);
+            products = await(query.runQuery(enums.querySubject.products, session.queryParams));
             
             if (!common.arrays.nullOrEmpty(products)) {
                 //count only
@@ -418,7 +418,7 @@ function getProductsForEntity(sessionContext, entityName, countOnly) {
 
         return responseBuilder.entityNotFound(entityName, sessionContext);         
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // gets total number of products for category or manufacturer
@@ -428,9 +428,9 @@ function getProductsForEntity(sessionContext, entityName, countOnly) {
 //  entityName: the category or manufacturer name 
 // 
 // returns: json object (Alexa response format) 
-function getProductsCountForEntity(sessionContext, entityName) {
-    return getProductsForEntity(sessionContext, entityName, true);
-}
+const getProductsCountForEntity = async((sessionContext, entityName) => {
+    return await(getProductsForEntity(sessionContext, entityName, true));
+});
 
 // ------------------------------------------------------------------------------------------------------
 // gets all feature values available for the given feature, in the given category
@@ -441,17 +441,17 @@ function getProductsCountForEntity(sessionContext, entityName) {
 //  featureName: the name of the feature 
 // 
 // returns: json object (Alexa response format) 
-function getFeatureValuesForCategory(sessionContext, categoryName, featureName) {
+const getFeatureValuesForCategory = async((sessionContext, categoryName, featureName) => {
     return exception.try(() => {
 
         //check first that category exists 
-        if (!dataAccess.categoryExists(categoryName)) {
+        if (!await(dataAccess.categoryExists(categoryName))) {
             return responseBuilder.categoryNotFound(categoryName, sessionContext); 
         }
 
         //get feature values 
         //TODO: implement this call 
-        var featureValues = query.runQuery(enums.querySubject.features, { feature:featureName, category:categoryName }); 
+        var featureValues = await(query.runQuery(enums.querySubject.features, { feature:featureName, category:categoryName })); 
 
         if (!common.arrays.nullOrEmpty(featureValues)) {
             return responseBuilder.listToText(
@@ -471,7 +471,7 @@ function getFeatureValuesForCategory(sessionContext, categoryName, featureName) 
             );
         }
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // queries for products by both a certain manufacturer and in a certain category 
@@ -482,9 +482,9 @@ function getFeatureValuesForCategory(sessionContext, categoryName, featureName) 
 //  manufacturerName: the name of the manufacturer 
 // 
 // returns: json object (Alexa response format) 
-function getProductsByMfgAndCategory(sessionContext, categoryName, manufacturerName) {
-    return queryProducts(sessionContext, categoryName, null, null, manufacturerName);
-}
+const getProductsByMfgAndCategory = async((sessionContext, categoryName, manufacturerName) => {
+    return await(queryProducts(sessionContext, categoryName, null, null, manufacturerName));
+});
     
 // ------------------------------------------------------------------------------------------------------
 // gets all products that match the given criteria
@@ -498,17 +498,17 @@ function getProductsByMfgAndCategory(sessionContext, categoryName, manufacturerN
 // 
 // returns: json object (Alexa response format) 
 //TODO: make this the one master query for all products (e.g. products by category) 
-function queryProducts(sessionContext, categoryName, featureName, featureValue, manufacturerName) {
+const queryProducts = async((sessionContext, categoryName, featureName, featureValue, manufacturerName) => {
     return exception.try(() => {
 
         //check first that category exists 
-        if (!dataAccess.categoryExists(categoryName)) {
+        if (!await(dataAccess.categoryExists(categoryName))) {
             return responseBuilder.categoryNotFound(categoryName, sessionContext); 
         }
 
         //check that manufacturer exists 
         if (manufacturerName) {
-            if (!dataAccess.manufacturerExists(manufacturerName))
+            if (!await(dataAccess.manufacturerExists(manufacturerName)))
                 return responseBuilder.manufacturerNotFound(manufacturerName, sessionContext); 
         }
 
@@ -526,7 +526,7 @@ function queryProducts(sessionContext, categoryName, featureName, featureValue, 
             sessionContext.attributes.queryParams.featureValue = featureValue;
 
         //run query 
-        var products = query.runQuery(sessionContext.attributes.querySubject, sessionContext.attributes.queryParams); 
+        var products = await(query.runQuery(sessionContext.attributes.querySubject, sessionContext.attributes.queryParams)); 
 
         if (!common.arrays.nullOrEmpty(products)) {
             return responseBuilder.responseListGroup(
@@ -551,13 +551,13 @@ function queryProducts(sessionContext, categoryName, featureName, featureValue, 
             );
         }
     }); 
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // attempts to get the product name from either the given parameter, or from session. 
 //
 // returns: string 
-function getProductFromSession(sessionContext, productName){
+const getProductFromSession = async((sessionContext, productName) => {
     return exception.try(() => {
         var output = null; 
 
@@ -570,10 +570,10 @@ function getProductFromSession(sessionContext, productName){
 
         if (productName) {
             //attempt to get by product name 
-            output = dataAccess.getProductByName(productName);
+            output = await(dataAccess.getProductByName(productName));
         }
         else {
-            var output = query.runQuery(enums.querySubject.products, sessionContext.attributes.queryParams); 
+            var output = await(query.runQuery(enums.querySubject.products, sessionContext.attributes.queryParams)); 
             if (Array.isArray(output)){
                 if (!common.types.isUndefinedOrNull(sessionContext.attributes.startIndex))
                     output = output[sessionContext.attributes.startIndex]; 
@@ -584,7 +584,7 @@ function getProductFromSession(sessionContext, productName){
         
         return output; 
     }); 
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // creates a speech string for category details
@@ -593,7 +593,7 @@ function getProductFromSession(sessionContext, productName){
 //  category: category object
 //
 // returns: string 
-function formatCategoryDetails(category) {
+const formatCategoryDetails = (category) => {
     return exception.try(() => {
         var output = '';
 
@@ -606,7 +606,7 @@ function formatCategoryDetails(category) {
 
         return output;
     });
-}
+};
 
 // ------------------------------------------------------------------------------------------------------
 // creates a speech string for manufacturer details
@@ -615,7 +615,7 @@ function formatCategoryDetails(category) {
 //  category: manufacturer object
 //
 // returns: string 
-function formatManufacturerDetails(manufacturer) {
+const formatManufacturerDetails = (manufacturer) => {
     return exception.try(() => {
         var output = '';
         output = manufacturer.name.trim() + '. ';
@@ -632,7 +632,7 @@ function formatManufacturerDetails(manufacturer) {
 
         return output;
     });
-}
+};
 
 // ------------------------------------------------------------------------------------------------------
 // creates a speech string for product details
@@ -641,7 +641,7 @@ function formatManufacturerDetails(manufacturer) {
 //  category: product object
 //
 // returns: string 
-function formatProductDetails(product) {
+const formatProductDetails = (product) => {
     return exception.try(() => {
         var output = '';
 
@@ -654,7 +654,7 @@ function formatProductDetails(product) {
 
         return output;
     });
-}
+};
 
 
 module.exports = {

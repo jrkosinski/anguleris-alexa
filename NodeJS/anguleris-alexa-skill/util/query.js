@@ -28,7 +28,7 @@ const responseBuilder = require('./responseBuilder');
 //  parameter: optional parameter to modify the request
 //
 // returns: object or array of objects 
-function runQuery(querySubject, queryParams) {
+const runQuery = async((querySubject, queryParams) => {
     return exception.try(() => {
         var name = null;
         if (queryParams && queryParams.name) {
@@ -38,30 +38,30 @@ function runQuery(querySubject, queryParams) {
         //anonymous querySubject
         if (!querySubject) {
             if (name) {
-                var entity = dataAccess.getEntityByName(name);
+                var entity = await(dataAccess.getEntityByName(name));
                 return entity;
             }
         }
         else {
             switch (querySubject) {
                 case enums.querySubject.categories: {
-                    return queryCategories(queryParams);
+                    return await(queryCategories(queryParams));
                 }
                 case enums.querySubject.manufacturers: {
-                    return queryManufacturers(queryParams);
+                    return await(queryManufacturers(queryParams));
                 }
                 case enums.querySubject.products: {
-                    return queryProducts(queryParams);
+                    return await(queryProducts(queryParams));
                 }
                 case enums.querySubject.features: {
-                    return queryFeatureValues(queryParams);
+                    return await(queryFeatureValues(queryParams));
                 }
             }
         }
 
         return null;
     });
-}
+}); 
 
 // ------------------------------------------------------------------------------------------------------
 // queries for categories by the given params
@@ -71,16 +71,16 @@ function runQuery(querySubject, queryParams) {
 //  queryParams.name - category name
 //
 // returns: array of categories 
-function queryCategories(queryParams) {
+const queryCategories  = async((queryParams) => {
     return exception.try(() => {
         if (queryParams && queryParams.manufacturer) {
-            return dataAccess.getCategoriesForManufacturer(queryParams.manufacturer);
+            return await(dataAccess.getCategoriesForManufacturer(queryParams.manufacturer));
         }
         else {
-            return dataAccess.getCategories(queryParams ? queryParams.name : null);
+            return await(dataAccess.getCategories(queryParams ? queryParams.name : null));
         }
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // queries for manufacturers by the given params
@@ -90,14 +90,14 @@ function queryCategories(queryParams) {
 //  queryParams.name - manufacturer name
 //
 // returns: array of categories 
-function queryManufacturers(queryParams) {
+const queryManufacturers = async((queryParams) => {
     return exception.try(() => {
         if (queryParams && queryParams.category) {
-            var category = dataAccess.getCategories(queryParams.category);
+            var category = await(dataAccess.getCategories(queryParams.category));
             if (category && category.manufacturers){
                 var output = []; 
                 for (var n=0; n<category.manufacturers.length; n++){
-                    var mfg = dataAccess.getManufacturers(category.manufacturers[n]); 
+                    var mfg = await(dataAccess.getManufacturers(category.manufacturers[n])); 
                     if (mfg){
                         output.push(mfg);
                     }
@@ -106,12 +106,12 @@ function queryManufacturers(queryParams) {
             }
         }
         else {
-            return dataAccess.getManufacturers(queryParams ? queryParams.name : null);
+            return await(dataAccess.getManufacturers(queryParams ? queryParams.name : null));
         }
 
         return null;
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // queries for products by the given params
@@ -123,30 +123,30 @@ function queryManufacturers(queryParams) {
 //  queryParams.featureValue - a feature value 
 //
 // returns: array of categories 
-function queryProducts(queryParams) {
+const queryProducts = async((queryParams) => {
     return exception.try(() => {
         if (queryParams) {
             var products = null;
 
             if (queryParams.category) {
-                products = dataAccess.getProductsForCategory(queryParams.category);
+                products = await(dataAccess.getProductsForCategory(queryParams.category));
             }
             if (queryParams.manufacturer) {
                 if (products)
                     products = filterProductsByManufacturer(products, queryParams.manufacturer);
                 else
-                    products = dataAccess.getProductsForManufacturer(queryParams.manufacturer);
+                    products = await(dataAccess.getProductsForManufacturer(queryParams.manufacturer));
             }
             if (queryParams.feature && queryParams.featureValue) {
                 if (!products)
-                    products = dataAccess.getProducts();
+                    products = await(dataAccess.getProducts());
                 products = filterProductsByFeature(products, queryParams.feature, queryParams.featureValue);
             }
 
             return products;
         }
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // queries for all feature values for a feature, which are supported by products.
@@ -158,11 +158,11 @@ function queryProducts(queryParams) {
 //  queryParams.feature - a feature name 
 //
 // returns: array of categories 
-function queryFeatureValues(queryParams) {
+const queryFeatureValues = async((queryParams) => {
     return exception.try(() => {
         var features = null;
         if (queryParams.category && queryParams.feature) {
-            var products = dataAccess.getProductsForCategory(queryParams.category); 
+            var products = await(dataAccess.getProductsForCategory(queryParams.category)); 
 
             if (products) {
                 var output = [];
@@ -187,7 +187,7 @@ function queryFeatureValues(queryParams) {
 
         return[];
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // filter a list of products, by manufacturer. 
@@ -197,7 +197,7 @@ function queryFeatureValues(queryParams) {
 //  manufacturer: the mfg name to filter by 
 // 
 // returns: subset of the original list of products
-function filterProductsByManufacturer(products, manufacturer) {
+const filterProductsByManufacturer = (products, manufacturer) => {
     return exception.try(() => {
         manufacturer = manufacturer.trim().toLowerCase();
 
@@ -205,7 +205,7 @@ function filterProductsByManufacturer(products, manufacturer) {
             return (p.manufacturer && p.manufacturer.trim().toLowerCase() === manufacturer);
         });
     });
-}
+};
 
 // ------------------------------------------------------------------------------------------------------
 // filter a list of products, by feature & feature value. 
@@ -216,7 +216,7 @@ function filterProductsByManufacturer(products, manufacturer) {
 //  featureValue: the feature value to filter by 
 // 
 // returns: subset of the original list of products
-function filterProductsByFeature(products, feature, featureValue) {
+const filterProductsByFeature = (products, feature, featureValue) => {
     return exception.try(() => {
         if (featureValue)
             featureValue = featureValue.trim().toLowerCase();
@@ -242,7 +242,7 @@ function filterProductsByFeature(products, feature, featureValue) {
             }
         });
     });
-}
+};
 
 
 module.exports = {

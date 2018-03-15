@@ -42,11 +42,11 @@ const callBimsmithSupport = async((sessionContext) => {
 // returns: json object (Alexa response format) 
 const callManufacturer = async((sessionContext, manufacturerName) => {
     return exception.try(() => {
-        var mfg = query.runQuery(enums.querySubject.manufacturer, {name: manufacturerName});
+        var mfg = await(query.runQuery(enums.querySubject.manufacturer, {name: manufacturerName}));
 
         //manufacturer not found
         if (!mfg) {
-            return responseBuilder.manufacturerNotFound(manufacturerName, session);
+            return responseBuilder.manufacturerNotFound(manufacturerName, sessionContext);
         }
 
         // no phone number available 
@@ -54,7 +54,7 @@ const callManufacturer = async((sessionContext, manufacturerName) => {
             return responseBuilder.responseWithCardShortcut(
                 'manufacturerPhoneNotFound', 
                 {name:manufacturerName}, 
-                session
+                sessionContext
             );
         }
 
