@@ -48,7 +48,8 @@ const getCategories = async((sessionContext) => {
                 postText: categories.length >1 ? 'Say next, or ask a different question. ' : '', 
                 reprompt: categories.length >1 ? 'Say next, or ask a different question. ' : 'hopi',
                 title: 'Results {start} to {end} of {count}'
-            }
+            },
+            sessionContext
         ); 
     });
 });
@@ -78,7 +79,8 @@ const getManufacturers = async((sessionContext) => {
                 postText: manufacturers.length >1 ? 'Say next to move to next result. Or ask a different question. ': '', 
                 reprompt: manufacturers.length >1 ? 'Say next to move to next result. Or ask a different question. ': null,
                 title: 'Results {start} to {end} of {count}'
-            }
+            },
+            sessionContext
         ); 
     });
 });
@@ -406,7 +408,8 @@ const getProductsForEntity = async((sessionContext, entityName, countOnly) => {
                             postText: products.length >1 ? 'Say next to move to next result. Or ask a different question. ' : '',
                             reprompt: products.length >1 ? 'Say next to move to next result. Or ask a different question. ' : null,
                             title: 'Result {start} of {count}'
-                        }
+                        },
+                        sessionContext
                     );
                 }
             }
@@ -540,7 +543,8 @@ const queryProducts = async((sessionContext, categoryName, featureName, featureV
                     postText: products.length >1 ? 'Say next to move to next result. Or ask a different question. ': '',
                     reprompt: products.length >1 ? 'Say next to move to next result. Or ask a different question. ': null,
                     title: 'Result {start} of {count}'
-                }
+                },
+                sessionContext
             );
         }
         else{

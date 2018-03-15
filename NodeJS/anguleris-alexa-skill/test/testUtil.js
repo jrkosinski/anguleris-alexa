@@ -223,7 +223,6 @@ const runUnitTests = async((handler) => {
             ])); 
         }),
 
-        /*
         //categories move next 1
         async(() => {
             var request = createNavigationRequest(enums.querySubject.categories, enums.navigationCommand.next, 0); 
@@ -334,7 +333,6 @@ const runUnitTests = async((handler) => {
             ])); 
         }),
         
-
         //get manufacturers
         async(() => {
             await(runTest('get manufacturers', createIntentRequest(config.intents.getManufacturers.name), [
@@ -600,7 +598,6 @@ const runUnitTests = async((handler) => {
                 assertions.hasSessionAttributes
             ])); 
         }),
-        */
 
         //call support
         async(() => {

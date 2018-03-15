@@ -107,7 +107,8 @@ const navigate = async((sessionContext, navigationCommand) => {
                         { subject: session.querySubject, params: session.queryParams }, 
                         groupSize, 
                         index, 
-                        navArgs
+                        navArgs, 
+                        sessionContext
                     ); 
                 }
                 else{

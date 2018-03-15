@@ -56,7 +56,7 @@ function addAppIntent(intent, func) {
                 logger.info('Session: ' + JSON.stringify(attr)); 
                 return func(slots, attr, data); 
             }, { 
-                defaultValue:responseBuilder.generalError(sessionContext.create(attr))
+                defaultValue:responseBuilder.generalError(sessionContext.create(attr), false, true)
             });
         }
     );
@@ -67,7 +67,7 @@ const addAppIntentAsync = (intent, func) => {
         intent.name,
         intent.utterances, 
         async((slots, attr, data, done) => {
-            var defaultOutput = responseBuilder.generalError(sessionContext.create(attr)); 
+            var defaultOutput = responseBuilder.generalError(sessionContext.create(attr), false, true); 
             var output = null; 
 
             try {

@@ -25,7 +25,7 @@ const config = require('../config');
 //  shouldEndSession: true to end session after response; false is the default 
 //
 // returns: json object (Alexa response format) 
-function responseWithCard(text, title, reprompt, sessionContext, shouldEndSession) {
+function responseWithCard(text, title, reprompt, sessionContext, shouldEndSession, suppressLogging) {
     return exception.try(() => {
         if (!text)
             text = ''; 
@@ -59,10 +59,12 @@ function responseWithCard(text, title, reprompt, sessionContext, shouldEndSessio
             output.attrs.text = text;
         }
 
-        if(shouldEndSession)
-            output.attrs = null; 
-            
-        logger.info('response: ' + JSON.stringify(output)); 
+        //if(shouldEndSession)
+        //    output.attrs = null; 
+        
+        if (!suppressLogging)
+            logger.info('response: ' + JSON.stringify(output)); 
+
         return output;
     });
 }
@@ -76,13 +78,13 @@ function responseWithCard(text, title, reprompt, sessionContext, shouldEndSessio
 //  shouldEndSession: true to end session after response; false is the default 
 //
 // returns: json object (Alexa response format) 
-function responseWithCardShortcut(propertyName, replacements, sessionContext, shouldEndSession) {
+function responseWithCardShortcut(propertyName, replacements, sessionContext, shouldEndSession, suppressLogging) {
     return exception.try(() => {
         var text = config.ui[propertyName] && config.ui[propertyName].text ? config.ui[propertyName].text.replaceTokens(replacements) : null; 
         var card = config.ui[propertyName] && config.ui[propertyName].card ? config.ui[propertyName].card.replaceTokens(replacements) : null; 
         var reprompt = config.ui[propertyName] && config.ui[propertyName].reprompt ? config.ui[propertyName].reprompt.replaceTokens(replacements) : null; 
         
-        return responseWithCard(text, card, reprompt, sessionContext, shouldEndSession);
+        return responseWithCard(text, card, reprompt, sessionContext, shouldEndSession, suppressLogging);
     });
 }
 
@@ -96,7 +98,7 @@ function responseWithCardShortcut(propertyName, replacements, sessionContext, sh
 //  navArgs: 
 //
 // returns: json object (Alexa response format) 
-function responseListGroup(list, query, groupSize, startIndex, navArgs) {
+function responseListGroup(list, query, groupSize, startIndex, navArgs, sessionContext) {
     return exception.try(() => {
         var text = '';
 
@@ -160,7 +162,8 @@ function responseListGroup(list, query, groupSize, startIndex, navArgs) {
             var title = replaceText(navArgs.title);         
             var reprompt = replaceText(navArgs.reprompt);
 
-            var output = responseWithCard(text, title, reprompt, sessionAttr);
+            sessionContext.attributes = sessionAttr;
+            var output = responseWithCard(text, title, reprompt, sessionContext);
 
             return output;
         }
@@ -171,11 +174,14 @@ function responseListGroup(list, query, groupSize, startIndex, navArgs) {
 // forms a speech response for the case of general error 
 // 
 // args
-//  session: session attributes to pass along despite the error 
+//  sessionContext: session attributes to pass along despite the error 
+//  suppressLogging: pass true to avoid logging the response. This is done because sometimes this 
+//  particular response is created & put aside as a default value; logging it makes it look like there
+//  might be a problem, to someone casually browsing the logs (it's a bit annoying) 
 //
 // returns: json object (Alexa response format) 
-function generalError(sessionContext) {
-    return responseWithCardShortcut('generalError', {}, sessionContext); 
+function generalError(sessionContext, shouldEndSession, suppressLogging) {
+    return responseWithCardShortcut('generalError', {}, sessionContext, shouldEndSession, suppressLogging); 
 }
 
 // ------------------------------------------------------------------------------------------------------
