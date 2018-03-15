@@ -40,7 +40,7 @@ const callBimsmithSupport = async((sessionContext) => {
 //  manufacturerName: the name of the manufacturer to call 
 // 
 // returns: json object (Alexa response format) 
-const callManufacturer = (sessionContext, manufacturerName) => {
+const callManufacturer = async((sessionContext, manufacturerName) => {
     return exception.try(() => {
         var mfg = query.runQuery(enums.querySubject.manufacturer, {name: manufacturerName});
 
@@ -59,9 +59,9 @@ const callManufacturer = (sessionContext, manufacturerName) => {
         }
 
         //else, call phone 
-        return callNumber(sessionContext, mfg.phone, mfg.name); 
+        return await(callNumber(sessionContext, mfg.phone, mfg.name)); 
     });
-};
+});
 
 // ------------------------------------------------------------------------------------------------------
 // sends the command to call a given number 
@@ -85,7 +85,7 @@ const callNumber = async((sessionContext, phoneNumber, name) => {
         }))); 
 
         //return a response 
-        return responseBuilder.responseWithCardShortcut('callingPhone', {name:name}, sessionContext, false);
+        return responseBuilder.responseWithCardShortcut('callingPhone', {name:name}, sessionContext, true);
     });
 });
 

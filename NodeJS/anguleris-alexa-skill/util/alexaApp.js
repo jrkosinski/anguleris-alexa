@@ -475,8 +475,8 @@ addAppIntent(config.intents.help, (slots, session, data) => {
 // example text: 
 //      call Kenmore
 //
-addAppIntent(config.intents.callManufacturer, (slots, session, data) => {
-    return phone.callManufacturer(sessionContext.create(session), slots.manufacturer); 
+addAppIntentAsync(config.intents.callManufacturer, (slots, session, data) => {
+    return await(phone.callManufacturer(sessionContext.create(session), slots.manufacturer)); 
 });
 
 // CallBimsmithSupport 

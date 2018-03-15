@@ -614,7 +614,6 @@ const runUnitTests = async((handler) => {
         }),
 
         //call manufacturer
-        /*
         async(() => {
             var request = createIntentRequest(config.intents.callManufacturer.name, 
             {},
@@ -622,7 +621,7 @@ const runUnitTests = async((handler) => {
             await(runTest('call manufacturer', request, [
                 assertions.responseIsNotNull
             ])); 
-        })*/
+        })
     ];
 
     //RUN TESTS 
