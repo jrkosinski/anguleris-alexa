@@ -16,6 +16,7 @@ const enums = common.enums;
 const exception = common.exceptions('DATA');
 const logger = common.logger('DATA');
 
+const users = require('./users');
 const config = require('./config');
 
 const _categories = new Categories(); 
@@ -46,7 +47,7 @@ function DataTable(data) {
     //  name: the name of the object to find 
     // 
     // returns: a single object, or null
-    this.findByName = (name) => {
+    this.findByName = async((name) => {
         return exception.try(() => {
             var output = null; 
             if (!name) 
@@ -67,7 +68,7 @@ function DataTable(data) {
 
             return output; 
         });
-    };
+    });
 
     // ------------------------------------------------------------------------------------------------------
     // finds a specific entity, given its id 
@@ -76,7 +77,7 @@ function DataTable(data) {
     //  name: the name of the object to find 
     // 
     // returns: a single object, or null
-    this.findById = (id) => {
+    this.findById = async((id) => {
         return exception.try(() => {
             var output = null; 
 
@@ -92,13 +93,13 @@ function DataTable(data) {
 
             return output; 
         });
-    };
+    });
 
     // ------------------------------------------------------------------------------------------------------
     // returns all contained objects
-    this.all = () => {
+    this.all = async(() => {
         return _all; 
-    }
+    })
 }
 
 // ======================================================================================================
@@ -612,7 +613,7 @@ function Products() {
 
     var dataTable = new DataTable(_all);
     
-    dataTable.findByName = (name) => {
+    dataTable.findByName = async((name) => {
         return exception.try(() => {
             var output = null; 
             name = name.trim().toLowerCase(); 
@@ -665,7 +666,7 @@ function Products() {
 
             return output; 
         });
-    };
+    });
 
     return dataTable; 
 }
@@ -678,14 +679,14 @@ function Products() {
 //  name: the name of the desired category; if omitted, all categories are returned in array
 //
 // returns: single object or array of categories
-function getCategories(name) {
+const getCategories = async((name) => {
     return exception.try(() => {
         if (name)
-            return _categories.findByName(name); 
+            return await(_categories.findByName(name)); 
         else
-            return _categories.all();
+            return await(_categories.all());
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // gets all manufacturers, or a specific one by name
@@ -694,14 +695,14 @@ function getCategories(name) {
 //  name: the name of the desired manufacturer; if omitted, all manufacturers are returned in array
 //
 // returns: single object or array of manufacturers
-function getManufacturers(name) {
+const getManufacturers = async((name) => {
     return exception.try(() => {
         if (name)
-            return _manufacturers.findByName(name); 
+            return await(_manufacturers.findByName(name)); 
         else
-            return _manufacturers.all();
+            return await(_manufacturers.all());
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // gets all products, or a specific one by id
@@ -710,14 +711,14 @@ function getManufacturers(name) {
 //  name: the id of the desired product; if omitted, all products are returned in array
 //
 // returns: single object or array of products
-function getProducts(id) {
+const getProducts = async((id) => {
     return exception.try(() => {
         if (id)
-            return _products.findById(id); 
+            return await(_products.findById(id)); 
         else
-            return _products.all();
+            return await(_products.all());
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // gets a list of categories that have the given manufacturer as a manufacturer
@@ -726,12 +727,12 @@ function getProducts(id) {
 //  manufacturerName: the name of the manufacturer in question 
 // 
 // returns: array of categories 
-function getCategoriesForManufacturer(manufacturerName) {
+const getCategoriesForManufacturer = async((manufacturerName) => {
     return exception.try(() => {
         manufacturerName = manufacturerName.trim().toLowerCase(); 
         var output = [];
 
-        var categories = _categories.all(); 
+        var categories = await(_categories.all()); 
         for(var i=0; i<categories.length; i++) {
             var category = categories[i]; 
 
@@ -748,7 +749,7 @@ function getCategoriesForManufacturer(manufacturerName) {
 
         return output; 
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // gets a list of products in the given category 
@@ -757,12 +758,12 @@ function getCategoriesForManufacturer(manufacturerName) {
 //  categoryName: name of the category for which to get products
 //
 // returns: array of products
-function getProductsForCategory(categoryName) {
+const getProductsForCategory = async((categoryName) => {
     return exception.try(() => {
         categoryName = categoryName.trim().toLowerCase(); 
         var output = [];
 
-        var products = _products.all();
+        var products = await(_products.all());
 
         for (var n=0; n<products.length; n++) {
             var prod = products[n]; 
@@ -772,7 +773,7 @@ function getProductsForCategory(categoryName) {
 
         return output; 
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // gets a list of products offered by the given manufacturer
@@ -781,12 +782,12 @@ function getProductsForCategory(categoryName) {
 //  manufacturerName: name of the manufacturer for which to get products
 //
 // returns: array of products
-function getProductsForManufacturer(manufacturerName) {
+const getProductsForManufacturer = async((manufacturerName) => {
     return exception.try(() => {
         manufacturerName = manufacturerName.trim().toLowerCase(); 
         var output = [];
 
-        var products = _products.all();
+        var products = await(_products.all());
 
         for (var n=0; n<products.length; n++) {
             var prod = products[n]; 
@@ -796,7 +797,7 @@ function getProductsForManufacturer(manufacturerName) {
 
         return output; 
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // gets a product by its name 
@@ -805,11 +806,11 @@ function getProductsForManufacturer(manufacturerName) {
 //  name: the name of the desired product; 
 //
 // returns: product object 
-function getProductByName(productName) {
+const getProductByName = async((productName) => {
     return exception.try(() => {
-        return _products.findByName(productName);
+        return await(_products.findByName(productName));
     }); 
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
 // attempts to get some entity that has a matching name 
@@ -818,19 +819,19 @@ function getProductByName(productName) {
 //  name: the name of the desired entity 
 //
 // returns: single category, product, or manufacturer (or null) 
-function getEntityByName(name) {
+const getEntityByName = async((name) => {
     return exception.try(() => {
-        var output = _categories.findByName(name); 
+        var output = await(_categories.findByName(name)); 
         if (!output){
-            output = _manufacturers.findByName(name); 
+            output = await(_manufacturers.findByName(name)); 
             if (!output) {
-                output = _prod.findByName(name);
+                output = await(_prod.findByName(name));
             }
         }
         
         return output; 
     });
-}
+}); 
 
 // ------------------------------------------------------------------------------------------------------
 // gets all of the name properties from every object in the given table. Removes any resulting 
@@ -840,50 +841,75 @@ function getEntityByName(name) {
 //  table: the data table container 
 //
 // returns: string[]
-function getAllNames(table) {
+const getAllNames = async((table) => {
     return exception.try(() => {
-        return common.arrays.removeWhereNullOrUndefined(common.arrays.select(table.all(), 'name')); 
+        return common.arrays.removeWhereNullOrUndefined(common.arrays.select(await(table.all()), 'name')); 
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
-function categoryExists(name) {
+// determines whether a category by the given name exists in the database.
+//
+// args
+//  name: category name
+//
+// returns: boolean 
+const categoryExists = async((name) => {
     return exception.try(() => {
-        return (!common.types.isUndefinedOrNull(_categories.findByName(name))); 
+        return (!common.types.isUndefinedOrNull(await(_categories.findByName(name)))); 
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
-function manufacturerExists(name) {
+// determines whether a manufacturer by the given name exists in the database.
+//
+// args
+//  name: manufacturer name
+//
+// returns: boolean 
+const manufacturerExists = async((name) => {
     return exception.try(() => {
-        return (!common.types.isUndefinedOrNull(_manufacturers.findByName(name))); 
+        return (!common.types.isUndefinedOrNull(await(_manufacturers.findByName(name)))); 
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
-function productExists(name) {
+// determines whether a product by the given name exists in the database.
+//
+// args
+//  name: product name
+//
+// returns: boolean 
+const productExists = async((name) => {
     return exception.try(() => {
-        return (!common.types.isUndefinedOrNull(_products.findByName(name))); 
+        return (!common.types.isUndefinedOrNull(await(_products.findByName(name)))); 
     });
-}
+});
 
 // ------------------------------------------------------------------------------------------------------
-function entityExists(name) {
+// determines whether an entity (catgeory, manufacturer, or product) by the given name exists 
+// in the database.
+//
+// args
+//  name: catgeory, manufacturer, or product name
+//
+// returns: boolean 
+const entityExists = async((name) => {
     return exception.try(() => {
-        if (categoryExists(name))
+        if (await(categoryExists(name)))
             return true; 
         else{
-            if (manufacturerExists(name))
+            if (await(manufacturerExists(name)))
                 return true; 
             else{
-                if (productExists(name))
+                if (await(productExists(name)))
                     return true; 
             }
         }
 
         return false;
     });
-}
+});
 
 
 
@@ -902,5 +928,7 @@ module.exports = {
     categoryExists,
     productExists,
     manufacturerExists,
-    entityExists
+    entityExists,
+
+    getUser: users.getUser
 };

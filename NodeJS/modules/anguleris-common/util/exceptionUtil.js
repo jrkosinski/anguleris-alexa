@@ -36,7 +36,7 @@ module.exports = function excepUtil(logPrefix) {
                 _this.handleError(err);
                 if (options && options.onError)
                     options.onError(err);
-                return options ? options.defaultVal : null;
+                return options ? options.defaultValue : null;
             }
         };
 

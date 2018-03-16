@@ -72,6 +72,33 @@ function tryParseFloat(v) {
      return output;
 }
 
+// ------------------------------------------------------------------------------------------------------
+// attempts to get a property value from the given json object. If any property in the string is 
+// null or undefined, returns null. 
+//
+// args
+//  obj: any json object 
+//  property: string in the form 'property1.property2.property3' 
+//
+// returns: value or null 
+function getDeepPropertyValue(obj, property) {
+    var output = null; 
+
+    var props = property.split('.'); 
+    for (var n=0; n<props.length; n++) {
+        var p = props[n];
+        if (isDefined(obj[p]) && !isNull(obj[p])) {
+            obj = obj[p]; 
+            if (n === props.length-1)
+                output = obj;
+        }
+        else
+            break;
+    }
+
+    return output; 
+}
+
 
 module.exports = {
     isDefined: isDefined,
@@ -82,5 +109,6 @@ module.exports = {
     isArray: isArray,
     isObject: isObject,
 	tryParseInt: tryParseInt,
-	tryParseFloat: tryParseFloat
+	tryParseFloat: tryParseFloat,
+    getDeepPropertyValue: getDeepPropertyValue
 }
