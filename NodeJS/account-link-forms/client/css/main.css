@@ -1,0 +1,439 @@
+
+body {
+  line-height: 1; }
+
+a {
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent; }
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #cccccc;
+  margin: 1em 0;
+  padding: 0; }
+
+input, select {
+  vertical-align: middle; }
+
+textarea {
+  resize: vertical; }
+
+html {
+  height: 100%;
+  position: relative;
+  -webkit-text-size-adjust: none;
+  font-size-adjust: none;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  -ms-touch-action: none;
+  overflow-x: hidden; }
+
+body {
+  height: 100%;
+  background-color: black;
+  -webkit-tap-highlight-color: transparent;
+  -ms-touch-action: none;
+  position: relative;
+  font-family: 'nationalThin';
+  font-size: 20px;
+  color: black;
+  margin: 0;
+  padding: 0; }
+
+a {
+  font-family: 'robotoRegular';
+  font-size: 16px;
+  color: #f0c55e;
+  text-decoration: none;
+  font-weight: normal;
+  transition: all .5s; }
+
+p {
+  font-family: 'nationalThin';
+  font-size: 21px;
+  color: #b2aeab;
+  letter-spacing: 0.08em;
+  line-height: 150%; }
+
+h1, h2, h3, h4, h5, p {
+  font-weight: normal;
+  margin: 0;
+  padding: 0;
+  line-height: 100%; }
+
+h1 {
+  font-family: 'nationalLight';
+  font-size: 34px;
+  color: #333949;
+  letter-spacing: .15em;
+  text-transform: uppercase; }
+
+h2 {
+  font-family: 'nationalLight';
+  font-size: 25px;
+  color: #f0c55e;
+  letter-spacing: .15em;
+  text-transform: uppercase; }
+
+.overlay-form {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(7, 4, 5, 0.96);
+  color: #f0f3fa;
+  z-index: 99; 
+  
+  /*visibility:visible; width:500px; height:500px; background-color:white; position:absolute; top:50px; left:20px;*/
+  }
+
+.form-outline {
+  position: relative;
+  width: 61%;
+  max-width: 800px;
+  border-radius: 4px;
+  top: 5%;
+  padding: 3%;
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translatex(-50%);
+  -ms-transform: translatex(-50%);
+  transform: translatex(-50%); 
+  background: #37383d;
+  background-size: contain;
+  box-shadow: 0 0 20px rgba(240, 243, 250, 0.2);}
+
+.button {
+    float: left;
+    margin-right: 15px;
+    padding-left:15px;
+    padding-right:15px;
+    padding-top:5px;
+    padding-bottom:5px;
+    cursor:pointer;
+    background:gray;
+    border-radius:5px;
+}
+
+.edit-article-button {
+    float: left;
+    margin-right: 15px;
+    margin-top: 20px;
+    padding-left:15px;
+    padding-right:15px;
+    padding-top:5px;
+    padding-bottom:5px;
+    cursor:pointer;
+    background:gray;
+    border-radius:5px;
+}
+
+.remove-article-button {
+    float: left;
+    margin-right: 15px;
+    margin-top: 20px;
+    padding-left:15px;
+    padding-right:15px;
+    padding-top:5px;
+    padding-bottom:5px;
+    cursor:pointer;
+    background:gray;
+    border-radius:5px;
+}
+
+.article-list {
+    visibility:visible; 
+    position:absolute; 
+    top:10px; 
+    left:20px;
+    width:100%;
+}
+
+.article-row {
+  font-family: 'nationalThin';
+  font-size: 21px;
+  background: #37383d;
+  letter-spacing: 0.08em;
+  padding-left:10px;
+  padding-right:10px;
+  padding-top:10px;
+  padding-bottom:10px;
+}
+
+.article-title {
+  font-family: 'nationalThin';
+  font-size: 20px;
+  color: #b2aeab;
+  letter-spacing: 0.08em;
+  padding-bottom:10px;
+}
+
+.article-smalltext {
+  font-family: 'nationalThin';
+  font-size: 12px;
+  color: #b2aeab;
+  letter-spacing: 0.08em;
+  padding-bottom:8px;
+}
+
+.title-large {
+  font-family: 'nationalThin';
+  font-size: 24px;
+  color: #eeeeee;
+  letter-spacing: 0.08em;
+  padding-bottom:0px;
+  vertical-align: bottom;
+}
+
+.title-medium {
+  font-family: 'nationalThin';
+  font-size: 18px;
+  color: #eeeeee;
+  letter-spacing: 0.08em;
+  padding-bottom:8px;
+}
+
+.error-title {
+  font-family: 'nationalThin';
+  font-size: 18px;
+  color: #f0c55e;
+  letter-spacing: 0.08em;
+  padding-bottom:8px;
+}
+
+.title-small {
+  font-family: 'nationalThin';
+  font-size: 16px;
+  color: #f0c55e;
+  letter-spacing: 0.08em;
+  padding-bottom:8px;
+}
+
+.caption {
+  font-family: 'nationalThin';
+  font-size: 14px;
+  color: #b2aeab;
+  letter-spacing: 0.08em;
+  padding-bottom:10px;
+}
+
+.article-description {
+  font-family: 'nationalThin';
+  font-size: 16px;
+  color: #b2aeab;
+  letter-spacing: 0.08em;
+  padding-bottom:10px;
+}
+
+.scrolling-article-list {
+    margin-top:0px;
+    margin-bottom:5px;
+    overflow:auto; 
+    width:95vw; 
+    height:75vh;   
+    background: #37383d;
+}
+
+.request-log-list {
+    margin-top:0px;
+    margin-bottom:5px;
+    overflow:auto; 
+    height:65vh;   
+    background: #6a7b7f;
+}
+
+.textfield {
+    font-family:'consolas';
+    font-size: 14px;
+    width:500px;
+}
+
+.loginfield {
+    font-family:'consolas';
+    font-size: 14px;
+    width:200px;
+}
+
+.numberPicker {
+    font-family:'consolas';
+    font-size: 14px;
+    width:80px;
+}
+
+.textarea {
+    font-family:'consolas';
+    font-size: 14px;
+}
+
+.drag-drop-area {
+    width:500px; 
+    height:110px;
+    background-color:gray;
+    margin-bottom: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.drag-drop-text {
+    margin-top: 20px;
+    vertical-align: center;
+}
+
+.progress-overlay {
+    width:100vw;
+    height:100vh; 
+    z-index: 100;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.close-button {
+  width:20px;
+  height:20px;
+  float:right;
+  margin-top:3px;
+  margin-right:3px;
+  cursor: pointer;
+}
+
+.close-error-button {
+  width:20px;
+  height:20px;
+  float:right;
+  margin-top:3px;
+  margin-right:3px;
+  cursor: pointer;
+}
+
+.close-request-log-button {
+  width:20px;
+  height:20px;
+  float:right;
+  margin-top:3px;
+  margin-right:3px;
+  cursor: pointer;
+}
+
+.align-right {
+  float:right;
+  margin-right:40px;
+  width:100px;
+  margin-bottom:0px;
+  vertical-align: bottom;
+}
+
+/* Dropdown Button */
+.menu-button {
+    background-color: #222222;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.request-log-menu-button {
+    background-color: #222222;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.request-log-response-button {
+    background-color: #222222;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.request-log-context-button {
+    background-color: #222222;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Dropdown button on hover & focus */
+.menu-button:hover, .menu-button:focus {
+    background-color: #555555;
+}
+
+/* Dropdown button on hover & focus */
+.request-log-menu-button:hover, .request-log-menu-button:focus {
+    background-color: #555555;
+}
+
+/* Dropdown button on hover & focus */
+.request-log-response-button:hover, .request-log-response-button:focus {
+    background-color: #555555;
+}
+
+/* Dropdown button on hover & focus */
+.request-log-context-button:hover, .request-log-context-button:focus {
+    background-color: #555555;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    margin-right:80px;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #222222;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 100000;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content2 {
+    display: none;
+    position: absolute;
+    background-color: #222222;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 100000;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    padding: 12px 16px;
+    text-decoration: none;
+    font-family: 'robotoRegular';
+    font-size: 16px;
+    color: #f0c55e;
+    text-decoration: none;
+    font-weight: normal;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+/* Change color of dropdown links on hover */
+.dropdown-content2 a:hover {background-color: #f1f1f1}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block; z-index: 100000;}
