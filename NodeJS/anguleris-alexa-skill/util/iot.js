@@ -30,10 +30,10 @@ function connectIoT(){
     }
 
     //credentials from config
-    if (config.aws.accessKey && config.aws.accessKey.length) 
-        options.accessKeyId = config.aws.accessKey; 
-    if (config.aws.secretKey && config.aws.secretKey.length) 
-        options.secretAccessKey = config.aws.secretKey; 
+    if (config.aws.iot.accessKey && config.aws.iot.accessKey.length) 
+        options.accessKeyId = config.aws.iot.accessKey; 
+    if (config.aws.iot.secretKey && config.aws.iot.secretKey.length) 
+        options.secretAccessKey = config.aws.iot.secretKey; 
 
     return new AWS.IotData(options);  
 }

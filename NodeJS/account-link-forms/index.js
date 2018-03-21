@@ -1,5 +1,7 @@
 'use strict';
 
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -7,8 +9,10 @@ const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 
 const config = require('./config');
+const api = require('./util/api');
 const common = require('anguleris-common');
 const exception = common.exceptions('IDX');
+const logger = common.logger('IDX');
 
 
 function run() {
@@ -33,6 +37,8 @@ function run() {
     registerGetFile('/', '/index.html');
     registerGetFile('/index.html');
 
+    registerGetFile('/js/config.js');    
+    registerGetFile('/js/api.js');    
     registerGetFile('/js/main.js');    
 
     registerGetFile('/css/main.css');    
@@ -51,10 +57,10 @@ function run() {
         });
     });
 
-    app.post('/', async((req, res) => {
+    app.post('/users', async((req, res) => {
         exception.try(() => {
-            logger.info('POST /auth');
-            res.send(await(common.postAuth(req.query, req.body)));
+            logger.info('POST /users');
+            res.send(await(api.postUser(req.query, req.body)));
         });
     }));
 

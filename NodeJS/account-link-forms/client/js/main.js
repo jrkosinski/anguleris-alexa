@@ -73,5 +73,13 @@ $(document).ready(function () {
                 */
             }
         }
+
+        $("#submitButton").click(function () {
+            showProgress(); 
+
+            api.postUser('456', () => {
+                hideProgress(); 
+            });
+        });
     });
 });

@@ -529,8 +529,8 @@ module.exports = {
     },
 
     aws: {
-        accessKey: configUtil.getSetting("AWS_ACCESS_KEY", null),
-        secretKey: configUtil.getSetting("AWS_SECRET_KEY", null),
+        accessKey: configUtil.getSetting("AWS_IOT_ACCESS_KEY", null),
+        secretKey: configUtil.getSetting("AWS_IOT_SECRET_KEY", null),
 
         iot: {
             endpoint: configUtil.getSetting('IOT_ENDPOINT', 'a21jd7gud1swyd.iot.us-east-1.amazonaws.com')

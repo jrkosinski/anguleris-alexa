@@ -16,7 +16,7 @@ const enums = common.enums;
 const exception = common.exceptions('DATA');
 const logger = common.logger('DATA');
 
-const users = require('./users');
+const users = require('./util/users');
 const config = require('./config');
 
 const _categories = new Categories(); 
@@ -912,7 +912,6 @@ const entityExists = async((name) => {
 });
 
 
-
 module.exports = {
     getCategories,
     getManufacturers,
@@ -930,5 +929,6 @@ module.exports = {
     manufacturerExists,
     entityExists,
 
-    getUser: users.getUser
+    getUser: users.getUser,
+    putUser: users.putUser
 };

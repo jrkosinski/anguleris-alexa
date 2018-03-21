@@ -10,7 +10,9 @@
   "license": "UNLICENSED",
   "dependencies": {
     "asyncawait": "^1.0.6",
+    "aws-sdk": "^2.212.1",
     "body-parser": "^1.18.2",
+    "dotenv": "^5.0.1",
     "express": "^4.16.3"
   }
 }
